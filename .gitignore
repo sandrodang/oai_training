@@ -1,0 +1,42 @@
+# ─── DỮ LIỆU & TRỌNG SỐ — TUYỆT ĐỐI KHÔNG COMMIT ───────────────────────────
+# Dữ liệu thi do BTC cấp. Quy chế: "chỉ được sử dụng dữ liệu do BTC cung cấp".
+# Phát tán lại dữ liệu thi là rủi ro kỷ luật. Chia sẻ trong đội qua kênh riêng.
+ThiChinhThucData/
+cv/
+work/
+*.zip
+*.tar.gz
+
+# Trọng số, checkpoint, cache mô hình
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+*.npz
+*.onnx
+hf/
+ckpt/
+checkpoints/
+
+# Môi trường Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Log & kết quả chạy
+logs/
+oof/
+sub/
+*.log
+
+# Hệ điều hành / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
