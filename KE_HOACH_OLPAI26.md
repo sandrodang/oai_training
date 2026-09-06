@@ -624,6 +624,48 @@ torch.compile · VideoMAE/TimeSformer · DETR · SegFormer · MoCo/BYOL · DART 
 
 ---
 
+## PHẦN 4B — BẢNG ĐỐI CHIẾU TẦNG ↔ TUẦN
+### *(thêm sau khi phát hiện lỗi: Phần 4 và Phần 5 vốn được viết rời và không khớp nhau)*
+
+**Lỗi đã phát hiện:** tổng 6 tầng = **56h** nhưng tổng ngân sách đọc 8 tuần = **47h**
+(7+8+8+8+8+5+3). Ánh xạ tầng→tuần trong bản đầu **bất khả thi về số học**. Ngoài ra
+Tuần 2 lẽ ra gánh "Tầng 1 hết" nhưng đã được viết thành 100% Tầng 2.
+
+**Đã sửa bằng ba việc:** (1) cắt Tầng 4 từ 6h → **2h** — ML không ra thành bài riêng,
+chỉ là lớp phân loại/đặc trưng bên trong 2 tác vụ; (2) rút Tầng 3 từ 14h → **12h**;
+(3) tách phần Tầng 1 còn nợ thành gói **[`tang1_toolkit/`](tang1_toolkit/)** và
+**xếp từng module vào tuần thực sự dùng nó** — Tầng 1 là bộ đồ nghề, không phải một chủ đề.
+
+| Tầng | Giờ | T1 | T2 | T3 | T4 | T5 | T6 | T7 |
+|---|---|---|---|---|---|---|---|---|
+| **0** Đánh giá & PP thực nghiệm | 6h | **5,3** | — | — | — | — | — | ôn |
+| **1** Học sâu cốt lõi | 10h | 1,7 | *(Pre-LN, Noam, clipping trong BT)* | **+1,5** M01·M02 | **+0,5** M05a | **+0,8** M05b | **+2,0** M03·M04·M06 | ôn |
+| **2** NLP & Dịch máy | 16h | — | **6,0** | **+8,0** | — | — | *(ôn phân loại)* | ôn |
+| **3** Thị giác máy tính | ~~14h~~ **12h** | — | — | — | **6,0** | **6,0** | — | ôn |
+| **4** ML lồng ghép | ~~6h~~ **2h** | — | — | — | — | — | **2,0** | — |
+| **5** Hạ tầng & tối ưu suy luận | 4h | *(đo môi trường N1)* | — | — | — | **3,0** | — | — |
+| **Tổng đọc/tuần** | | 7,0 | 6,0 | 9,5 | 6,5 | 9,8 | 4,0 | 3,0 |
+
+> ⚠️ Tuần 3 và Tuần 5 nặng nhất (~9,5h đọc). Đó là chủ ý: **Tuần 3 là dịch máy**
+> (2/2 đề mẫu 2025) và **Tuần 5 là jigsaw + tối ưu suy luận** (ràng buộc `main.py ≤ 20 phút`).
+> Nếu phải cắt, cắt Tuần 4 và Tuần 6 trước.
+
+### Lịch `tang1_toolkit/`
+
+| Module | Nội dung | Tuần | Vì dùng cho |
+|---|---|---|---|
+| M01 `weight_averaging` | EMA · SWA · checkpoint averaging | **3** | ckpt averaging là kỹ thuật 🔴 của NMT |
+| M02 `grad_tricks` | gradient accumulation · checkpointing · thứ tự AMP | **3** | batch lớn cho MT trên GPU 16GB |
+| M05a `losses` | focal loss | **4** | phân loại ảnh mất cân bằng |
+| M05b `losses` | dice · tversky · contrastive · triplet | **5** | segmentation & ghép ảnh |
+| M03 `finetune_lr` | LLRD · gradual unfreezing · freeze BN | **6** | fine-tune encoder |
+| M04 `adversarial` | FGM · PGD · FreeLB | **6** | robustness (FGM đã cho +0,016) |
+| M06 `consistency_multitask` | R-Drop · consistency · uncertainty weighting | **6** | đa nhiệm + nhiễu |
+
+Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
+
+---
+
 ## PHẦN 5 — LỘ TRÌNH 8 TUẦN
 ### Mỗi tuần: **📖 đọc lý thuyết → 🔧 nắm kỹ thuật → 💻 cài đặt → ✅ nghiệm thu**
 

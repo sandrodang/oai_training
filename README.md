@@ -13,6 +13,7 @@ Tài liệu ôn tập của đội cho **Olympic AI Sinh viên 2026**, vòng lo�
 | **[PHUONG_PHAP_LUAN.md](PHUONG_PHAP_LUAN.md)** | Sổ tay phương pháp luận thi đấu — 5 nguyên lý quyết định "cải thiện này có thật không" |
 | **[tuan01/](tuan01/)** | Gói học Tuần 1: tài liệu đọc, 6 bài tập có bộ chấm tự động, notebook đo môi trường |
 | **[tuan02/](tuan02/)** | Gói học Tuần 2: Transformer & seq2seq tự viết, 5 bài tập + 26 test, corpus song ngữ Kơtu→Việt |
+| **[tang1_toolkit/](tang1_toolkit/)** | Bộ đồ nghề huấn luyện (Tầng 1 còn nợ): EMA/SWA/ckpt-avg · grad accumulation · LLRD · FGM · focal/dice · R-Drop. 6 module, 26 test, **xếp lịch vào tuần 3–6** |
 | **[de_tham_khao/](de_tham_khao/)** | 5 đề thi PDF: SOLOAI 2025, VOAI 2025 CK, 2 đề chính thức vòng trường 2026, đề thi thử 2026 |
 | **[task1_nlp_fpt26/](task1_nlp_fpt26/)** | 🗄 Mã nguồn bài **Tác vụ 1 — NLP** vòng trường 2026 (R-ViHSD: hate speech + noise type). Private 0.720 |
 | **[task2_cv_fpt26/](task2_cv_fpt26/)** | 🗄 Mã nguồn bài **Tác vụ 2 — CV** vòng trường 2026 (image anomaly detection, 6 category). Public 80.4 |
