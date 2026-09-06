@@ -14,6 +14,11 @@ ThiChinhThucData/
 **/training_set*
 **/validation_set*
 
+# NGOẠI LỆ: corpus song ngữ đồ chơi của Tuần 2 do CHÍNH TA sinh ra
+# (data/make_toy_parallel.py), không phải dữ liệu BTC -> phải được commit.
+!tuan02/data/
+!tuan02/data/**
+
 # ─── TRỌNG SỐ, CHECKPOINT, CACHE MÔ HÌNH ───────────────────────────────────
 *.pt
 *.pth
