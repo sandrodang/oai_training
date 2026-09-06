@@ -12,6 +12,9 @@ Tài liệu ôn tập của đội cho **Olympic AI Sinh viên 2026**, vòng lo�
 | **[KE_HOACH_OLPAI26.md](KE_HOACH_OLPAI26.md)** | Kế hoạch 8 tuần đầy đủ: luật thi, chẩn đoán năng lực, chương trình lý thuyết 6 tầng, lộ trình từng tuần, phân vai ngày thi, sổ rủi ro |
 | **[PHUONG_PHAP_LUAN.md](PHUONG_PHAP_LUAN.md)** | Sổ tay phương pháp luận thi đấu — 5 nguyên lý quyết định "cải thiện này có thật không" |
 | **[tuan01/](tuan01/)** | Gói học Tuần 1: tài liệu đọc, 6 bài tập có bộ chấm tự động, notebook đo môi trường |
+| **[de_tham_khao/](de_tham_khao/)** | 5 đề thi PDF: SOLOAI 2025, VOAI 2025 CK, 2 đề chính thức vòng trường 2026, đề thi thử 2026 |
+| **[task1_nlp/](task1_nlp/)** | 🗄 Mã nguồn bài **Tác vụ 1 — NLP** vòng trường 2026 (R-ViHSD: hate speech + noise type). Private 0.720 |
+| **[task2_cv/](task2_cv/)** | 🗄 Mã nguồn bài **Tác vụ 2 — CV** vòng trường 2026 (image anomaly detection, 6 category). Public 80.4 |
 
 ---
 
@@ -32,6 +35,25 @@ python3 -m pytest tuan01/bai_tap/test_all.py -q
 1. `KE_HOACH_OLPAI26.md` — Phần 0 → Phần 1 (luật thi, đọc kỹ §1.3 công thức điểm và §1.4 ràng buộc 20 phút)
 2. `PHUONG_PHAP_LUAN.md` — 5 nguyên lý
 3. `tuan01/README.md` — lịch 8 ngày, rồi bắt đầu N1
+
+---
+
+## 🗄 Hai thư mục bài cũ — dùng để làm gì
+
+`task1_nlp/` và `task2_cv/` là **mã nguồn bài làm vòng trường 2026** của đội, tách ra từ
+thư mục làm việc gốc (77GB). **Chỉ gồm mã nguồn, log, notebook, tài liệu và file nộp** —
+không có trọng số, checkpoint hay dữ liệu BTC.
+
+Giá trị của chúng **không phải để tái sử dụng** — vòng miền đổi luật khá nhiều
+(xem `KE_HOACH_OLPAI26.md` Phần 0). Giá trị là để **đọc lại phương pháp**:
+
+- `task1_nlp/REPRODUCE.md` — mẫu hồ sơ tái lập + tuyên bố tuân thủ. **Dùng lại cấu trúc này
+  cho báo cáo kỹ thuật ngày thi** (quy chế bắt buộc nộp).
+- `task2_cv/RESULTS.md` — nhật ký từng lượt nộp kèm kết luận. Bảng *"đã thử và loại bỏ"*
+  chính là thứ ban giám khảo muốn thấy ở phần chấm định tính.
+- `task1_nlp/src/build_groups.py` — kỹ thuật phục hồi nhóm chống rò rỉ (Tuần 1 BT 04 cài lại).
+- `task1_nlp/src/tune_prior.py`, `task2_cv/src/calibrate.py` — hiệu chỉnh ngưỡng.
+  ⚠️ Đọc kèm cảnh báo ở `tuan01/bai_tap/05_threshold.py`: tune ngưỡng **làm tệ đi** task hate.
 
 ---
 

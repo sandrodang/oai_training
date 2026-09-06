@@ -1,0 +1,8 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 3072) 89s | hold med=33.588 | test med=34.925 p90=44.833 | sep=+0.68sd
+  category_02: bank=(30000, 3072) 80s | hold med=33.306 | test med=35.345 p90=57.260 | sep=+0.85sd
+  category_03: bank=(30000, 3072) 43s | hold med=38.798 | test med=39.338 p90=50.317 | sep=+0.36sd
+  category_04: bank=(30000, 3072) 87s | hold med=33.541 | test med=35.451 p90=54.312 | sep=+1.01sd
+  category_05: bank=(30000, 3072) 81s | hold med=36.809 | test med=37.723 p90=56.334 | sep=+0.65sd
+  category_06: bank=(30000, 3072) 83s | hold med=36.354 | test med=38.745 p90=55.067 | sep=+1.25sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2l_augHV.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2l_augHV

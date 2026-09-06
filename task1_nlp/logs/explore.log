@@ -1,0 +1,5 @@
+baseline to beat: FGM alone = 0.7277
+gce_fgm | [gce_fgm] OOF over 10481 rows: hate=0.7207 noise=0.7452 SCORE=0.7244
+aug03_fgm | [aug03_fgm] OOF over 10481 rows: hate=0.7221 noise=0.7375 SCORE=0.7245
+cons_fgm | [cons_fgm] OOF over 10481 rows: hate=0.7283 noise=0.7526 SCORE=0.7320
+=== EXPLORE DONE ===

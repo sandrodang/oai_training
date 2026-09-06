@@ -1,0 +1,10 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: tau=0.5816  anom=67/160 (41.9%)
+  category_02: tau=0.6747  anom=67/160 (41.9%)
+  category_03: tau=0.5460  anom=67/160 (41.9%)
+  category_04: tau=0.7183  anom=67/160 (41.9%)
+  category_05: tau=0.5837  anom=67/160 (41.9%)
+  category_06: tau=0.6081  anom=67/160 (41.9%)
+
+CSV: /home/namdp36/oai/cv/sub/PRIVATE_SAFE/task2_private_output.csv
+ZIP: /home/namdp36/oai/cv/sub/PRIVATE_SAFE/FPTU_Promt_Engineer_task2_pri.zip

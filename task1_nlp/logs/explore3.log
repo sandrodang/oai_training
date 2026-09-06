@@ -1,0 +1,5 @@
+baseline: FGM eps=1.0 -> 0.7277
+hier | [hier] OOF over 10481 rows: hate=0.7228 noise=0.7186 SCORE=0.7222
+llrd | [llrd] OOF over 10481 rows: hate=0.7250 noise=0.7283 SCORE=0.7255
+ema | [ema] OOF over 10481 rows: hate=0.7258 noise=0.7347 SCORE=0.7271
+=== EXPLORE3 DONE ===

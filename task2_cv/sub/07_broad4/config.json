@@ -1,0 +1,30 @@
+{
+ "tags": [
+  "wrn50_L512_h180",
+  "dinov2b_L518_h180",
+  "dinov2l_ml_L518",
+  "dinomalyL"
+ ],
+ "p": 0.42,
+ "w": 1.0,
+ "maha": true,
+ "pc": null,
+ "shrink": 1.0,
+ "q": null,
+ "taus": {
+  "category_01": 0.6819980694980696,
+  "category_02": 0.6984942084942086,
+  "category_03": 0.5582262569832404,
+  "category_04": 0.7532046332046332,
+  "category_05": 0.7210424710424712,
+  "category_06": 0.6459563758389264
+ },
+ "n_anom": {
+  "category_01": 34,
+  "category_02": 34,
+  "category_03": 34,
+  "category_04": 34,
+  "category_05": 34,
+  "category_06": 34
+ }
+}

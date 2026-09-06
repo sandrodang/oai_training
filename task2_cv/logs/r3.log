@@ -1,0 +1,25 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: 104s | hold med=0.2189 test med=0.2397 sep=+0.59sd
+  category_02: 114s | hold med=0.2225 test med=0.2481 sep=+0.95sd
+  category_03: 94s | hold med=0.1820 test med=0.1863 sep=+0.11sd
+  category_04: 130s | hold med=0.1771 test med=0.2165 sep=+1.18sd
+  category_05: 113s | hold med=0.1897 test med=0.2110 sep=+0.96sd
+  category_06: 109s | hold med=0.1475 test med=0.1793 sep=+1.41sd
+saved dinomalyG
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 3072) 50s | hold med=30.907 | test med=32.456 p90=45.021 | sep=+0.61sd
+  category_02: bank=(30000, 3072) 40s | hold med=31.382 | test med=33.680 p90=55.015 | sep=+0.98sd
+  category_03: bank=(30000, 3072) 26s | hold med=38.253 | test med=38.699 p90=49.973 | sep=+0.24sd
+  category_04: bank=(30000, 3072) 46s | hold med=30.979 | test med=33.400 p90=54.128 | sep=+1.25sd
+  category_05: bank=(30000, 3072) 40s | hold med=34.769 | test med=36.166 p90=54.757 | sep=+0.82sd
+  category_06: bank=(30000, 3072) 28s | hold med=33.423 | test med=36.349 p90=55.297 | sep=+1.35sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2l_ml_L770.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2l_ml_L770
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(100000, 4608) 139s | hold med=54.109 | test med=56.280 p90=77.454 | sep=+0.54sd
+  category_02: bank=(100000, 4608) 125s | hold med=53.908 | test med=57.721 p90=103.836 | sep=+0.82sd
+  category_03: bank=(65246, 4608) 13s | hold med=68.664 | test med=70.702 p90=94.251 | sep=+0.59sd
+  category_04: bank=(100000, 4608) 164s | hold med=59.157 | test med=62.751 p90=98.899 | sep=+1.12sd
+  category_05: bank=(100000, 4608) 119s | hold med=59.338 | test med=64.092 p90=110.149 | sep=+1.30sd
+  category_06: bank=(61600, 4608) 14s | hold med=64.805 | test med=69.802 p90=99.805 | sep=+1.41sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2g_big.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2g_big
+R3DONE

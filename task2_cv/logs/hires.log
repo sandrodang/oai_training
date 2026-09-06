@@ -1,0 +1,25 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 768) 41s | hold med=9.869 | test med=10.439 p90=14.425 | sep=+0.79sd
+  category_02: bank=(30000, 768) 14s | hold med=10.194 | test med=10.849 p90=17.895 | sep=+0.80sd
+  category_03: bank=(30000, 768) 25s | hold med=11.364 | test med=11.584 p90=16.078 | sep=+0.15sd
+  category_04: bank=(30000, 768) 40s | hold med=9.833 | test med=10.315 p90=18.381 | sep=+0.96sd
+  category_05: bank=(30000, 768) 35s | hold med=11.823 | test med=12.226 p90=19.311 | sep=+0.81sd
+  category_06: bank=(30000, 768) 23s | hold med=10.995 | test med=11.776 p90=22.902 | sep=+0.75sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2b_L770.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2b_L770
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 1536) 74s | hold med=13.831 | test med=14.110 p90=17.739 | sep=+0.75sd
+  category_02: bank=(30000, 1536) 35s | hold med=13.838 | test med=14.062 p90=19.029 | sep=+0.41sd
+  category_03: bank=(30000, 1536) 40s | hold med=15.260 | test med=15.492 p90=17.413 | sep=+0.22sd
+  category_04: bank=(30000, 1536) 155s | hold med=12.659 | test med=13.178 p90=17.357 | sep=+1.35sd
+  category_05: bank=(30000, 1536) 209s | hold med=13.256 | test med=14.027 p90=19.979 | sep=+0.97sd
+  category_06: bank=(30000, 1536) 46s | hold med=14.108 | test med=14.305 p90=16.248 | sep=+0.38sd
+saved /home/namdp36/oai/cv/cache/scores_wrn50_L768.npz | ckpt /home/namdp36/oai/cv/ckpt/wrn50_L768
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 768) 52s | hold med=9.616 | test med=10.172 p90=14.028 | sep=+0.80sd
+  category_02: bank=(30000, 768) 49s | hold med=9.981 | test med=10.561 p90=18.491 | sep=+0.70sd
+  category_03: bank=(30000, 768) 27s | hold med=11.434 | test med=11.656 p90=15.367 | sep=+0.15sd
+  category_04: bank=(30000, 768) 51s | hold med=9.581 | test med=10.123 p90=18.003 | sep=+0.85sd
+  category_05: bank=(30000, 768) 38s | hold med=11.915 | test med=12.430 p90=18.942 | sep=+0.92sd
+  category_06: bank=(30000, 768) 29s | hold med=10.634 | test med=11.372 p90=22.307 | sep=+0.59sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2b_L1022.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2b_L1022
+ALLDONE

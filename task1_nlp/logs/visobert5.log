@@ -1,0 +1,69 @@
+[tok] token len p50=12 p95=40 p99=70 max_len=96
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold0 ep1 loss=0.9200 hate=0.6557 noise=0.5832 SCORE=0.6448 (31s)
+  fold0 ep2 loss=0.6008 hate=0.5952 noise=0.6931 SCORE=0.6098 (31s)
+  fold0 ep3 loss=0.4100 hate=0.7051 noise=0.7087 SCORE=0.7057 (31s)
+  fold0 ep4 loss=0.2894 hate=0.6842 noise=0.6659 SCORE=0.6815 (30s)
+  fold0 ep5 loss=0.2133 hate=0.7296 noise=0.7167 SCORE=0.7277 (31s)
+  fold0 ep6 loss=0.1665 hate=0.7476 noise=0.6768 SCORE=0.7370 (31s)
+  fold0 ep7 loss=0.1319 hate=0.7491 noise=0.7174 SCORE=0.7443 (31s)
+  fold0 ep8 loss=0.1059 hate=0.7535 noise=0.7307 SCORE=0.7501 (31s)
+  fold0 ep9 loss=0.0925 hate=0.7531 noise=0.7284 SCORE=0.7494 (31s)
+  fold0 ep10 loss=0.0855 hate=0.7545 noise=0.7295 SCORE=0.7508 (30s)
+[fold 0] best SCORE=0.7508
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold1 ep1 loss=0.9227 hate=0.6513 noise=0.6945 SCORE=0.6578 (31s)
+  fold1 ep2 loss=0.6160 hate=0.6762 noise=0.6636 SCORE=0.6743 (31s)
+  fold1 ep3 loss=0.4178 hate=0.6876 noise=0.7369 SCORE=0.6950 (30s)
+  fold1 ep4 loss=0.2944 hate=0.6938 noise=0.7423 SCORE=0.7011 (31s)
+  fold1 ep5 loss=0.2187 hate=0.7388 noise=0.7350 SCORE=0.7382 (31s)
+  fold1 ep6 loss=0.1692 hate=0.7380 noise=0.7216 SCORE=0.7355 (31s)
+  fold1 ep7 loss=0.1344 hate=0.7486 noise=0.7321 SCORE=0.7461 (31s)
+  fold1 ep8 loss=0.1060 hate=0.7494 noise=0.7314 SCORE=0.7467 (32s)
+  fold1 ep9 loss=0.0920 hate=0.7475 noise=0.7326 SCORE=0.7453 (31s)
+  fold1 ep10 loss=0.0857 hate=0.7500 noise=0.7380 SCORE=0.7482 (32s)
+[fold 1] best SCORE=0.7482
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold2 ep1 loss=0.9345 hate=0.6090 noise=0.6623 SCORE=0.6170 (32s)
+  fold2 ep2 loss=0.6190 hate=0.6838 noise=0.7297 SCORE=0.6907 (31s)
+  fold2 ep3 loss=0.4204 hate=0.6764 noise=0.7187 SCORE=0.6828 (28s)
+  fold2 ep4 loss=0.3012 hate=0.7221 noise=0.7354 SCORE=0.7241 (21s)
+  fold2 ep5 loss=0.2260 hate=0.7270 noise=0.6910 SCORE=0.7216 (21s)
+  fold2 ep6 loss=0.1712 hate=0.7333 noise=0.7135 SCORE=0.7303 (20s)
+  fold2 ep7 loss=0.1351 hate=0.7348 noise=0.7493 SCORE=0.7370 (21s)
+  fold2 ep8 loss=0.1102 hate=0.7369 noise=0.7229 SCORE=0.7348 (20s)
+  fold2 ep9 loss=0.0945 hate=0.7279 noise=0.7442 SCORE=0.7303 (21s)
+  fold2 ep10 loss=0.0891 hate=0.7394 noise=0.7405 SCORE=0.7396 (21s)
+[fold 2] best SCORE=0.7396
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold3 ep1 loss=0.9124 hate=0.5499 noise=0.6104 SCORE=0.5590 (20s)
+  fold3 ep2 loss=0.6055 hate=0.6290 noise=0.6882 SCORE=0.6379 (30s)
+  fold3 ep3 loss=0.4155 hate=0.7166 noise=0.6707 SCORE=0.7097 (35s)
+  fold3 ep4 loss=0.2974 hate=0.7292 noise=0.7088 SCORE=0.7261 (35s)
+  fold3 ep5 loss=0.2184 hate=0.7316 noise=0.7475 SCORE=0.7340 (34s)
+  fold3 ep6 loss=0.1689 hate=0.7396 noise=0.6702 SCORE=0.7292 (34s)
+  fold3 ep7 loss=0.1332 hate=0.7434 noise=0.7363 SCORE=0.7423 (34s)
+  fold3 ep8 loss=0.1065 hate=0.7425 noise=0.7418 SCORE=0.7424 (35s)
+  fold3 ep9 loss=0.0929 hate=0.7454 noise=0.7413 SCORE=0.7448 (35s)
+  fold3 ep10 loss=0.0861 hate=0.7442 noise=0.7375 SCORE=0.7432 (35s)
+[fold 3] best SCORE=0.7448
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold4 ep1 loss=0.9213 hate=0.5983 noise=0.6650 SCORE=0.6083 (35s)
+  fold4 ep2 loss=0.6190 hate=0.6638 noise=0.7208 SCORE=0.6724 (34s)
+  fold4 ep3 loss=0.4137 hate=0.6696 noise=0.7117 SCORE=0.6759 (34s)
+  fold4 ep4 loss=0.2894 hate=0.7105 noise=0.6595 SCORE=0.7028 (34s)
+  fold4 ep5 loss=0.2176 hate=0.6950 noise=0.7052 SCORE=0.6965 (34s)
+  fold4 ep6 loss=0.1645 hate=0.7187 noise=0.7342 SCORE=0.7210 (34s)
+  fold4 ep7 loss=0.1322 hate=0.7267 noise=0.7276 SCORE=0.7269 (33s)
+  fold4 ep8 loss=0.1064 hate=0.7174 noise=0.7363 SCORE=0.7203 (33s)
+  fold4 ep9 loss=0.0911 hate=0.7221 noise=0.7313 SCORE=0.7235 (34s)
+  fold4 ep10 loss=0.0853 hate=0.7196 noise=0.7366 SCORE=0.7222 (32s)
+[fold 4] best SCORE=0.7269
+
+[visobert5] OOF over 51663 rows: hate=0.7436 noise=0.7356 SCORE=0.7424
+[saved] oof/visobert5_oof.npz

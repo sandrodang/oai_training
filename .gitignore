@@ -1,13 +1,20 @@
-# ─── DỮ LIỆU & TRỌNG SỐ — TUYỆT ĐỐI KHÔNG COMMIT ───────────────────────────
-# Dữ liệu thi do BTC cấp. Quy chế: "chỉ được sử dụng dữ liệu do BTC cung cấp".
-# Phát tán lại dữ liệu thi là rủi ro kỷ luật. Chia sẻ trong đội qua kênh riêng.
-ThiChinhThucData/
+# ─── THƯ MỤC LÀM VIỆC GỐC (77GB: weights, checkpoint, dữ liệu BTC) ──────────
+# Mã nguồn của hai tác vụ đã được tách sang task1_nlp/ và task2_cv/
 cv/
 work/
-*.zip
-*.tar.gz
 
-# Trọng số, checkpoint, cache mô hình
+# ─── DỮ LIỆU THI CỦA BTC — TUYỆT ĐỐI KHÔNG COMMIT ──────────────────────────
+# Quy chế: "chỉ được sử dụng dữ liệu do Ban giám khảo cung cấp".
+# Phát tán lại dữ liệu thi là rủi ro kỷ luật. Chia sẻ trong đội qua kênh riêng.
+ThiChinhThucData/
+**/data/
+**/dataset_train/
+**/public_test/
+**/private_test/
+**/training_set*
+**/validation_set*
+
+# ─── TRỌNG SỐ, CHECKPOINT, CACHE MÔ HÌNH ───────────────────────────────────
 *.pt
 *.pth
 *.ckpt
@@ -15,11 +22,20 @@ work/
 *.safetensors
 *.npz
 *.onnx
-hf/
-ckpt/
-checkpoints/
+*.h5
+**/hf/
+**/ckpt/
+**/cache/
+**/oof/
+**/audit_*/
 
-# Môi trường Python
+# ─── LƯU TRỮ NÉN ───────────────────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.tar
+!de_tham_khao/*.pdf
+
+# ─── MÔI TRƯỜNG PYTHON ─────────────────────────────────────────────────────
 .venv/
 venv/
 __pycache__/
@@ -28,13 +44,7 @@ __pycache__/
 .ipynb_checkpoints/
 *.egg-info/
 
-# Log & kết quả chạy
-logs/
-oof/
-sub/
-*.log
-
-# Hệ điều hành / editor
+# ─── HỆ ĐIỀU HÀNH / EDITOR ─────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 .vscode/

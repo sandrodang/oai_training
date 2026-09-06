@@ -1,0 +1,31 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 3072) 34s | hold med=32.586 | test med=34.802 p90=45.392 | sep=+0.80sd
+  category_02: bank=(30000, 3072) 32s | hold med=32.211 | test med=34.766 p90=57.879 | sep=+0.93sd
+  category_03: bank=(27876, 3072) 5s | hold med=38.588 | test med=39.137 p90=51.112 | sep=+0.28sd
+  category_04: bank=(30000, 3072) 32s | hold med=33.511 | test med=35.613 p90=55.678 | sep=+1.01sd
+  category_05: bank=(30000, 3072) 23s | hold med=35.325 | test med=36.879 p90=56.499 | sep=+0.76sd
+  category_06: bank=(26320, 3072) 6s | hold med=35.955 | test med=38.717 p90=55.817 | sep=+1.24sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2l_ml_L518.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2l_ml_L518
+  category_01: bank=(30000, 1536) 45s | hold med=12.759 | test med=13.224 p90=16.300 | sep=+0.73sd
+  category_02: bank=(30000, 1536) 44s | hold med=12.602 | test med=12.976 p90=17.887 | sep=+0.61sd
+  category_03: bank=(30000, 1536) 28s | hold med=15.506 | test med=15.575 p90=16.842 | sep=+0.07sd
+  category_04: bank=(30000, 1536) 54s | hold med=11.861 | test med=12.425 p90=17.521 | sep=+0.94sd
+  category_05: bank=(30000, 1536) 39s | hold med=13.373 | test med=13.833 p90=19.838 | sep=+0.58sd
+  category_06: bank=(30000, 1536) 30s | hold med=12.722 | test med=13.113 p90=16.124 | sep=+0.64sd
+saved /home/namdp36/oai/cv/cache/scores_wrn50_L512_h180.npz | ckpt /home/namdp36/oai/cv/ckpt/wrn50_L512_h180
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 2304) 30s | hold med=48.326 | test med=50.645 p90=59.654 | sep=+0.67sd
+  category_02: bank=(30000, 2304) 26s | hold med=47.597 | test med=50.581 p90=69.062 | sep=+0.92sd
+  category_03: bank=(27876, 2304) 4s | hold med=56.163 | test med=56.403 p90=69.471 | sep=+0.06sd
+  category_04: bank=(30000, 2304) 30s | hold med=45.980 | test med=48.772 p90=68.401 | sep=+1.01sd
+  category_05: bank=(30000, 2304) 25s | hold med=50.907 | test med=53.021 p90=69.923 | sep=+0.78sd
+  category_06: bank=(26320, 2304) 4s | hold med=50.789 | test med=52.619 p90=64.734 | sep=+0.82sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2b_ml_L518.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2b_ml_L518
+  category_01: bank=(30000, 768) 28s | hold med=10.926 | test med=11.391 p90=14.565 | sep=+0.52sd
+  category_02: bank=(30000, 768) 22s | hold med=10.932 | test med=11.741 p90=17.756 | sep=+0.93sd
+  category_03: bank=(27876, 768) 3s | hold med=11.709 | test med=12.263 p90=16.041 | sep=+0.44sd
+  category_04: bank=(30000, 768) 29s | hold med=10.738 | test med=11.348 p90=18.639 | sep=+0.79sd
+  category_05: bank=(30000, 768) 21s | hold med=12.037 | test med=12.597 p90=19.905 | sep=+0.75sd
+  category_06: bank=(26320, 768) 3s | hold med=12.000 | test med=12.867 p90=22.439 | sep=+1.07sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2b_L518_h180.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2b_L518_h180
+R2DONE

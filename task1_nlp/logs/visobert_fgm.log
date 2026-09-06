@@ -1,0 +1,59 @@
+[tok] token len p50=12 p95=40 p99=70 max_len=96
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold0 ep1 loss=0.9380 hate=0.6362 noise=0.6935 SCORE=0.6448 (42s)
+  fold0 ep2 loss=0.6472 hate=0.6745 noise=0.6964 SCORE=0.6777 (60s)
+  fold0 ep3 loss=0.4790 hate=0.6640 noise=0.7242 SCORE=0.6730 (105s)
+  fold0 ep4 loss=0.3219 hate=0.7128 noise=0.7294 SCORE=0.7153 (102s)
+  fold0 ep5 loss=0.2214 hate=0.7262 noise=0.7366 SCORE=0.7277 (94s)
+  fold0 ep6 loss=0.1701 hate=0.7154 noise=0.7456 SCORE=0.7200 (40s)
+  fold0 ep7 loss=0.1439 hate=0.7142 noise=0.7101 SCORE=0.7136 (40s)
+  fold0 ep8 loss=0.1326 hate=0.7151 noise=0.7346 SCORE=0.7180 (40s)
+[fold 0] best SCORE=0.7277
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold1 ep1 loss=0.9232 hate=0.5366 noise=0.6631 SCORE=0.5556 (40s)
+  fold1 ep2 loss=0.6308 hate=0.6579 noise=0.7042 SCORE=0.6648 (41s)
+  fold1 ep3 loss=0.4555 hate=0.6764 noise=0.6821 SCORE=0.6772 (42s)
+  fold1 ep4 loss=0.3037 hate=0.7111 noise=0.7440 SCORE=0.7160 (42s)
+  fold1 ep5 loss=0.2116 hate=0.7022 noise=0.7012 SCORE=0.7020 (36s)
+  fold1 ep6 loss=0.1620 hate=0.7136 noise=0.7356 SCORE=0.7169 (36s)
+  fold1 ep7 loss=0.1382 hate=0.7130 noise=0.7307 SCORE=0.7157 (40s)
+  fold1 ep8 loss=0.1284 hate=0.7106 noise=0.7405 SCORE=0.7151 (43s)
+[fold 1] best SCORE=0.7169
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold2 ep1 loss=0.9183 hate=0.6152 noise=0.6637 SCORE=0.6225 (42s)
+  fold2 ep2 loss=0.6309 hate=0.6384 noise=0.7029 SCORE=0.6481 (38s)
+  fold2 ep3 loss=0.4729 hate=0.6822 noise=0.7382 SCORE=0.6906 (40s)
+  fold2 ep4 loss=0.3147 hate=0.6745 noise=0.7400 SCORE=0.6843 (40s)
+  fold2 ep5 loss=0.2207 hate=0.6945 noise=0.7401 SCORE=0.7013 (44s)
+  fold2 ep6 loss=0.1703 hate=0.7063 noise=0.7518 SCORE=0.7132 (43s)
+  fold2 ep7 loss=0.1452 hate=0.7048 noise=0.7515 SCORE=0.7118 (44s)
+  fold2 ep8 loss=0.1348 hate=0.7024 noise=0.7445 SCORE=0.7088 (43s)
+[fold 2] best SCORE=0.7132
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold3 ep1 loss=0.9298 hate=0.6023 noise=0.6898 SCORE=0.6154 (43s)
+  fold3 ep2 loss=0.6485 hate=0.6230 noise=0.6069 SCORE=0.6206 (39s)
+  fold3 ep3 loss=0.4697 hate=0.6494 noise=0.6961 SCORE=0.6564 (43s)
+  fold3 ep4 loss=0.3151 hate=0.7019 noise=0.7407 SCORE=0.7077 (42s)
+  fold3 ep5 loss=0.2168 hate=0.7013 noise=0.7454 SCORE=0.7079 (41s)
+  fold3 ep6 loss=0.1676 hate=0.7080 noise=0.7389 SCORE=0.7126 (40s)
+  fold3 ep7 loss=0.1426 hate=0.7034 noise=0.7328 SCORE=0.7078 (42s)
+  fold3 ep8 loss=0.1312 hate=0.7022 noise=0.7326 SCORE=0.7068 (41s)
+[fold 3] best SCORE=0.7126
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold4 ep1 loss=0.9020 hate=0.6292 noise=0.6841 SCORE=0.6374 (42s)
+  fold4 ep2 loss=0.6361 hate=0.6400 noise=0.7284 SCORE=0.6533 (37s)
+  fold4 ep3 loss=0.4544 hate=0.6856 noise=0.7210 SCORE=0.6909 (37s)
+  fold4 ep4 loss=0.2962 hate=0.6836 noise=0.7390 SCORE=0.6919 (39s)
+  fold4 ep5 loss=0.2050 hate=0.6880 noise=0.6754 SCORE=0.6861 (39s)
+  fold4 ep6 loss=0.1584 hate=0.6881 noise=0.7189 SCORE=0.6927 (38s)
+  fold4 ep7 loss=0.1349 hate=0.6827 noise=0.7390 SCORE=0.6911 (37s)
+  fold4 ep8 loss=0.1261 hate=0.6872 noise=0.7466 SCORE=0.6961 (38s)
+[fold 4] best SCORE=0.6961
+
+[visobert_fgm] OOF over 51663 rows: hate=0.7089 noise=0.7421 SCORE=0.7139
+[saved] oof/visobert_fgm_oof.npz

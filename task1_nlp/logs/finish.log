@@ -1,0 +1,14 @@
+=== 5-FOLD DONE ===
+[fold 0] best SCORE=0.7277
+[fold 1] best SCORE=0.7169
+[fold 2] best SCORE=0.7132
+[fold 3] best SCORE=0.7126
+[fold 4] best SCORE=0.6961
+[visobert_fgm] OOF over 51663 rows: hate=0.7089 noise=0.7421 SCORE=0.7139
+=== building v7 ===
+prior-reweighted macro-F1: argmax=0.7638 -> tuned=0.7696
+bias: [-0.1 -0.6  0.  -0.4 -0.8 -1.2 -1.2]
+[saved] oof/bias_fgm.npz
+[write] sub/v7_visobert_fgm/FPTU_Promt_Engineer_task1_pub.zip  rows=3340
+OK: valid submission with 3340 rows
+=== resuming exploration ===

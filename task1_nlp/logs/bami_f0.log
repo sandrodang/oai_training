@@ -1,0 +1,4 @@
+[tok] token len p50=15 p95=46 p99=81 max_len=96
+Some weights of RobertaModel were not initialized from the model checkpoint at Qualcomm-AI-Research/BamiBERT and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold0 ep1 loss=1.0431 hate=0.6119 noise=0.5950 SCORE=0.6094 (70s)

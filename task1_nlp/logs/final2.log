@@ -1,0 +1,37 @@
+=== cons 5-fold done ===
+[fold 0] best SCORE=0.7320
+[fold 1] best SCORE=0.7246
+[fold 2] best SCORE=0.7107
+[fold 3] best SCORE=0.7186
+[fold 4] best SCORE=0.7067
+[visobert_cons] OOF over 51663 rows: hate=0.7125 noise=0.7531 SCORE=0.7186
+=== reference: visobert_fgm OOF = 0.7139 ===
+=== ensembling fgm + cons ===
+[ens] 2 models, 51663 common OOF rows
+   visobert_fgm_oof.npz         hate=0.7089 noise=0.7421
+   visobert_cons_oof.npz        hate=0.7125 noise=0.7531
+
+  hate: best single=0.7125  ensemble held-out=0.7124 (-0.0001)  [full-fit 0.7132]
+         weights=[0.091 0.909]  bias=[0. 0. 0.]
+
+  noise: best single=0.7531  ensemble held-out=0.7656 (+0.0124)  [full-fit 0.7667]
+         weights=[0.455 0.545]  bias=[-0.1 -0.6  0.2 -1.2 -1.6 -1.7 -1.5]
+
+  ESTIMATED OFFICIAL (held-out) = 0.7204
+  [saved] oof/ens_final.npz
+=== building v8 ===
+[write] sub/v8_fgm_cons/FPTU_Promt_Engineer_task1_pub.zip  rows=3340
+pred_label
+CLEAN        2835
+HATE          319
+OFFENSIVE     186
+pred_noise_type
+ORIGINAL         1138
+NO_DIACRITICS     471
+OBFUSCATION       436
+PUNCT_NOISE       429
+CHAR_REPEAT       390
+MIXED             342
+TEENCODE          134
+OK: valid submission with 3340 rows
+=== FINAL2 DONE ===

@@ -1,0 +1,3 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 3072) 92s | hold med=32.526 | test med=34.174 p90=45.186 | sep=+0.82sd
+  category_02: bank=(30000, 3072) 87s | hold med=32.295 | test med=34.565 p90=56.572 | sep=+0.99sd

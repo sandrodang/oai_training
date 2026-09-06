@@ -1,0 +1,8 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: bank=(30000, 1536) 55s | hold med=12.728 | test med=13.116 p90=16.066 | sep=+0.77sd
+  category_02: bank=(30000, 1536) 45s | hold med=12.782 | test med=13.163 p90=17.745 | sep=+0.71sd
+  category_03: bank=(30000, 1536) 35s | hold med=15.270 | test med=15.620 p90=16.791 | sep=+0.30sd
+  category_04: bank=(30000, 1536) 58s | hold med=11.697 | test med=12.249 p90=17.634 | sep=+1.13sd
+  category_05: bank=(30000, 1536) 52s | hold med=13.320 | test med=13.948 p90=19.594 | sep=+0.81sd
+  category_06: bank=(30000, 1536) 39s | hold med=12.926 | test med=13.054 p90=16.094 | sep=+0.19sd
+saved /home/namdp36/oai/cv/cache/scores_wrn50_L512_jn.npz | ckpt /home/namdp36/oai/cv/ckpt/wrn50_L512_jn

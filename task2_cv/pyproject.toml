@@ -1,0 +1,29 @@
+[project]
+name = "cv-anomaly"
+version = "0.1.0"
+description = "FPTU Prompt Engineer Task 2 - Image Anomaly Detection"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "torch==2.13.0",
+    "torchvision==0.28.0",
+    "timm==1.0.28",
+    "numpy==2.2.6",
+    "pillow==12.3.0",
+    "scikit-learn==1.7.2",
+    "pandas==2.3.3",
+    "scipy==1.15.3",
+    "huggingface-hub>=1.28.0",
+    "safetensors>=0.8.0",
+]
+
+[tool.uv]
+index-strategy = "unsafe-best-match"
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }

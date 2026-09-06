@@ -1,0 +1,8 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  category_01: 94s | hold med=0.0721 test med=0.0793 sep=+0.90sd
+  category_02: 84s | hold med=0.0592 test med=0.0638 sep=+0.89sd
+  category_03: 72s | hold med=0.0524 test med=0.0533 sep=+0.06sd
+  category_04: 89s | hold med=0.0582 test med=0.0687 sep=+1.18sd
+  category_05: 77s | hold med=0.0485 test med=0.0543 sep=+1.15sd
+  category_06: 89s | hold med=0.0573 test med=0.0626 sep=+0.64sd
+saved dinomalyL

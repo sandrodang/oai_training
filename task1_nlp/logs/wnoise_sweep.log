@@ -1,0 +1,3 @@
+w_noise=0.30  [wn0.30] OOF over 10481 rows: hate=0.7114 noise=0.7223 SCORE=0.7130
+w_noise=0.15  [wn0.15] OOF over 10481 rows: hate=0.7134 noise=0.7212 SCORE=0.7146
+w_noise=0.05  [wn0.05] OOF over 10481 rows: hate=0.7050 noise=0.7074 SCORE=0.7054

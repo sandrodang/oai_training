@@ -1,0 +1,7 @@
+  category_01: bank=(30000, 768) 29s | hold med=10.600 | test med=11.122 p90=14.398 | sep=+0.59sd
+  category_02: bank=(30000, 768) 27s | hold med=10.820 | test med=11.481 p90=17.847 | sep=+0.67sd
+  category_03: bank=(30000, 768) 15s | hold med=11.563 | test med=11.971 p90=16.189 | sep=+0.31sd
+  category_04: bank=(30000, 768) 28s | hold med=10.541 | test med=11.197 p90=18.458 | sep=+1.09sd
+  category_05: bank=(30000, 768) 26s | hold med=11.907 | test med=12.462 p90=19.849 | sep=+0.82sd
+  category_06: bank=(29704, 768) 3s | hold med=12.141 | test med=12.878 p90=21.771 | sep=+0.89sd
+saved /home/namdp36/oai/cv/cache/scores_dinov2b_L518.npz | ckpt /home/namdp36/oai/cv/ckpt/dinov2b_L518

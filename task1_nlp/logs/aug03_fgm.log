@@ -1,0 +1,6 @@
+[tok] token len p50=12 p95=40 p99=70 max_len=96
+  fold0 augmentation p=0.3
+Some weights of XLMRobertaModel were not initialized from the model checkpoint at 5CD-AI/visobert-14gb-corpus and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  fold0 ep1 loss=0.9611 hate=0.6100 noise=0.6878 SCORE=0.6217 (140s)
+  fold0 ep2 loss=0.6739 hate=0.6815 noise=0.6764 SCORE=0.6807 (136s)
