@@ -15,15 +15,20 @@
 
 | Module | Nội dung | Làm ở | Vì dùng cho |
 |---|---|---|---|
+| **07** `norm_init_gradflow` 🔴 | LayerNorm vs BatchNorm · Xavier/He · zero-γ · grad flow Pre/Post-LN | **Tuần 2** | **lớp giải thích nằm dưới Pre-LN** của BT 02 tuần 2 — không có nó thì "Pre-LN ổn định hơn" chỉ là câu học thuộc |
 | **01** `weight_averaging` | EMA · SWA · checkpoint averaging | **Tuần 3** | model dịch máy — ckpt averaging là kỹ thuật 🔴 của NMT |
 | **02** `grad_tricks` | gradient accumulation · checkpointing · thứ tự AMP | **Tuần 3** | batch lớn cho MT trên GPU 16GB |
 | **05a** `losses` (focal) | focal loss | **Tuần 4** | phân loại ảnh mất cân bằng |
 | **05b** `losses` (dice/tversky/contrastive) | dice · tversky · contrastive · triplet | **Tuần 5** | segmentation & ghép ảnh jigsaw |
 | **03** `finetune_lr` | LLRD · gradual unfreezing · freeze BN | **Tuần 6** | fine-tune encoder cho phân loại |
-| **04** `adversarial` | FGM · PGD · FreeLB | **Tuần 6** | robustness (bạn đã dùng FGM: +0,016) |
-| **06** `consistency_multitask` | R-Drop · consistency · uncertainty weighting | **Tuần 6** | đa nhiệm + nhiễu, đúng bài R-ViHSD |
+| **04** `adversarial` | FGM · PGD · FreeLB | **Tuần 3** 🔴 | **FGM: +0,0121 OOF, dương 5/5 fold** — tấn công embedding nên dùng được cho cả seq2seq |
+| **06** `consistency_multitask` | R-Drop · consistency · uncertainty weighting | **Tuần 3** 🔴 | **R-Drop: +0,0047 OOF, 4/5 fold** — Wu (2021) vốn sinh ra cho NMT |
 
-**Tải mỗi lần: ~45' đọc + ~45' code.** Tổng ~4h đọc + ~4h code rải trên 4 tuần.
+**Tải mỗi lần: ~45' đọc + ~45' code.** Tổng ~5h đọc + ~5h code rải trên 4 tuần.
+
+> ⚠️ **M04 và M06 đã chuyển từ Tuần 6 về Tuần 3.** Chúng là hai kỹ thuật DUY NHẤT sống sót
+> qua đo đạc ở vòng trường (2 trên 11 thứ đã thử), nên không được xếp vào tuần có TỔNG DUYỆT 1.
+> Tuần 3 còn cho chúng một **bài thật (Ba Na) để đo ngay** thay vì học chay.
 
 Bù lại đã cắt: **Tầng 4 từ 6h → 2h** (ML không ra thành bài riêng, chỉ là lớp phân loại
 cuối) và **Tầng 3 từ 14h → 12h**. Net +2h trên cả phần còn lại của kế hoạch.

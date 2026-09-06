@@ -15,7 +15,7 @@
 | Lấy **đề thi thử 2026** làm chuẩn | Đề thi thử **chỉ là tham khảo**. Mẫu thật là **SOLOAI 2025 (sơ loại)** và **VOAI 2025 (chung kết)**. |
 | Trần **25M tham số** + danh sách trắng torchvision | **Bỏ hoàn toàn.** Không có trong quy chế thật. SOLOAI 2025 còn *phát sẵn* pretrained CRNN/3D-CNN kèm `download_model.py` liệt kê model được phép. |
 | "LLM = Gemini trên Colab" | **`deepseek-r1-distill-qwen-32b`**, offline, **token vô hạn** nhưng **mỗi phiên chỉ 2.000 token ngữ cảnh**. Khoá sau giờ thứ 5. |
-| Thiếu hẳn phần lý thuyết | Bản này có **Phần 4 — Chương trình lý thuyết**, ~56 giờ đọc, đặt **trước** phần cài đặt. |
+| Thiếu hẳn phần lý thuyết | Bản này có **Phần 4 — Chương trình lý thuyết**, **68 giờ đọc** (bản 3), đặt **trước** phần cài đặt. |
 
 Bản 1 lưu tại `scratchpad/KE_HOACH_v1_backup.md`, không dùng nữa.
 
@@ -277,7 +277,8 @@ nhân với 3 lần thử là 5 phút mất trắng.
 ---
 
 ## PHẦN 4 — CHƯƠNG TRÌNH LÝ THUYẾT
-### *Đọc → tự kiểm tra → mới cài đặt.* Tổng ~56 giờ đọc trong 8 tuần (~7h/tuần).
+### *Đọc → tự kiểm tra → mới cài đặt.* Tổng **68 giờ đọc** trong 8 tuần (**10h/tuần**, xem §4B).
+### Ngân sách mới: **4 giờ/ngày = 28 giờ/tuần** — đọc chỉ là 10h trong đó.
 
 **Cách dùng phần này:** mỗi Tầng có 4 mục —
 **(a) Khái niệm nền** (phải hiểu, không được mơ hồ) ·
@@ -289,7 +290,7 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 ---
 
-### ⬛ TẦNG 0 — ĐÁNH GIÁ & PHƯƠNG PHÁP THỰC NGHIỆM · 6h · 🔴
+### ⬛ TẦNG 0 — ĐÁNH GIÁ & PHƯƠNG PHÁP THỰC NGHIỆM · 10h · 🔴🔴
 > *Đặt đầu tiên vì mọi quyết định trong 6 tiếng thi đều dựa trên câu hỏi "cải thiện này có thật không?"*
 
 **(a) Khái niệm nền**
@@ -310,21 +311,74 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 - **Tối ưu ngưỡng theo metric** (F1/BA không tối ưu bằng cách tối đa accuracy) — coordinate search trên OOF.
 - **Nelder–Mead / hill-climbing** tìm trọng số ensemble trên OOF.
 
-**(c) Đọc**
+**(c) 🔴 VÒNG LẶP CẢI TIẾN — *nửa còn thiếu của Tầng 0***
+
+> (a) và (b) dạy cách **đo** xem một cải thiện có thật không. Mục này dạy cách **sinh ra giả thuyết
+> nên cải thiện cái gì**. Hai nửa của cùng một vòng lặp. Thiếu nửa này thì 144 kỹ thuật ở các tầng
+> sau chỉ là thử mò theo thứ tự ngẫu nhiên — và trong 6 tiếng bạn chỉ thử được 3–4 thứ.
+
+**c1 · Phân tích lỗi có kỷ luật — 30 phút mỗi vòng** 🔴
+
+- Lấy **50 mẫu sai nặng nhất** theo loss (hoặc theo confidence sai cao nhất). **Đọc bằng mắt.**
+- Phân loại thủ công vào **≤ 6 nhóm nguyên nhân**. Đếm. Nhóm lớn nhất là nơi *duy nhất* đáng đổ giờ tiếp theo.
+- Đọc **ma trận nhầm lẫn**, phân biệt hai chữ ký khác hẳn nhau:
+  - Nhầm **đối xứng** (a→b nhiều *và* b→a nhiều) ⇒ hai lớp thật sự chồng lấn ⇒ đây là **trần**, đừng đâm đầu.
+  - Nhầm **một chiều** (a→b nhiều, b→a ít) ⇒ **lệch prior / ngưỡng sai** ⇒ sửa rất rẻ, thường vài phút.
+- Ghi vào bảng cố định: `nhóm lỗi · số mẫu · giả thuyết · chi phí sửa · đã thử chưa · kết quả`.
+
+> Đây là hoạt động ROI cao nhất trong 6 tiếng và là thứ dễ bị bỏ qua nhất khi vội.
+> Nó rẻ hơn train thêm một model, và nó là cách duy nhất để **chọn đúng kỹ thuật thứ 4** thay vì thử cả 11.
+
+**c2 · Trần Bayes từ nhiễu nhãn — đo TRƯỚC khi tối ưu** 🔴
+
+- Trước khi đổ giờ vào một head/nhiệm vụ con, hỏi: **trần của nó là bao nhiêu?**
+- Cách đo rẻ nhất: tìm các mẫu **trùng input nhưng khác nhãn**. Tỉ lệ đó **chặn trên** accuracy đạt được.
+  Không có mẫu trùng thì gom theo khoá gần đúng (char-ngram) rồi đo trong từng nhóm.
+- Bằng chứng thật, vòng trường 2026: **76,7% mẫu nhãn TEENCODE là no-op** — chuỗi sau biến đổi
+  *không khác* chuỗi gốc. Head noise vì thế có **trần cứng**; mọi giờ đổ thêm vào nó là lãng phí.
+  Phát hiện này đến từ **đếm**, không từ mô hình, và tốn 15 phút.
+- Hệ quả: khi một nhiệm vụ con chỉ chiếm 15% trọng số **và** có trần thấp, chiến lược đúng là
+  **bỏ nó ở mức đủ dùng** và dồn toàn bộ giờ sang nhiệm vụ chiếm 85%.
+
+**c3 · Đọc baseline BTC phát sẵn — 20 phút đầu giờ thi** 🔴
+
+- §1.3: điểm của bạn là `(S − Min)/(Max − Min)`. Mục tiêu **không phải** vượt các đội khác —
+  mà là **vượt model phức tạp do chính BTC huấn luyện**. Đó là một đích **cố định và hữu hạn**.
+- BTC thường **phát sẵn baseline** (SOLOAI 2025: `download_model.py`; CRNN cho nhánh video).
+  **Baseline đó là mẫu trực tiếp về trình độ kỹ thuật của BTC** — đọc nó là cách rẻ nhất để ước lượng
+  `Max_Score` nằm ở đâu.
+- Việc phải làm: **đọc trước khi chạy**. Ghi lại kiến trúc · augmentation · số epoch · cách chia val ·
+  có dùng pretrained không. Nếu baseline là ResNet18 + 10 epoch, `Max` **không** phải SOTA —
+  và mục tiêu của bạn vừa hạ xuống một bậc.
+- ⚠️ Baseline cũng tiết lộ **định dạng nộp bài đúng**. Nhiều đội mất lượt nộp đầu chỉ vì đoán sai định dạng.
+
+**c4 · Cổng quyết định — mọi cải tiến phải qua 4 câu hỏi**
+
+1. Gain trên OOF có **> 2×SE** không? (SE ước bằng bootstrap, §b)
+2. **Dương trên bao nhiêu fold?** 5/5 đáng tin hơn 3/5 cùng mức gain.
+3. Chi phí **inference** bao nhiêu giây/mẫu?
+4. Có làm vỡ ràng buộc **`main.py` ≤ 20 phút** (§1.4) không?
+
+> Không qua đủ 4 cổng thì **không đưa vào bản nộp**, dù nó "có vẻ đúng về lý thuyết".
+
+**(d) Đọc**
 1. Post (2018) *"A Call for Clarity in Reporting BLEU Scores"* — 🔴 ngắn, bắt buộc.
 2. Papineni et al. (2002) *BLEU* — chỉ mục 2.
 3. *The Elements of Statistical Learning* Ch.7 (Model Assessment & Selection).
 4. Jurafsky & Martin *SLP3* Ch.4 mục đánh giá + phụ lục kiểm định thống kê.
 5. scikit-learn User Guide: `model_selection`, `metrics`, `calibration`.
 
-**(d) Tự kiểm tra**
+**(e) Tự kiểm tra**
 - Tính tay BLEU-4 cho một cặp câu 8 từ, có BP.
 - SE của macro-F1 trên 3.340 mẫu ≈ bao nhiêu? Cải thiện 0.004 có đáng tin không?
 - Vì sao nộp "toàn nhãn 0" cho **50 điểm** ở công thức `SCORE/MAX` nhưng **0 điểm** ở công thức `(S−Min)/(Max−Min)`?
+- Cho một ma trận nhầm lẫn 3 lớp: chỉ ra nhầm lẫn nào là **trần** và nhầm lẫn nào là **lệch prior**.
+- Không có mẫu trùng input thì đo trần Bayes bằng cách nào?
+- BTC phát baseline ResNet18 + 10 epoch. Điều đó nói gì về `Max_Score`?
 
 ---
 
-### ⬛ TẦNG 1 — HỌC SÂU CỐT LÕI · 10h · 🔴
+### ⬛ TẦNG 1 — HỌC SÂU CỐT LÕI · 12h · 🔴
 > *Mục tiêu: hiểu đủ sâu để tự viết mọi thứ khi không có pretrained và không có LLM ngữ cảnh dài.*
 
 **(a) Khái niệm nền**
@@ -366,7 +420,7 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 ---
 
-### ⬛ TẦNG 2 — NLP & DỊCH MÁY · 16h · 🔴🔴 **TRỌNG TÂM SỐ 1**
+### ⬛ TẦNG 2 — NLP & DỊCH MÁY · 20h · 🔴🔴 **TRỌNG TÂM SỐ 1**
 > *2/2 đề mẫu 2025 có dịch máy. VOAI CK cho BLEU trọng số 0.8. Đây là tầng quan trọng nhất.*
 
 **(a) Khái niệm nền**
@@ -382,7 +436,8 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 *Huấn luyện NMT:*
 - **Label smoothing 0.1** (chuẩn de facto cho MT)
-- **Checkpoint averaging** 5–10 checkpoint cuối 🔴
+- **Checkpoint averaging** 5–10 checkpoint cuối 🔴🔴 — *lựa chọn ensemble MẶC ĐỊNH của kỳ thi này:*
+  gần như luôn dương, chi phí huấn luyện ~0, **chi phí suy luận ×1** nên không đụng trần 20 phút.
 - **Tied embeddings** (encoder-in / decoder-in / decoder-out dùng chung ma trận) — giảm ~1/3 tham số
 - **Noam schedule** (warmup 4000 bước, inverse-sqrt)
 - **BPE-dropout / subword regularization** — augmentation cực rẻ cho dữ liệu ít 🔴
@@ -392,7 +447,11 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 - Dropout cao (0.3) cho tập nhỏ; giảm chiều model thay vì tăng
 
 *Giải mã (decoding) — nơi ăn điểm rẻ nhất:*
-- **Ensemble decoding**: trung bình log-prob của nhiều model **tại mỗi bước** (mạnh hơn ensemble đầu ra) 🔴
+- **Ensemble decoding**: trung bình log-prob của nhiều model **tại mỗi bước** (mạnh hơn ensemble đầu ra) 🟠
+  ⚠️ **MÂU THUẪN PHẢI GIẢI TRƯỚC KHI DÙNG:** chi phí gấp N lần beam search, trong khi §1.4 áp trần
+  `main.py ≤ 20 phút`. **Quy tắc:** đo `giây/mẫu × số mẫu private × N` *trước*; nếu > 15 phút thì
+  chuyển sang **checkpoint averaging** (gộp N checkpoint thành 1 model — chi phí suy luận **×1**,
+  giữ phần lớn lợi ích) hoặc **cascade** (§Tầng 5). Hạ từ 🔴 xuống 🟠 chính vì ràng buộc này.
 - **MBR decoding** (Minimum Bayes Risk) — sinh n-best rồi chọn câu có BLEU/chrF kỳ vọng cao nhất 🟠
 - **Reranking n-best** bằng model ngược chiều hoặc language model (noisy channel)
 - **Lexically constrained decoding** — ép giữ tên riêng/số
@@ -456,7 +515,7 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 ---
 
-### ⬛ TẦNG 3 — THỊ GIÁC MÁY TÍNH · 14h · 🔴🔴 **TRỌNG TÂM SỐ 2**
+### ⬛ TẦNG 3 — THỊ GIÁC MÁY TÍNH · 16h · 🔴🔴 **TRỌNG TÂM SỐ 2**
 > *Hai đề CV mẫu 2025 đều KHÔNG phải phân loại ảnh thường: video (ký hiệu) và cấu trúc không gian (jigsaw).
 > Phải ôn cả ba nhánh: ảnh tĩnh, video, và tự giám sát/so khớp.*
 
@@ -488,6 +547,11 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 - **Weighted Box/Mask Fusion (WBF)** để ensemble kết quả định vị
 
 *Video / hành động — SOLOAI T2 dạng này 🔴:*
+> 🔴 **QUY TẮC CẮT:** 14h không đủ để giỏi cả 3 nhánh CV. **Chọn ĐÚNG MỘT hướng video và đào sâu
+> đến mức cài được từ trí nhớ**, phần còn lại chỉ đọc để nhận dạng đề:
+> · **TSM** nếu đề cho video RGB thô · **ST-GCN** nếu đề cho (hoặc dễ trích) keypoint.
+> Quyết định ở **Tuần 4** sau khi đọc lại 2 đề mẫu, rồi **không đổi nữa**. I3D / SlowFast /
+> two-stream / TimeSformer hạ xuống 🟡 — biết tên, không cài.
 - **Lấy mẫu khung hình**: dense vs **TSN sparse sampling** (chia video thành K đoạn, lấy 1 khung mỗi đoạn) 🔴
 - **CNN + LSTM/GRU (CRNN)** — BTC 2025 phát sẵn baseline dạng này
 - **3D-CNN**: C3D, **I3D**, R(2+1)D, **X3D**, **SlowFast**
@@ -500,6 +564,10 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 - Video transformer: TimeSformer, VideoMAE 🟡 (quá nặng cho 6 tiếng)
 
 *Tự giám sát & so khớp — VOAI CK T2 (jigsaw) dạng này 🔴:*
+> 🔴 **QUY TẮC CẮT:** đi **một đường duy nhất** — *đo tương thích cạnh bằng CNN Siamese* +
+> *lắp ghép bằng greedy/Hungarian*. Đó là đường **thoả §1.8** (có thành phần học được) và
+> chạy được trong 20 phút. SimCLR / MoCo / BYOL / DINO / MAE hạ xuống 🟡 — chúng cần
+> pretraining dài, **không khả thi trong 6 tiếng**.
 - **Pretext tasks**: **Jigsaw (Noroozi & Favaro)** 🔴, rotation prediction, context prediction (Doersch),
   colorization, **inpainting**
 - **Contrastive**: SimCLR, MoCo, BYOL, **DINO**; masked image modeling: MAE, SimMIM
@@ -536,7 +604,7 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 ---
 
-### ⬛ TẦNG 4 — HỌC MÁY LỒNG GHÉP · 6h · 🟠
+### ⬛ TẦNG 4 — HỌC MÁY LỒNG GHÉP · 4h · 🟠
 > *ML không ra thành bài riêng mà nằm **bên trong** 2 tác vụ: lớp phân loại cuối, đặc trưng thủ công,
 > hiệu chỉnh ngưỡng, ghép mô hình. Ôn vừa đủ, đừng ôn tabular Kaggle như bản 1 nói.*
 
@@ -569,7 +637,7 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 ---
 
-### ⬛ TẦNG 5 — KỸ THUẬT HẠ TẦNG & TỐI ƯU SUY LUẬN · 4h · 🔴
+### ⬛ TẦNG 5 — KỸ THUẬT HẠ TẦNG & TỐI ƯU SUY LUẬN · 6h · 🔴
 > *Tầng này tồn tại vì ràng buộc `Final/main.py ≤ 20 phút` (§1.4) và GPU Colab yếu.
 > Bản 1 bỏ sót hoàn toàn.*
 
@@ -624,52 +692,211 @@ torch.compile · VideoMAE/TimeSformer · DETR · SegFormer · MoCo/BYOL · DART 
 
 ---
 
-## PHẦN 4B — BẢNG ĐỐI CHIẾU TẦNG ↔ TUẦN
-### *(thêm sau khi phát hiện lỗi: Phần 4 và Phần 5 vốn được viết rời và không khớp nhau)*
+## PHẦN 4B — NGÂN SÁCH 4h/NGÀY & BẢNG ĐỐI CHIẾU TẦNG ↔ TUẦN
+### *(bản 3 — tái ngân sách sau quyết định dồn toàn lực cho Olympic AI)*
 
-**Lỗi đã phát hiện:** tổng 6 tầng = **56h** nhưng tổng ngân sách đọc 8 tuần = **47h**
-(7+8+8+8+8+5+3). Ánh xạ tầng→tuần trong bản đầu **bất khả thi về số học**. Ngoài ra
-Tuần 2 lẽ ra gánh "Tầng 1 hết" nhưng đã được viết thành 100% Tầng 2.
+### 4B.1 · Ngân sách tuần: **4 giờ/ngày × 7 = 28 giờ/tuần**
 
-**Đã sửa bằng ba việc:** (1) cắt Tầng 4 từ 6h → **2h** — ML không ra thành bài riêng,
-chỉ là lớp phân loại/đặc trưng bên trong 2 tác vụ; (2) rút Tầng 3 từ 14h → **12h**;
-(3) tách phần Tầng 1 còn nợ thành gói **[`tang1_toolkit/`](tang1_toolkit/)** và
-**xếp từng module vào tuần thực sự dùng nó** — Tầng 1 là bộ đồ nghề, không phải một chủ đề.
+Bản 1 sai số học (56h tầng vs 47h tuần). Bản 2 sửa bằng cách **cắt nội dung**.
+Bản 3 sửa bằng cách **tăng ngân sách** — và vì thế **khôi phục lại phần đã cắt**,
+đồng thời nạp thêm ba mục vốn thiếu hoàn toàn (phân tích lỗi · trần Bayes · đọc baseline BTC).
+
+| Hạng mục mỗi tuần | Giờ | Ghi chú |
+|---|---|---|
+| 📖 Đọc lý thuyết | **10h** | theo bảng 4B.2 |
+| 💻 Cài đặt + bài tập có bộ chấm | **12h** | `tuan0X/` · `tang1_toolkit/` |
+| 📓 Sổ assert (viết mới + gõ lại từ trí nhớ) | **2h** | §4C — từ Tuần 3 trở đi bắt buộc |
+| 🧪 Thí nghiệm / tổng duyệt / phân tích lỗi | **3h** | |
+| 🫙 Dự phòng | **1h** | *đừng lấp đầy — tuần nào cũng có việc tràn* |
+| **Tổng** | **28h** | |
+
+> **Tuần 8 giảm tải còn ~10h** (nghi thức hoá, không kiến thức mới).
+> Tổng cả khoá: 7 × 28 + 10 = **206 giờ**.
+
+### 4B.2 · Bảng đối chiếu — **số học đã kiểm, khớp tuyệt đối**
 
 | Tầng | Giờ | T1 | T2 | T3 | T4 | T5 | T6 | T7 |
 |---|---|---|---|---|---|---|---|---|
-| **0** Đánh giá & PP thực nghiệm | 6h | **5,3** | — | — | — | — | — | ôn |
-| **1** Học sâu cốt lõi | 10h | 1,7 | *(Pre-LN, Noam, clipping trong BT)* | **+1,5** M01·M02 | **+0,5** M05a | **+0,8** M05b | **+2,0** M03·M04·M06 | ôn |
-| **2** NLP & Dịch máy | 16h | — | **6,0** | **+8,0** | — | — | *(ôn phân loại)* | ôn |
-| **3** Thị giác máy tính | ~~14h~~ **12h** | — | — | — | **6,0** | **6,0** | — | ôn |
-| **4** ML lồng ghép | ~~6h~~ **2h** | — | — | — | — | — | **2,0** | — |
-| **5** Hạ tầng & tối ưu suy luận | 4h | *(đo môi trường N1)* | — | — | — | **3,0** | — | — |
-| **Tổng đọc/tuần** | | 7,0 | 6,0 | 9,5 | 6,5 | 9,8 | 4,0 | 3,0 |
+| **0** Đánh giá & PP thực nghiệm 🔴🔴 | **10h** | **10** | — | — | — | — | — | ôn |
+| **1** Học sâu cốt lõi 🔴 | **12h** | — | **6** | **3** | **1** | **1** | **1** | ôn |
+| **2** NLP & Dịch máy 🔴🔴 | **20h** | — | **4** | **7** | — | — | **4** | **5** |
+| **3** Thị giác máy tính 🔴🔴 | **16h** | — | — | — | **9** | **7** | — | ôn |
+| **4** ML lồng ghép 🟠 | **4h** | — | — | — | — | — | **4** | — |
+| **5** Hạ tầng & tối ưu suy luận 🔴 | **6h** | — | — | — | — | **2** | **1** | **3** |
+| **📖 Đọc mỗi tuần** | **68h** | **10** | **10** | **10** | **10** | **10** | **10** | **8** |
 
-> ⚠️ Tuần 3 và Tuần 5 nặng nhất (~9,5h đọc). Đó là chủ ý: **Tuần 3 là dịch máy**
-> (2/2 đề mẫu 2025) và **Tuần 5 là jigsaw + tối ưu suy luận** (ràng buộc `main.py ≤ 20 phút`).
-> Nếu phải cắt, cắt Tuần 4 và Tuần 6 trước.
+```
+Tổng 6 tầng   = 10+12+20+16+4+6 = 68h
+Tổng 7 tuần   = 10+10+10+10+10+10+8 = 68h      ✅ KHỚP
+```
 
-### Lịch `tang1_toolkit/`
+**Thay đổi so với bản 2 và lý do:**
 
-| Module | Nội dung | Tuần | Vì dùng cho |
+| Tầng | Bản 2 | Bản 3 | Vì sao |
 |---|---|---|---|
-| M01 `weight_averaging` | EMA · SWA · checkpoint averaging | **3** | ckpt averaging là kỹ thuật 🔴 của NMT |
-| M02 `grad_tricks` | gradient accumulation · checkpointing · thứ tự AMP | **3** | batch lớn cho MT trên GPU 16GB |
-| M05a `losses` | focal loss | **4** | phân loại ảnh mất cân bằng |
-| M05b `losses` | dice · tversky · contrastive · triplet | **5** | segmentation & ghép ảnh |
-| M03 `finetune_lr` | LLRD · gradual unfreezing · freeze BN | **6** | fine-tune encoder |
-| M04 `adversarial` | FGM · PGD · FreeLB | **6** | robustness (FGM đã cho +0,016) |
-| M06 `consistency_multitask` | R-Drop · consistency · uncertainty weighting | **6** | đa nhiệm + nhiễu |
+| 0 | 6h | **10h** | thêm §(c) *Vòng lặp cải tiến*: phân tích lỗi · trần Bayes · đọc baseline BTC — **ba mục trước đây có 0 dòng** |
+| 1 | 10h | **12h** | `tang1_toolkit/` giờ có bài tập + assert, không chỉ đọc |
+| 2 | 16h | **20h** | trọng tâm số 1 (2/2 đề mẫu có dịch máy, BLEU trọng số 0.8) — bản 2 cắt nhầm chỗ |
+| 3 | ~~12h~~ | **16h** | khôi phục, **nhưng cắt theo chiều sâu**: 1 nhánh video + 1 nhánh so khớp, phần còn lại 🟡 |
+| 4 | 2h | **4h** | giữ mức thấp — ML không ra thành bài riêng |
+| 5 | 4h | **6h** | ràng buộc `main.py ≤ 20 phút` là cổng loại trực tiếp |
 
-Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
+### 4B.3 · Lịch `tang1_toolkit/` — *Tầng 1 là bộ đồ nghề, xếp vào tuần thực sự dùng nó*
+
+| Module | Nội dung | Tuần | Vì dùng cho | Assert §4C |
+|---|---|---|---|---|
+| **M07 `norm_init_gradflow`** 🔴 | LayerNorm vs BatchNorm · Xavier/He · zero-γ · grad flow Pre/Post-LN | **2** | 🔴 **lớp giải thích dưới Pre-LN** của BT 02 | **#10 · #11** |
+| M01 `weight_averaging` | EMA · SWA · **checkpoint averaging** | **3** | 🔴 lựa chọn ensemble mặc định (suy luận ×1) | — |
+| M02 `grad_tricks` | gradient accumulation · checkpointing · thứ tự AMP | **3** | batch lớn cho MT trên GPU yếu | **#20** |
+| M05a `losses` | focal loss | **4** | phân loại ảnh mất cân bằng | — |
+| M05b `losses` | dice · tversky · contrastive · triplet | **5** | segmentation & ghép ảnh (Siamese) | — |
+| M03 `finetune_lr` | LLRD · gradual unfreezing · freeze BN | **6** | fine-tune encoder pretrained | — |
+| M04 `adversarial` | **FGM** · PGD · FreeLB | **3** | 🔴 **+0,0121 OOF, 5/5 fold** · tấn công embedding ⇒ dùng được cho seq2seq | **#17** |
+| M06 `consistency_multitask` | **R-Drop** · consistency · uncertainty weighting | **3** | 🔴 **+0,0047 OOF, 4/5 fold** · R-Drop (Wu 2021) **sinh ra cho NMT** | **#18** |
+
+**Tải mỗi module: ~45' đọc + ~45' code.** Giờ đọc nằm trong cột 📖 của §4B.2; giờ code nằm trong quỹ 💻 12h/tuần.
+
+> ⚠️ **M04 và M06 là hai kỹ thuật DUY NHẤT sống sót qua đo đạc ở vòng trường** (2 trên 11 thứ đã thử).
+> **Vì thế chúng KHÔNG được xếp vào Tuần 6** — tuần đó có TỔNG DUYỆT 1 chiếm trọn một ngày;
+> đặt thứ quan trọng nhất vào tuần bận nhất là tự chuốc rủi ro. Chúng chuyển về **Tuần 3**, nơi:
+> · cùng họ "đồ nghề vòng lặp huấn luyện" với M01/M02 · **R-Drop vốn là kỹ thuật NMT** (Wu 2021)
+> · và có **bài thật (VOAI CK T1 Ba Na) để đo ngay**, thay vì học chay.
+>
+> Nếu Tuần 6 vỡ, **cắt M03** — nó là module duy nhất còn lại ở đó.
+
+### 4B.4 · Nếu tuần nào bị vỡ — thứ tự hy sinh
+
+1. 🫙 Dự phòng (1h)
+2. 🧪 Thí nghiệm (3h → 1h)
+3. 📖 Đọc phần 🟡, rồi 🟠
+4. 💻 Bài tập nhóm 🟠
+5. **KHÔNG BAO GIỜ CẮT:** 📓 sổ assert · bài tập 🔴 · Tầng 0 §(c) · M04 · M06
+
+---
+
+## PHẦN 4C — SỔ ASSERT: THỨ THẬT SỰ MANG VÀO PHÒNG THI
+
+### Nguyên tắc: **nhờ máy cái hỏng TO TIẾNG, thuộc cái hỏng ÂM THẦM**
+
+Trong phòng thi có `deepseek-r1-distill-qwen-32b`. Đo thật trên code của chính chúng ta:
+
+| hàm | dòng | ~token | lọt 2.000? |
+|---|---|---|---|
+| FGM (vòng trường 2026) | 18 | 260 | ✅ |
+| DecoderLayer | 16 | 245 | ✅ |
+| beam_search | 45 | 560 | ✅ |
+| train_model | 33 | 569 | ✅ |
+| stratified_group_kfold | 43 | 546 | ✅ |
+| Seq2SeqTransformer | 43 | 657 | ⚠️ chật |
+
+→ **Từng hàm đơn lẻ lọt thoải mái.** Nghĩa là bạn *không cần thuộc lòng phần cài đặt*.
+Ràng buộc thắt không phải token mà là: **~40–60 câu hỏi cho cả 5 tiếng, chia cho 2 tác vụ và 3 người**
+(§8.1), và **giờ thứ 6 LLM bị khoá** đúng lúc mở private test.
+
+**Nhưng có một lớp lỗi không thể thuê ngoài.** Bằng chứng từ chính vòng trường 2026:
+
+| Bug | Hậu quả | Code có chạy không? |
+|---|---|---|
+| Rò rỉ nhóm khi chia fold | OOF **thổi phồng 0,04** (0,7545 → 0,7067) | chạy hoàn hảo |
+| Bias dùng train-prior thay test-prior | v8 được **0,697** thay vì 0,720 — **lặp 2 lần** | chạy hoàn hảo |
+
+Và các bẫy kinh điển của seq2seq đều cùng chữ ký đó: causal mask sai → *train loss **đẹp hơn**, BLEU **sập***;
+lệch `tgt_in`/`tgt_out` một ô → *loss giảm **rất đẹp**, BLEU **bằng 0***; quên `√d_k` → *model **vẫn chạy**, chỉ học kém*.
+
+> **Những kỹ thuật này không hỏng bằng cách crash. Chúng hỏng bằng cách trả về một con số hợp lý.**
+> DeepSeek sẽ đưa bạn code chạy được. Bạn **không thể** phân biệt FGM đúng với FGM sai bằng cách chạy nó.
+> Tệ hơn: bản sai không chỉ làm mất kỹ thuật đó — nó **dạy bạn một bài học sai**
+> ("FGM không giúp ở bài này") rồi bạn bỏ đi một thứ đáng **+0,0121 trên 5/5 fold**.
+
+### Ranh giới quyết định
+
+| ✅ Nhờ DeepSeek — sai là **thấy ngay** | ❌ Phải tự biết — sai vẫn **ra số đẹp** |
+|---|---|
+| Signature API, hằng số mặc định | Chiều của causal mask |
+| Boilerplate sklearn, TF-IDF + LogReg | Dịch `tgt_in`/`tgt_out` một ô |
+| Ghi CSV, đóng zip, `argparse` | FGM: tấn công tham số nào, khôi phục ra sao |
+| Khung thuật toán kinh điển (Hungarian) | Chia fold có nhóm / chống rò rỉ |
+| Sửa cú pháp ≤ 10 dòng | Hiệu chỉnh prior (train-prior vs test-prior) |
+| Vẽ đồ thị, đọc/ghi file | Chiều KL trong R-Drop, áp lên head nào |
+
+Trục phân loại **không phải** "thuật toán vs boilerplate" — mà là ***bản sai sẽ nổ, hay sẽ im lặng***.
+
+### Hệ quả: thuộc **câu assert**, không thuộc phần cài đặt
+
+```
+test_model_is_causal             9 dòng  ~141 token
+test_collate_pads_and_shifts     6 dòng  ~122 token
+test_scaling_by_sqrt_dk          7 dòng  ~130 token
+──────────────────────────────────────────────────
+Seq2SeqTransformer (cài đặt)    43 dòng  ~657 token   → đắt gấp ~7 lần
+```
+
+Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5 giây biết đúng hay sai.
+Đó là lý do giá trị thật của `tuan01/` `tuan02/` `tang1_toolkit/` nằm ở **bộ test**, không ở đáp án.
+
+---
+
+### 📓 SỔ ASSERT — 22 mục nhóm 🔴, phải gõ được từ trí nhớ
+
+> Mỗi mục: *chế độ hỏng âm thầm* → *câu kiểm tra*. Gõ lại toàn bộ sổ này **1 lần mỗi tuần** từ Tuần 3.
+
+**Nhóm A — Seq2seq / Transformer**
+
+| # | Kỹ thuật | Hỏng âm thầm kiểu gì | Assert |
+|---|---|---|---|
+| 1 | **Causal mask** | rò rỉ tương lai → train loss *đẹp hơn*, BLEU sập | `a=net(s,t); t2=t.clone(); t2[:,-1]=(t2[:,-1]+7)%V;`<br>`assert allclose(a[:,:-1], net(s,t2)[:,:-1])` |
+| 2 | **tgt_in / tgt_out** | lệch 1 ô → model học chép đầu vào, BLEU 0 | `_,ti,to = collate([([5,6,7],[1,8,9,2])])`<br>`assert ti[0].tolist()==[1,8,9] and to[0].tolist()==[8,9,2]` |
+| 3 | **Chia √d_k** | softmax bão hoà → gradient ≈ 0, học kém | `_,w = sdpa(q,k,v)  # d_k=64`<br>`assert -(w*(w+1e-12).log()).sum(-1).mean() > 0.5` |
+| 4 | **Padding mask** | chú ý vào ô trống | `assert allclose(net(x5,t), net(pad_to(x5,8),t))`<br>⚠️ *phải đổi **lượng đệm**, không phải đổi nội dung ô pad* |
+| 5 | **Tied embeddings** | quên buộc → thừa tham số, kém khi ít dữ liệu | `assert net.out.weight is net.tgt_emb.weight` |
+| 6 | **Nhân `√d_model`** trước PE | tín hiệu vị trí lấn tín hiệu từ | `assert emb_scaled.std() > pe.std()` |
+| 7 | **Beam length penalty** | lp=0 → thiên vị câu ngắn, cộng dồn với BP của BLEU | `assert len(beam(lp=1.5)) >= len(beam(lp=0.0))` |
+| 8 | **beam=1 ≡ greedy** | beam cài sai vẫn ra câu hợp lý | `assert beam(k=1,lp=0.0) == greedy()` |
+| 9 | **BPE theo rank** | quét trái→phải thay vì rank nhỏ nhất | `assert apply_bpe("abc",[("a","b"),("b","c")]) == ["ab","c","</w>"]` |
+| 10 | **LayerNorm ≠ BatchNorm** | BN trong Transformer: thống kê ô nhiễm bởi padding, đổi theo batch — **không crash**, chỉ kém | `y1=norm(x)[0]; batch2=x.clone(); batch2[1:]=randn_like(batch2[1:])`<br>`assert allclose(norm(batch2)[0], y1)  # LN đúng; BN sẽ TRƯỢT` |
+| 11 | **Pre-LN vs Post-LN** | Post-LN không warmup → gradient tầng đầu tắt, train phân kỳ *hoặc* chỉ học kém | `assert grad_norm_layer0(preln) > 10 * grad_norm_layer0(postln)` |
+
+**Nhóm B — Đánh giá & chia dữ liệu** *(nơi mất nhiều điểm nhất ở vòng trường)*
+
+| # | Kỹ thuật | Hỏng âm thầm kiểu gì | Assert |
+|---|---|---|---|
+| 12 | **Chia fold có nhóm** | rò rỉ → OOF thổi phồng **0,04** | `assert not (set(g[tr]) & set(g[va]))` |
+| 13 | **Hiệu chỉnh prior** | dùng train-prior → lệch phân phối dự đoán | `assert abs(pred_dist - test_prior).max() < 0.05` |
+| 14 | **Mọi đại lượng đã tune** | fit và eval cùng dữ liệu → gain ảo | nửa-fit / nửa-eval: `assert gain_eval < gain_fit` |
+| 15 | **Trọng số ensemble trên OOF** | tối ưu trên chính tập chấm | như #12, cộng: `assert w.sum()≈1 and (w>=0).all()` |
+| 16 | **Brevity penalty của BLEU** | quên BP → điểm ảo cho câu ngắn | `assert bleu(["a"],["a b c d"]) < bleu(["a b c d"],["a b c d"])` |
+
+**Nhóm C — Huấn luyện**
+
+| # | Kỹ thuật | Hỏng âm thầm kiểu gì | Assert |
+|---|---|---|---|
+| 17 | **FGM** | tấn công sai tham số / quên khôi phục | `w0=emb.weight.clone(); fgm.attack()`<br>`assert not equal(emb.weight,w0); fgm.restore(); assert equal(emb.weight,w0)` |
+| 18 | **R-Drop / consistency** | KL sai chiều, áp nhầm head | `assert kl(p,p) < 1e-6` và `assert kl(p,q)≈kl(q,p)` *(bản đối xứng)* |
+| 19 | **label_smoothing + ignore_index** | tính loss trên ô PAD → loãng | `assert loss(logits, all_pad_targets) == 0` |
+| 20 | **AMP: GradScaler ↔ scheduler** | `sched.step()` khi scaler đã bỏ bước | `s0=scaler.get_scale(); scaler.step(opt); scaler.update()`<br>`if scaler.get_scale() >= s0: sched.step()` |
+
+**Nhóm D — Hai cổng cuối, không có ngoại lệ**
+
+| # | Ràng buộc | Assert |
+|---|---|---|
+| 21 | **`main.py` ≤ 20 phút** (§1.4) | `t0=time(); main(); assert time()-t0 < 1200` |
+| 22 | **Tái lập** (quy chế bắt buộc) | `assert run(seed=42) == run(seed=42)` |
+
+> 🔴 **Mục 19 và 20 phải chạy được ở giờ thứ 6 khi KHÔNG có DeepSeek.** Không thương lượng.
 
 ---
 
 ## PHẦN 5 — LỘ TRÌNH 8 TUẦN
 ### Mỗi tuần: **📖 đọc lý thuyết → 🔧 nắm kỹ thuật → 💻 cài đặt → ✅ nghiệm thu**
 
-**Ngân sách:** ~15h/tuần (2h × 5 ngày + 5h cuối tuần) = **~7h lý thuyết + ~8h cài đặt**.
+**Ngân sách (bản 3): 4 giờ/ngày × 7 = 28h/tuần** — xem chi tiết §4B.1.
+
+| 📖 đọc | 💻 cài đặt | 📓 sổ assert | 🧪 thí nghiệm | 🫙 dự phòng | **tổng** |
+|---|---|---|---|---|---|
+| **10h** | **12h** | **2h** | **3h** | **1h** | **28h** |
+
+> 📓 **Sổ assert (§4C) bắt buộc từ Tuần 3**: mỗi tuần gõ lại toàn bộ sổ từ trí nhớ **1 lần**.
+> Đó là thứ duy nhất mang vào được giờ thứ 6 khi DeepSeek bị khoá.
 **Từ tuần 2 trở đi: mọi thứ chạy trên Colab/Kaggle.** H100 chỉ dùng chuẩn bị dữ liệu.
 **Từ tuần 3 trở đi: cấm ChatGPT/Claude khi luyện.** Tự giới hạn 2.000 token/phiên (§8).
 
@@ -677,7 +904,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 
 ### 🗓️ TUẦN 1 · 05–12/09 · NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
 
-**📖 Lý thuyết (7h)** — Tầng 0 toàn bộ (6h) + khởi động Tầng 1
+**📖 Lý thuyết (10h)** — **Tầng 0 toàn bộ**, gồm §(c) *Vòng lặp cải tiến* (mới)
 - Post (2018) SacreBLEU · Papineni BLEU · ESL Ch.7
 - d2l.ai Ch.4–5 · He (2018) *Bag of Tricks*
 
@@ -691,7 +918,12 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 1. **`train_loop.py` gõ từ số 0**, không framework cao cấp: AMP, scheduler, early stopping,
    best-checkpoint, log thời gian/epoch + `max_memory_allocated`. **Gõ lại 2 lần, lần 2 dưới 15 phút.**
 2. Tự cài bằng numpy (không sklearn): `macro_f1`, `balanced_accuracy`, `bleu4`, `bootstrap_se`.
-3. **Đo môi trường thi** → `env_report.md`. Bắt buộc có ≥8 con số thật:
+3. 🔴 **`error_analysis.py` — vòng lặp phân tích lỗi** (Tầng 0 §c1). Nhận `(y_true, y_pred, proba, texts)`,
+   xuất: 50 mẫu sai nặng nhất · ma trận nhầm lẫn · **tách nhầm-đối-xứng (trần) khỏi nhầm-một-chiều (lệch prior)**.
+   Chạy nó trên chính OOF vòng trường 2026 (`work/oof/`) và **tìm lại được** kết luận đã biết.
+4. 🔴 **`bayes_ceiling.py`** (Tầng 0 §c2). Đếm mẫu **trùng input khác nhãn** → trần accuracy.
+   Nghiệm thu: chạy trên `ThiChinhThucData/NLP_Data` phải **tái hiện con số 76,7% no-op** của nhãn TEENCODE.
+5. **Đo môi trường thi** → `env_report.md`. Bắt buộc có ≥8 con số thật:
    GPU được cấp (T4/P100/L4?), VRAM, RAM, số core · thời gian 1 epoch `resnet34` @224 trên 3k ảnh (AMP on/off) ·
    thời gian fine-tune 1 epoch encoder ~100M trên 48k câu `max_len=96` · **thời gian `pip install` các gói hay dùng** ·
    quota GPU Kaggle còn lại · hành vi ngắt kết nối của Colab.
@@ -701,29 +933,62 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 - [ ] Tính tay BLEU-4 một cặp câu, khớp với `sacrebleu`.
 - [ ] Có `env_report.md` ≥ 8 con số đo thật.
 - [ ] Trả lời được: *"Vì sao 'toàn nhãn 0' được 50 điểm ở vòng trường nhưng 0 điểm ở công thức 2025?"*
+- [ ] 🔴 `bayes_ceiling.py` tái hiện đúng **76,7%** no-op trên nhãn TEENCODE.
+- [ ] 🔴 Từ ma trận nhầm lẫn, chỉ đúng cặp nào là **trần** và cặp nào là **lệch prior**.
+- [ ] 🔴 Đọc `task1_nlp_fpt26/` **như thể đó là baseline BTC** (Tầng 0 §c3): ghi ra kiến trúc ·
+      augmentation · số epoch · cách chia val — trong **20 phút**, không chạy code.
 
 ---
 
 ### 🗓️ TUẦN 2 · 13–19/09 · TRANSFORMER & SEQ2SEQ — TỰ VIẾT TỪ ĐẦU
 
-**📖 Lý thuyết (8h)** — Tầng 1 hết + Tầng 2 nửa đầu
+**📖 Lý thuyết (10h)** — Tầng 1 phần A (**6h**) + Tầng 2 đầu (**4h**)
+
+*Tầng 1 phần A — 6h · nền của mọi thứ tuần này, đọc TRƯỚC Transformer:*
+- **d2l.ai Ch.6–7** (tính toán sâu · **khởi tạo** · ổn định số học) + **Ch.11** (tối ưu nâng cao) — 3h
+- **Goodfellow Ch.6–8** (backprop · đồ thị tính toán · vanishing/exploding · tối ưu hoá) — 2h
+- **Loshchilov & Hutter (2019) AdamW** — 0,5h · ôn **He (2018) Bag of Tricks** phần **zero-γ init** + no-bias-decay — 0,5h
+
+*Tầng 2 đầu — 4h:*
 - *The Illustrated Transformer* → **The Annotated Transformer** (3h, đọc code từng dòng) 🔴🔴
-- Vaswani 2017 · Sutskever 2014 · Bahdanau 2015 · Sennrich 2016 (BPE)
-- d2l.ai Ch.10–11 (attention, transformer)
+- Bahdanau 2015 §3 · Sennrich 2016 (BPE) · d2l.ai Ch.10–11 (attention, transformer) — 1h
 
 **🔧 Kỹ thuật phải nắm tuần này**
+
+*Tầng 1 phần A — **đây là lớp giải thích nằm DƯỚI Pre-LN**, không phải chủ đề rời:*
+> backprop & đồ thị tính toán · vanishing/exploding gradient · SGD+momentum vs Adam vs **AdamW**
+> (vì sao weight decay ≠ L2 trong Adam) · **LayerNorm vs BatchNorm vs RMSNorm — vì sao Transformer
+> buộc phải dùng LayerNorm** · khởi tạo **Xavier/He** · **zero-γ init** · dropout · **label smoothing**
+
+*Tầng 2 đầu:*
 > Encoder–decoder · teacher forcing · **exposure bias** · additive vs multiplicative attention ·
 > multi-head · positional encoding · **causal mask** · cross-attention · **Pre-LN vs Post-LN** ·
 > Noam schedule · **tied embeddings** · label smoothing 0.1 · gradient clipping · gradient accumulation ·
 > BPE / SentencePiece unigram · vocab chia sẻ nguồn–đích · **beam search + length penalty**
 
 **💻 Cài đặt**
+0. 🔴 **`tang1_toolkit/` M07 `norm_init_gradflow`** (~1,5h code) — **làm TRƯỚC Transformer**.
+   Ba thí nghiệm, mỗi cái kết thúc bằng một con số, không phải một câu chữ:
+   - **a. LayerNorm tự viết** ≡ `nn.LayerNorm`. Rồi chứng minh **vì sao Transformer không dùng BatchNorm**:
+     giữ nguyên câu thứ nhất, **đổi các câu KHÁC trong batch** → output của **BN đổi**, của **LN không đổi**.
+     Với batch có padding và độ dài thay đổi, thống kê BN bị ô nhiễm bởi ô đệm. *(assert §4C #10)*
+   - **b. Khởi tạo**: đo phương sai kích hoạt qua **20 tầng** với Xavier/He vs `randn()`.
+     Xavier giữ phương sai ổn định; khởi tạo ẩu làm nó **nổ hoặc tắt** — và không hề crash.
+   - **c. Pre-LN vs Post-LN**: dựng hai stack 12 tầng, đo `grad_norm` **tại tầng ĐẦU**.
+     Post-LN nhỏ hơn Pre-LN ít nhất một bậc ⇒ **đó chính là lý do Post-LN cần warmup dài**,
+     và là lý do BT 02 bắt dùng Pre-LN. *(assert §4C #11)*
+   > Không có mục 0 này thì "Pre-LN ổn định hơn" chỉ là câu **học thuộc**. Có nó, đó là **số bạn tự đo**.
 1. **Viết Transformer seq2seq từ số 0** (~300 dòng, Pre-LN, tied embeddings), **không dùng HuggingFace**.
    Train trên một cặp ngôn ngữ nhỏ bất kỳ. Đạt BLEU > 0 và giải thích được từng con số.
 2. Cài **beam search** tay, có length penalty. So greedy vs beam=4 vs beam=8.
 3. Train SentencePiece, khảo sát ảnh hưởng kích thước vocab (1k / 4k / 8k) lên BLEU với dữ liệu ít.
 
 **✅ Nghiệm thu**
+- [ ] 🔴 M07 xanh hết. **Nói được bằng SỐ**: BN đổi bao nhiêu khi batch đổi, LN đổi bao nhiêu;
+      grad tầng đầu Post-LN nhỏ hơn Pre-LN bao nhiêu lần.
+- [ ] 🔴 Trả lời không nhìn tài liệu: *"Vì sao Transformer dùng LayerNorm chứ không BatchNorm?"* —
+      câu trả lời phải nhắc tới **padding + độ dài thay đổi**, không chỉ "vì nó chuẩn hoá theo feature".
+- [ ] 📓 Khởi tạo **sổ assert (§4C)**: chép đủ 22 mục, tự gõ lại nhóm A một lần.
 - [ ] Vẽ được sơ đồ decoder có mask, không nhìn tài liệu.
 - [ ] Transformer tự viết chạy được, BLEU > 0.
 - [ ] Giải thích được vì sao beam quá lớn làm BLEU giảm.
@@ -732,7 +997,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 
 ### 🗓️ TUẦN 3 · 20–26/09 · DỊCH MÁY ÍT TÀI NGUYÊN — 🔴 TUẦN QUAN TRỌNG NHẤT
 
-**📖 Lý thuyết (8h)** — Tầng 2 nửa sau
+**📖 Lý thuyết (10h)** — Tầng 2 phần giữa (7h) + `tang1_toolkit/` **M01 · M02 · M04 FGM · M06 R-Drop** (3h) 🔴
 - **J&M SLP3 Ch.13 Machine Translation** · CS224n lecture MT/subword
 - Sennrich (2016) back-translation · Provilkov (2020) BPE-dropout · Ott (2018) Scaling NMT
 - Koehn *SMT* Ch.4 (IBM Model 1, word alignment)
@@ -746,6 +1011,10 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 > SacreBLEU signature & tokenizer · chrF++
 
 **💻 Cài đặt**
+0. 🔴 **`tang1_toolkit/` M01 · M02 · M04 · M06** (~3h code). Làm TRƯỚC phần dịch máy bên dưới —
+   M01 `weight_averaging` và M04 `adversarial` được dùng ngay ở mục 1–3 của tuần này.
+   Chấm: `pytest tang1_toolkit/bai_tap/test_all.py -q`. **Assert §4C #17 (FGM) · #18 (R-Drop) · #20 (AMP)**
+   phải gõ được từ trí nhớ trước khi sang tuần 4.
 1. **Giải trọn VOAI 2025 CK Tác vụ 1 (Ba Na → Việt), bấm giờ 3 tiếng trên Colab.**
    Đây là bài luyện sát đề nhất trong toàn bộ kế hoạch.
 2. So sánh có số liệu trên **cùng** tập dữ liệu:
@@ -754,6 +1023,8 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 3. Cài **checkpoint averaging** và **ensemble decoding**, đo mức tăng BLEU.
 
 **✅ Nghiệm thu**
+- [ ] 🔴 `tang1_toolkit` M01·M02·M04·M06 **xanh hết**, và đo được **FGM có dương trên bài Ba Na không** (đừng tin số của bài khác).
+- [ ] 📓 **Gõ lại toàn bộ sổ assert (§4C) từ trí nhớ**, không nhìn — sai mục nào thì học lại mục đó.
 - [ ] Có bảng so sánh 5 hướng dịch máy, kèm BLEU và thời gian train.
 - [ ] Trả lời chắc: *"3.000 cặp câu → chọn gì? 30.000 cặp → chọn gì?"*
 - [ ] Cài được copy mechanism cho tên riêng/chữ số.
@@ -762,7 +1033,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 
 ### 🗓️ TUẦN 4 · 27/09–03/10 · CV NỀN + VIDEO / HÀNH ĐỘNG
 
-**📖 Lý thuyết (8h)** — Tầng 3 nửa đầu
+**📖 Lý thuyết (10h)** — Tầng 3 nhánh ảnh + **một** hướng video (9h) + M05a focal (1h)
 - CS231n notes (CNN + training) · He 2016 ResNet · Tan&Le EfficientNet · He 2018 Bag of Tricks
 - **Lin (2019) TSM** 🔴 · Wang (2016) TSN · Carreira (2017) I3D · Yan (2018) ST-GCN
 
@@ -774,6 +1045,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 > **TSM** · two-stream & optical flow · **attention pooling / NetVLAD** · **ST-GCN cho keypoint**
 
 **💻 Cài đặt**
+0. **`tang1_toolkit/` M05a `losses` — focal loss** (~45' code). Dùng ngay cho phân loại ảnh mất cân bằng.
 1. **Giải SOLOAI 2025 Tác vụ 2 (nhận diện ngôn ngữ ký hiệu)** trên Colab, bấm giờ 3 tiếng.
    Nếu không lấy được dữ liệu gốc → dùng một tập video cử chỉ công khai làm thay.
 2. So sánh 3 hướng **trên cùng ngân sách 20 phút inference**:
@@ -781,6 +1053,8 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 3. Cài **TSN sparse sampling** và khảo sát K = 4/8/16 đoạn.
 
 **✅ Nghiệm thu**
+- [ ] `tang1_toolkit` M05a xanh; so focal vs CE trên tập ảnh mất cân bằng, ghi lại con số.
+- [ ] 📓 **Gõ lại toàn bộ sổ assert (§4C) từ trí nhớ**, không nhìn — sai mục nào thì học lại mục đó.
 - [ ] Có bảng so sánh 3 kiến trúc video kèm thời gian inference thật.
 - [ ] Giải thích được cơ chế TSM bằng lời, không nhìn bài báo.
 - [ ] Biết chính xác K khung/video là ngưỡng vượt 20 phút.
@@ -789,7 +1063,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 
 ### 🗓️ TUẦN 5 · 04–10/10 · TỰ GIÁM SÁT, SO KHỚP, GHÉP ẢNH + TỐI ƯU SUY LUẬN
 
-**📖 Lý thuyết (8h)** — Tầng 3 nửa sau + Tầng 5
+**📖 Lý thuyết (10h)** — Tầng 3 nhánh so khớp (7h) + Tầng 5 (2h) + M05b losses (1h)
 - **Noroozi & Favaro (2016) Jigsaw** 🔴🔴 · Doersch (2015) context prediction · Chen (2020) SimCLR
 - Gallagher (2012) / Cho — jigsaw solver & MGC
 - Ronneberger U-Net · Lin FPN · Roth PatchCore
@@ -806,6 +1080,8 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 > lượng tử hoá int8 · distillation
 
 **💻 Cài đặt**
+0. **`tang1_toolkit/` M05b `losses` — dice · tversky · contrastive · triplet** (~45' code).
+   `contrastive`/`triplet` là nền của Siamese đo tương thích cạnh ở mục dưới.
 1. **Giải VOAI 2025 CK Tác vụ 2 (ghép ảnh 3×5)** trên Colab, bấm giờ 3 tiếng.
    **Bắt buộc** có thành phần học được (CNN Siamese dự đoán cặp kề) — đây là bài luyện §1.8.
 2. Viết **`main.py` inference-only** cho cả hai bài đã giải (tuần 3 + tuần 5),
@@ -813,6 +1089,8 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 3. Cài U-Net decoder trên encoder torchvision, gõ tay.
 
 **✅ Nghiệm thu**
+- [ ] `tang1_toolkit` M05b xanh; `triplet` dùng được trực tiếp cho Siamese cạnh.
+- [ ] 📓 **Gõ lại toàn bộ sổ assert (§4C) từ trí nhớ**, không nhìn — sai mục nào thì học lại mục đó.
 - [ ] Bài jigsaw có PPA > 0 và **chứng minh được thành phần ML thực sự tham gia quyết định**.
 - [ ] Hai `main.py` đều chạy dưới 20 phút, sinh đúng `submission.csv`.
 - [ ] Tính được không gian hoán vị 15 mảnh và giải thích chiến lược cắt tỉa.
@@ -821,7 +1099,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 
 ### 🗓️ TUẦN 6 · 11–17/10 · ML LỒNG GHÉP + RÁP ĐỘI + TỔNG DUYỆT 1
 
-**📖 Lý thuyết (5h)** — Tầng 4
+**📖 Lý thuyết (10h)** — Tầng 4 (4h) + Tầng 2 phân loại văn bản (4h) + **M03 finetune_lr** (1h) + Tầng 5 (1h)
 - ESL Ch.9/10/15 · LightGBM & XGBoost paper · sklearn `calibration`
 - Guo (2017) temperature scaling
 
@@ -831,6 +1109,8 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 > permutation & null importance · Optuna TPE + ASHA · uncertainty weighting đa nhiệm
 
 **💻 Cài đặt + vận hành**
+0. **`tang1_toolkit/` M03 `finetune_lr` — LLRD · gradual unfreezing · freeze BN** (~45' code).
+   🫙 **Đây là module đầu tiên bị cắt nếu tuần vỡ** (§4B.3) — tuần này đã có TỔNG DUYỆT 1.
 1. Chốt **phân vai 3 người / 2 máy / 1 DeepSeek** (§7). Dựng bảng theo dõi chung, giao thức hàng đợi LLM.
 2. **TỔNG DUYỆT 1** — mô phỏng 100%: một ngày trọn vẹn 8h30–14h30, **2 tác vụ**,
    chỉ Colab/Kaggle, **chỉ DeepSeek 2k ngữ cảnh**, không mở code cũ, có `Final/` + báo cáo kỹ thuật.
@@ -838,6 +1118,8 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 3. **Post-mortem 90 phút** → `MOCK1.md`: cái gì vỡ, mất bao nhiêu phút ở đâu.
 
 **✅ Nghiệm thu**
+- [ ] `tang1_toolkit` M03 xanh **hoặc** đã chủ động bỏ và ghi lý do vào `MOCK1.md`.
+- [ ] 📓 **Gõ lại toàn bộ sổ assert (§4C) từ trí nhớ**, không nhìn — sai mục nào thì học lại mục đó.
 - [ ] Cả 2 tác vụ có submission hợp lệ + `Final/` chạy dưới 20 phút + báo cáo kỹ thuật.
 - [ ] `MOCK1.md` liệt kê ≥5 sự cố cụ thể kèm thời gian mất.
 
@@ -845,7 +1127,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 
 ### 🗓️ TUẦN 7 · 18–24/10 · VÁ LỖ HỔNG + TỔNG DUYỆT 2 + ĐÓNG BĂNG
 
-**📖 Lý thuyết (3h)** — chỉ đọc lại phần `MOCK1.md` chỉ ra là yếu. **Không đọc chủ đề mới.**
+**📖 Lý thuyết (8h)** — ôn Tầng 2 (5h) + Tầng 5 (3h). Chỉ đọc lại phần `MOCK1.md` chỉ ra là yếu. **Không chủ đề mới.**
 
 **🔧 Kỹ thuật**: không thêm mới. Củng cố nhóm 🔴 trong bảng tổng hợp Phần 4.
 
@@ -857,6 +1139,7 @@ Mỗi module ~45' đọc + ~45' code, có bộ chấm riêng (26 test).
 3. **TỔNG DUYỆT 2**: đề **VOAI 2025 CK** (cả 2 tác vụ), khó hơn, thêm một "khúc cua" cố ý.
 
 **✅ Nghiệm thu**
+- [ ] 📓 **Gõ lại toàn bộ sổ assert (§4C) từ trí nhớ**, không nhìn — sai mục nào thì học lại mục đó.
 - [ ] Submission hợp lệ đầu tiên cho **cả 2 tác vụ trong vòng 60 phút**.
 - [ ] Không lặp lại bất kỳ sự cố nào từ `MOCK1.md`.
 
@@ -1165,17 +1448,23 @@ Baseline nộp được trong 15 phút: ................................
 
 **Khi có đề mẫu / luật mới công bố: dừng lịch ôn, đọc kỹ, cập nhật tài liệu này trước.**
 
-| Tuần | Ngày | Lý thuyết | Kỹ thuật trọng tâm | Sản phẩm |
+**Ngân sách: 4h/ngày = 28h/tuần** (10 đọc · 12 cài đặt · 2 sổ assert · 3 thí nghiệm · 1 dự phòng).
+Tổng khoá **206 giờ**. Số học đã kiểm: 68h đọc = 68h phân bổ (§4B.2).
+
+| Tuần | Ngày | 📖 Đọc | Kỹ thuật trọng tâm | Sản phẩm |
 |---|---|---|---|---|
-| 1 | 05–12/09 | Tầng 0 + đầu Tầng 1 | Metrics, CV design, bootstrap, AdamW, AMP | `train_loop.py` < 15', `env_report.md` |
-| 2 | 13–19/09 | Tầng 1 + nửa Tầng 2 | Transformer, attention, BPE, beam search | Transformer tự viết, BLEU > 0 |
-| 3 | 20–26/09 | Tầng 2 hết 🔴 | **Back-translation, BPE-dropout, ckpt avg, ensemble decoding, SMT** | **Giải VOAI CK T1 (Ba Na)** + bảng so sánh 5 hướng |
-| 4 | 27/09–03/10 | Tầng 3 nửa đầu | **TSN, TSM, CRNN, I3D, ST-GCN**, Bag of Tricks | **Giải SOLOAI T2 (ký hiệu)** + bảng 3 kiến trúc |
-| 5 | 04–10/10 | Tầng 3 hết + Tầng 5 | **Jigsaw, Siamese/contrastive, MGC, Hungarian**, cache đặc trưng, cascade | **Giải VOAI CK T2** + 2 `main.py` < 20' |
-| 6 | 11–17/10 | Tầng 4 | LightGBM, hill-climbing, temperature scaling | Phân vai + **TỔNG DUYỆT 1** (SOLOAI) → `MOCK1.md` |
-| 7 | 18–24/10 | ôn phần yếu | củng cố nhóm 🔴 | **TỔNG DUYỆT 2** (VOAI CK) → `MOCK2.md`, đóng băng |
-| 8 | 25–30/10 | — | nghi thức | Mẫu báo cáo, hậu cần, **ngủ đủ** |
+| 1 | 05–12/09 | Tầng 0 (10h) | Metrics, CV design, bootstrap · 🔴 **phân tích lỗi · trần Bayes · đọc baseline BTC** | `train_loop.py` < 15' · `env_report.md` · 🔴 `error_analysis.py` · `bayes_ceiling.py` |
+| 2 | 13–19/09 | T1 phần A (6h) + T2 đầu (4h) | Transformer, attention, BPE, beam search | Transformer tự viết, **BLEU > 40** · 📓 khởi tạo sổ assert |
+| 3 | 20–26/09 | T2 giữa (7h) + M01·M02 (3h) 🔴 | **Back-translation, BPE-dropout, ckpt averaging, SMT** | **Giải VOAI CK T1 (Ba Na)** + bảng so sánh 5 hướng |
+| 4 | 27/09–03/10 | T3 video (9h) + M05a (1h) | **CHỌN 1: TSM *hoặc* ST-GCN** (§Tầng 3 quy tắc cắt), Bag of Tricks | **Giải SOLOAI T2 (ký hiệu)** + bảng 3 kiến trúc |
+| 5 | 04–10/10 | T3 so khớp (7h) + T5 (2h) + M05b (1h) | **Siamese cạnh + Hungarian**, cache đặc trưng, cascade | **Giải VOAI CK T2** + 2 `main.py` < 20' |
+| 6 | 11–17/10 | T4 (4h) + T2 phân loại (4h) + **M04 FGM · M06 R-Drop** (1h) 🔴 | LightGBM, hill-climbing, **FGM +0,0121 · R-Drop +0,0047** | Phân vai + **TỔNG DUYỆT 1** (SOLOAI) → `MOCK1.md` |
+| 7 | 18–24/10 | ôn T2 (5h) + T5 (3h) | củng cố nhóm 🔴 | **TỔNG DUYỆT 2** (VOAI CK) → `MOCK2.md`, đóng băng |
+| 8 | 25–30/10 | — *(~10h, giảm tải)* | nghi thức | Mẫu báo cáo, hậu cần, **ngủ đủ** |
 | — | **31/10** | — | — | **2 submission + `Final/` + báo cáo** |
+
+> 📓 Từ Tuần 3, mỗi tuần **gõ lại toàn bộ sổ assert (§4C) từ trí nhớ 1 lần**. Đó là thứ duy nhất
+> còn dùng được ở **giờ thứ 6**, khi DeepSeek bị khoá và private test vừa mở.
 
 ---
 
