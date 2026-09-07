@@ -131,7 +131,62 @@ làm trọng số cạnh → **rồi mới** chạy tối ưu tổ hợp. Ghi r�
 
 ---
 
-### 1.9 Framework cao cấp & thư viện — được dùng đến đâu?
+### 1.9 🔴🔴 NỘI QUY PHÒNG THI — điều cấm tuyệt đối *(nguồn: Nội quy OLP + Quy tắc thi chính thức)*
+
+**Ba điều dưới đây là ranh giới bị loại, không phải khuyến nghị.**
+
+**(a) KHÔNG được mang tài liệu vào phòng thi — giấy hay điện tử.**
+> *"Các đội tuyển chỉ được phép mang vào phòng thi **giấy tờ tùy thân hợp lệ, bút và giấy trắng**.
+> **Nghiêm cấm tuyệt đối** việc mang theo và sử dụng các thiết bị điện tử, thiết bị truyền tin,
+> **tài liệu (giấy hoặc điện tử)**."* — Quy tắc thi §6c (Vòng chung kết)
+
+Nội quy §5 nói tương tự cho mọi vòng: ngoài vật dụng **đã đăng ký trước** và do BTC cấp,
+*"không được mang theo bất cứ tài liệu, hoặc trang bị tin học, viễn thông nào khác"*.
+
+⇒ **Điều này biến §6 "thư viện chiến đấu thuộc lòng" và §4C "sổ assert gõ từ trí nhớ" từ
+lời khuyên thành ĐIỀU KIỆN SỐNG CÒN.** Không có bản in, không có file, không có cheat sheet.
+Thứ duy nhất đi vào phòng thi cùng bạn là **trí nhớ** — và giấy trắng để vẽ lại.
+
+**(b) Truy cập internet ngoài môi trường quy định = ĐÌNH CHỈ NGAY LẬP TỨC.**
+> *"Các trường hợp vi phạm mang vào phòng thi, sử dụng điện thoại di động và các thiết bị sao lưu,
+> truyền, nhắn tin trong giờ thi và **truy cập qua internet không đúng trang thi và môi trường
+> đã quy định** khi bị phát hiện **bị đình chỉ thi ngay lập tức**."* — Nội quy §13
+
+⇒ **Kéo code từ GitHub/Drive cá nhân trong giờ thi là hành vi có thể bị đình chỉ.**
+Mọi kế hoạch kiểu "chuẩn bị sẵn repo tiện ích rồi `git clone` vào Colab" **phải bị loại bỏ**
+trừ khi BTC xác nhận bằng văn bản (§11 câu 4). Đây là lý do §6 tồn tại.
+
+**(c) Một tài khoản nộp bài duy nhất.**
+> *"Mỗi Đội tuyển chỉ được nộp bài từ **một tài khoản duy nhất**."* — Quy tắc thi §6a
+> Vòng chung kết: *"Mỗi đội tuyển sẽ được cung cấp **02 máy tính** vào **01 account nộp bài**."*
+
+**(d) Sự cố kỹ thuật — bạn CÓ QUYỀN đòi bù giờ, nhưng phải làm đúng thủ tục.**
+> *"Khi có sự cố kỹ thuật về thiết bị máy tính hoặc thiết bị lưu trữ, thí sinh **có quyền yêu cầu
+> giám thị xem xét, giải quyết**. Giám thị **lập biên bản** và theo điều kiện thực tế **có thể
+> quyết định kéo dài thêm thời gian làm bài bị mất** vì sự cố."* — Nội quy §9
+
+⇒ Máy treo, mất mạng, GPU hỏng: **báo giám thị NGAY và yêu cầu lập biên bản**, đừng im lặng
+tự xoay. 20 phút mất vì sự cố có thể đòi lại được; 20 phút im lặng thì không.
+
+**(e) Bảng xếp hạng ĐÓNG BĂNG 45–60 phút trước khi hết giờ.**
+> *"45-60 phút trước khi hết giờ sẽ có thông báo và **dừng truyền công khai kết quả trực tuyến**."*
+> — Nội quy §11
+
+⚠️ Cơ chế này **khác** với mô hình "5h public + 1h private mở bằng mật khẩu" mà §1.7 suy ra từ
+đề mẫu 2025. Hai khả năng: (i) chúng là một — giờ private chính là giờ đóng băng; hoặc (ii) là
+hai cơ chế chồng nhau. **Phải hỏi BTC (§11 câu 12).** Nếu là (i) thì **các lượt nộp cuối là
+nộp mù** — và mọi quyết định chốt bài phải dựa vào **OOF**, không dựa vào bảng.
+
+**(f) Tài khoản phải chạy đủ 6 tiếng.**
+> *"một số loại tài khoản **có thể bị giới hạn thời gian huấn luyện**… hãy đảm bảo tài khoản của
+> đội tuyển **có thể huấn luyện mô hình trong 6 tiếng**."*
+
+⇒ Thêm vào `env_report.md` (Tuần 1 N1) một mục bắt buộc: **xác minh tài khoản chạy liên tục 6h
+không bị ngắt** — đo thật, không tin mặc định.
+
+---
+
+### 1.10 Framework cao cấp & thư viện — được dùng đến đâu?
 
 **Kết luận: KHÔNG có danh sách cấm nào.** Rà toàn bộ 4 đề (SOLOAI 2025, VOAI CK 2025, 2 đề vòng trường 2026,
 đề thi thử 2026) + 4 trang quy chế, chỉ tìm thấy đúng 3 chỗ nhắc tới thư viện:
@@ -1151,7 +1206,10 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 5. **Đo môi trường thi** → `env_report.md`. Bắt buộc có ≥8 con số thật:
    GPU được cấp (T4/P100/L4?), VRAM, RAM, số core · thời gian 1 epoch `resnet34` @224 trên 3k ảnh (AMP on/off) ·
    thời gian fine-tune 1 epoch encoder ~100M trên 48k câu `max_len=96` · **thời gian `pip install` các gói hay dùng** ·
-   quota GPU Kaggle còn lại · hành vi ngắt kết nối của Colab.
+   quota GPU Kaggle còn lại · hành vi ngắt kết nối của Colab ·
+   🔴 **xác minh tài khoản chạy huấn luyện LIÊN TỤC 6 TIẾNG không bị ngắt** (Quy tắc thi cảnh báo
+   *"một số loại tài khoản có thể bị giới hạn thời gian huấn luyện"* — §1.9f). Đo thật bằng một job
+   dài, đừng tin mặc định.
 
 **✅ Nghiệm thu**
 - [ ] 🔴 `00_torch_basics` xanh 8/8. Trả lời không nhìn: *`x` shape (B,L,D) với L==D, cộng
@@ -1418,6 +1476,11 @@ Cả ba vẫn phải đọc **Tầng 0** và **Tầng 1** đầy đủ — đó 
 
 ## PHẦN 6 — THƯ VIỆN CHIẾN ĐẤU (thuộc lòng, gõ được không cần tra)
 
+> 🔴🔴 **"Thuộc lòng" ở đây không phải phong cách học — nó là RÀNG BUỘC PHÁP LÝ.**
+> Quy tắc thi §6c chỉ cho mang **giấy tờ tuỳ thân, bút, giấy trắng**; Nội quy §13 phạt
+> **đình chỉ ngay lập tức** với hành vi truy cập internet ngoài môi trường quy định.
+> Không bản in, không file, không `git clone`. Xem §1.9.
+
 Mục tiêu **không phải là có file**, mà là **có trong đầu** — vì có thể không được mang code vào (§11.4),
 và vì DeepSeek 2k ngữ cảnh không thể viết hộ bạn một module dài.
 
@@ -1498,7 +1561,18 @@ Mỗi lượt phải được ghi vào bảng theo dõi **trước** khi nộp, 
 mở profile trình duyệt thứ hai trên Máy 1, đăng nhập tài khoản của C, giao cho nó một job train dài.
 
 → **Xác nhận số tài khoản được cấp ngay ở buổi practice hôm trước.** Nếu được 3, đội bạn có
-**+50% năng lực tính toán** so với đội chỉ dùng 2. Đây là lợi thế miễn phí và hầu như không ai khai thác.
+**+50% năng lực tính toán** so với đội chỉ dùng 2.
+
+> 🔴🔴 **CẢNH BÁO — mẹo này có thể VI PHẠM QUY CHẾ, phải hỏi trước khi dùng.**
+> Quy tắc thi §6a: *"Mỗi Đội tuyển chỉ được nộp bài từ **một tài khoản duy nhất**."*
+> Vòng chung kết §6c: *"Mỗi đội tuyển sẽ được cung cấp **02 máy tính** vào **01 account nộp bài**"*,
+> và **tất cả máy đều có phần mềm giám sát**.
+>
+> Ranh giới chưa rõ: quy tắc nói về **tài khoản NỘP BÀI**, còn tài khoản **huấn luyện** trên cloud
+> có thể là chuyện khác. Nhưng **đừng tự suy diễn** — §11 câu 6 phải hỏi thẳng:
+> *"Đội được cấp mấy tài khoản cloud? Có được chạy huấn luyện song song trên nhiều tài khoản không?"*
+> **Chưa có câu trả lời bằng văn bản thì KHÔNG dùng.** Đổi vài chục phút GPU lấy nguy cơ huỷ kết quả
+> là đánh đổi tệ nhất trong cả tài liệu này.
 
 ---
 
@@ -1654,6 +1728,11 @@ Baseline nộp được trong 15 phút: ................................
 | Hết VRAM (quen H100 80GB) | **Cao** | Mất 20–40 phút | Tuần 1 đo trước; mặc định batch nhỏ + gradient accumulation + AMP |
 | Đuổi theo nhiễu bảng public | Trung bình | Chọn sai bài cuối | Quy tắc 2×SE; tin OOF |
 | Dùng pseudo-label trên test → **vi phạm quy chế** | Thấp | Bị loại | *"Không được dùng test dưới bất kỳ hình thức nào để huấn luyện"* |
+| 🔴🔴 **Kéo code từ GitHub/Drive trong giờ thi** | Trung bình | **Đình chỉ ngay lập tức** | Nội quy §13 cấm *"truy cập internet không đúng trang thi"*. §6 thư viện chiến đấu **phải thuộc lòng** — đó là lý do nó tồn tại |
+| 🔴 **Mang tài liệu (giấy/điện tử) vào phòng** | Trung bình | Bị loại | Chỉ được mang **giấy tờ tuỳ thân, bút, giấy trắng** (§1.9a). Kiểm túi trước khi vào |
+| 🔴 **Máy/GPU hỏng mà không báo giám thị** | Trung bình | Mất 20–40' không đòi lại được | Nội quy §9 cho phép **lập biên bản + bù giờ**. Báo NGAY, đừng tự xoay |
+| **Bảng xếp hạng đóng băng 45–60' cuối** | **Cao** | Các lượt cuối nộp mù | Chốt bài bằng **OOF**, không bằng bảng public. Xem §1.9e |
+| Tài khoản bị giới hạn giờ, không chạy nổi 6h | Trung bình | Đứt giữa chừng | Đo thật ở Tuần 1 N1, ghi vào `env_report.md` (§1.9f) |
 
 ---
 
@@ -1680,7 +1759,10 @@ Baseline nộp được trong 15 phút: ................................
 2. Đề vòng miền có **2 tác vụ** (1 NLP + 1 CV) như 4 kỳ trước, hay tách thành 3 bài theo 3 lĩnh vực?
 3. **Pretrained**: có danh sách model được phép như `download_model.py` của SOLOAI 2025 không?
    Cụ thể — **HuggingFace encoder tiếng Việt (PhoBERT/ViSoBERT/XLM-R) và mBART/NLLB có được dùng không?**
-4. Thí sinh có được **mang mã nguồn/thư viện tiện ích tự viết sẵn** (GitHub/Drive) vào phòng thi không?
+4. 🔴 Thí sinh có được **mang mã nguồn/thư viện tiện ích tự viết sẵn** (GitHub/Drive) vào phòng thi không?
+   ⚠️ Nội quy §13 cấm *"truy cập qua internet không đúng trang thi và môi trường đã quy định"* với chế tài
+   **đình chỉ ngay lập tức**, và §6c cấm *"tài liệu (giấy hoặc điện tử)"*. Xin xác nhận rõ: `git clone`
+   repo cá nhân vào Colab trong giờ thi — **được hay không**? `pip install` từ PyPI thì sao?
 5. **Bộ trích keypoint dựng sẵn** (MediaPipe, OpenPose) có bị coi là "model/dữ liệu ngoài" không?
    *(quyết định hướng giải cho bài video/cử chỉ)*
 6. Máy tính do BTC cấp hay **mang laptop cá nhân**? Đội 3 người được cấp **mấy máy, mấy tài khoản GPU**?
@@ -1688,6 +1770,9 @@ Baseline nộp được trong 15 phút: ................................
 8. Xác nhận **5h public + 1h private**, **20 lượt public / 5 lượt private mỗi tác vụ**,
    và yêu cầu `Final/main.py ≤ 20 phút` có còn áp dụng không.
 9. Truy cập DeepSeek: xác nhận **2.000 token ngữ cảnh/phiên**, không giới hạn số phiên?
+   ⚠️ **Nội quy và Quy tắc thi chính thức KHÔNG nhắc tới LLM một lần nào** — chỉ có lệnh cấm thiết bị
+   điện tử và cấm internet ngoài môi trường quy định. Vòng miền 2026 **có** cấp LLM offline như 2025
+   không? Nếu không thì §8 của tài liệu này (chiến thuật 2.000 token) **không dùng được**.
 10. **Quy định về thư viện:** đề vòng trường 2026 nhắc *"tuân thủ quy định về thư viện và tài nguyên
     của kỳ thi"* nhưng **quy định này chưa được công bố**. Xin cho biết: có danh sách thư viện
     được phép/bị cấm không? **PyTorch Lightning, HuggingFace Trainer, fastai, timm, Keras** có được dùng không?
@@ -1695,6 +1780,15 @@ Baseline nộp được trong 15 phút: ................................
 11. **Trọng số pretrained:** `timm.create_model(pretrained=True)` và `AutoModel.from_pretrained()`
     tải trọng số từ internet — có được phép không, hay chỉ được dùng model trong danh sách BTC phát
     (như `download_model.py` của SOLOAI 2025)? Môi trường thi **có internet mở** hay chỉ whitelist?
+
+12. 🔴 **Đóng băng bảng xếp hạng vs private test — là MỘT hay HAI cơ chế?**
+    Nội quy §11: *"45-60 phút trước khi hết giờ sẽ có thông báo và **dừng truyền công khai kết quả
+    trực tuyến**"*. Đề mẫu 2025 lại mô tả *"5h public + 1h private mở bằng mật khẩu, 5 lượt nộp"*.
+    Xin cho biết: giờ cuối **có phản hồi điểm** cho từng lượt nộp không, hay **nộp mù hoàn toàn**?
+    (Câu này quyết định toàn bộ chiến thuật chốt bài ở §9.)
+
+13. Sự cố kỹ thuật: xác nhận quy trình **lập biên bản + bù giờ** (Nội quy §9) áp dụng cho cả
+    vòng miền, và bù giờ có tính vào **hạn nộp trực tuyến** không?
 
 ---
 
