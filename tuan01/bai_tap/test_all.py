@@ -26,6 +26,82 @@ def load(name):
     return mod
 
 
+# ══════════════════════════════════════════════ BT 00 — TORCH CƠ BẢN
+class TestTorchBasics:
+    def setup_method(self):
+        self.t = pytest.importorskip("torch")
+        self.m = load("00_torch_basics")
+
+    def test_batched_dot_keeps_batch_dim(self):
+        """(a*b).sum() ra vô hướng và KHÔNG báo lỗi — phải chỉ rõ dim=-1."""
+        a = self.t.tensor([[1.0, 2.0], [3.0, 4.0]])
+        b = self.t.tensor([[10.0, 20.0], [100.0, 200.0]])
+        out = self.m.batched_dot(a, b)
+        assert out.shape == (2,), f"phải là (B,), đang {tuple(out.shape)}"
+        assert self.t.allclose(out, self.t.tensor([50.0, 1100.0]))
+
+    def test_feature_bias_rejects_silently_broadcastable_shape(self):
+        """🔴 x (B,L,D) với L==D: bias shape (L,) VẪN broadcast được và ra kết quả
+        sai hoàn toàn. Hàm phải TỪ CHỐI, không được im lặng chấp nhận."""
+        x = self.t.zeros(2, 5, 5)                 # L == D == 5, cố ý
+        good = self.t.arange(5.0)
+        assert self.t.allclose(self.m.add_feature_bias(x, good)[0, 0], good)
+        with pytest.raises(ValueError):
+            self.m.add_feature_bias(x, self.t.zeros(5, 1))   # không phải 1 chiều
+        with pytest.raises(ValueError):
+            self.m.add_feature_bias(self.t.zeros(2, 5, 3), self.t.zeros(5))  # (L,) chứ không (D,)
+
+    def test_split_heads_shape_and_data_order(self):
+        """Shape đúng CHƯA đủ — transpose trước view cho shape đúng, dữ liệu sai."""
+        x = self.t.arange(24.0).view(1, 2, 12)
+        h = self.m.split_heads(x, 3)
+        assert h.shape == (1, 3, 2, 4), f"đang {tuple(h.shape)}"
+        assert self.t.allclose(h[0, 0, 0], self.t.tensor([0.0, 1.0, 2.0, 3.0])), \
+            "head 0 của token 0 phải là 4 phần tử ĐẦU -> bạn transpose trước khi view"
+        with pytest.raises(ValueError):
+            self.m.split_heads(x, 5)
+
+    def test_merge_heads_is_exact_inverse(self):
+        self.t.manual_seed(0)
+        x = self.t.randn(2, 6, 12)
+        assert self.t.equal(self.m.merge_heads(self.m.split_heads(x, 4)), x), \
+            "merge(split(x)) phải bằng CHÍNH x"
+
+    def test_masked_mean_ignores_padding(self):
+        """x.mean(1) tính cả ô đệm -> không crash, chỉ làm điểm tệ đi."""
+        x = self.t.tensor([[[1.0, 1.0], [3.0, 3.0], [99.0, 99.0]]])
+        mask = self.t.tensor([[True, True, False]])
+        out = self.m.masked_mean(x, mask)
+        assert self.t.allclose(out, self.t.tensor([[2.0, 2.0]])), \
+            f"phải bỏ ô đệm; đang {out.tolist()} (99 lọt vào -> bạn dùng mean thường)"
+        allpad = self.m.masked_mean(x, self.t.zeros(1, 3, dtype=self.t.bool))
+        assert self.t.allclose(allpad, self.t.zeros(1, 2)), "câu toàn pad -> vector 0, không NaN"
+
+    def test_grad_wrt_matches_analytic(self):
+        x = self.t.tensor([3.0, -2.0])
+        g = self.m.grad_wrt(lambda t: (t ** 2).sum(), x)
+        assert self.t.allclose(g, 2 * x), "d(x²)/dx = 2x"
+        assert x.grad is None, "không được đụng vào tensor của người gọi (thiếu detach/clone)"
+
+    def test_running_mean_uses_buffer_not_parameter(self):
+        """🔴 Dùng Parameter thì optimizer sẽ 'học' một con số vốn là thống kê."""
+        r = self.m.RunningMean()
+        assert len(list(r.parameters())) == 0, "trạng thái thống kê KHÔNG được là Parameter"
+        names = {n for n, _ in r.named_buffers()}
+        assert {"total", "count"} <= names, f"phải register_buffer; đang có {names}"
+        r.update(self.t.tensor([1.0, 3.0]))
+        assert abs(r.update(self.t.tensor([4.0, 4.0])).item() - 3.0) < 1e-6
+        assert "total" in r.state_dict(), "buffer phải nằm trong state_dict"
+
+    def test_running_loss_detaches_graph(self):
+        """Cộng thẳng tensor còn đồ thị -> giữ đồ thị MỌI batch -> hết VRAM."""
+        w = self.t.ones(1, requires_grad=True)
+        losses = [(w * k).sum() for k in (1.0, 2.0, 3.0)]
+        out = self.m.running_loss(losses)
+        assert isinstance(out, float), f"phải trả float Python, đang {type(out).__name__}"
+        assert abs(out - 6.0) < 1e-6
+
+
 # ══════════════════════════════════════════════ BT 01 — METRICS
 class TestMetrics:
     def setup_method(self):

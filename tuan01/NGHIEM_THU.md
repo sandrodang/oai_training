@@ -7,7 +7,9 @@ cd /home/namdp36/oai/tuan01
 python3 -m pytest bai_tap/test_all.py -q
 ```
 
-- [ ] **41 xanh, 1 skip** (test AP50 bị skip có chủ đích — hoãn sang Tuần 5)
+- [ ] **49 xanh, 1 skip** (test AP50 bị skip có chủ đích — hoãn sang Tuần 5)
+- [ ] 🔴🔴 `00_torch_basics` xanh 8/8 — và nói được **vì sao** mỗi hàm tồn tại
+      (mỗi hàm là một chỗ bản sai vẫn chạy và vẫn ra số)
 - [ ] 🔴 `07_error_analysis` — chỉ đúng cặp nào là **trần**, cặp nào là **lệch prior**
 - [ ] 🔴 `08_bayes_ceiling` — chạy trên `work/data/training_set.csv` ra **TEENCODE 78,5%**,
       năm nhãn còn lại **< 10%** ⇒ chỉ TEENCODE có trần

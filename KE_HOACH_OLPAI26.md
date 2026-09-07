@@ -378,7 +378,7 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 ---
 
-### ⬛ TẦNG 1 — HỌC SÂU CỐT LÕI · 12h · 🔴
+### ⬛ TẦNG 1 — HỌC SÂU CỐT LÕI · 14h · 🔴
 > *Mục tiêu: hiểu đủ sâu để tự viết mọi thứ khi không có pretrained và không có LLM ngữ cảnh dài.*
 
 **(a) Khái niệm nền**
@@ -718,19 +718,22 @@ Bản 3 sửa bằng cách **tăng ngân sách** — và vì thế **khôi phụ
 | Tầng | Giờ | T1 | T2 | T3 | T4 | T5 | T6 | T7 |
 |---|---|---|---|---|---|---|---|---|
 | **0** Đánh giá & PP thực nghiệm 🔴🔴 | **10h** | **10** | — | — | — | — | — | ôn |
-| **1** Học sâu cốt lõi 🔴 | **12h** | **1** | **5** | **3** | **1** | **1** | **1** | ôn |
+| **1** Học sâu cốt lõi 🔴 | **14h** | **3** | **5** | **3** | **1** | **1** | **1** | ôn |
 | **2** NLP & Dịch máy 🔴🔴 | **20h** | — | **6** | **7** | — | — | **4** | **3** |
 | **3** Thị giác máy tính 🔴🔴 | **16h** | — | — | — | **9** | **7** | — | ôn |
 | **4** ML lồng ghép 🟠 | **4h** | — | — | — | — | — | **4** | — |
 | **5** Hạ tầng & tối ưu suy luận 🔴 | **6h** | — | — | — | — | **2** | **1** | **3** |
-| **📖 Đọc mỗi tuần** | **68h** | **11** | **11** | **10** | **10** | **10** | **10** | **6** |
+| **📖 Đọc mỗi tuần** | **70h** | **13** | **11** | **10** | **10** | **10** | **10** | **6** |
 
 ```
-Tổng 6 tầng   = 10+12+20+16+4+6 = 68h
-Tổng 7 tuần   = 11+11+10+10+10+10+6 = 68h     ✅ KHỚP
+Tổng 6 tầng   = 10+14+20+16+4+6 = 70h
+Tổng 7 tuần   = 13+11+10+10+10+10+6 = 70h     ✅ KHỚP
 
-Tuần 1 đọc 11h vì ngoài Tầng 0 (10h) nó còn KHỞI ĐỘNG Tầng 1 1h (d2l Ch.4–5 +
-Bag of Tricks) — phần nền trực tiếp cho `06_train_loop.py`. Tuần 2 vì thế còn 9h.
+Tuần 1 đọc 13h: Tầng 0 (10h) + Tầng 1 khởi động (3h) = **§0 TORCH CƠ BẢN 2h**
++ d2l/Bag of Tricks 1h. §0 là phần trả nợ muộn: bài tập Tuần 1–2 đòi 22 API torch
+(`nn.Module` 15 lần, `Dataset` 11, `.view`/`.transpose`/`.contiguous`, `register_buffer`…)
+mà trước đó KHÔNG tài liệu nào dạy — §5 mang tên "PyTorch nền" nhưng nội dung là
+optimizer · AMP · tái lập, không phải cơ học tensor.
 ```
 
 **Thay đổi so với bản 2 và lý do:**
@@ -1034,7 +1037,9 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ### 🗓️ TUẦN 1 · 05–12/09 · NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
 
-**📖 Lý thuyết (11h)** — **Tầng 0 toàn bộ** (10h, gồm §(c) *Vòng lặp cải tiến*) + khởi động Tầng 1 (1h)
+**📖 Lý thuyết (13h)** — **Tầng 0 toàn bộ** (10h, gồm §(c) *Vòng lặp cải tiến*)
++ Tầng 1 khởi động (3h): 🔴🔴 **§0 torch cơ bản (2h)** · d2l + Bag of Tricks (1h)
+- 🔴🔴 **PyTorch basics: Tensors · Broadcasting · view/reshape · Autograd · nn.Module · DataLoader**
 - Post (2018) SacreBLEU · Papineni BLEU · ESL Ch.7
 - d2l.ai Ch.4–5 · He (2018) *Bag of Tricks*
 
@@ -1046,6 +1051,10 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 > AMP fp16 + GradScaler · seed toàn cục & determinism
 
 **💻 Cài đặt**
+0. 🔴🔴 **`00_torch_basics.py`** — 7 hàm, mỗi hàm là một chỗ **bản sai vẫn chạy và vẫn ra số**:
+   broadcasting `(L,)` vs `(D,)` khi L==D · `view` vs `reshape` sau `transpose` ·
+   `register_buffer` vs `Parameter` · `.detach()` khi cộng dồn loss.
+   `split_heads`/`merge_heads` chính là bước 2 và 4 của MultiHeadAttention Tuần 2.
 1. **`train_loop.py` gõ từ số 0**, không framework cao cấp: AMP, scheduler, early stopping,
    best-checkpoint, log thời gian/epoch + `max_memory_allocated`. **Gõ lại 2 lần, lần 2 dưới 15 phút.**
 2. Tự cài bằng numpy (không sklearn): `macro_f1`, `balanced_accuracy`, `bleu4`, `bootstrap_se`.
@@ -1063,6 +1072,8 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
    quota GPU Kaggle còn lại · hành vi ngắt kết nối của Colab.
 
 **✅ Nghiệm thu**
+- [ ] 🔴 `00_torch_basics` xanh 8/8. Trả lời không nhìn: *`x` shape (B,L,D) với L==D, cộng
+      `bias` shape (L,) — torch báo lỗi hay chạy?* và *khi nào `view` lỗi mà `reshape` không?*
 - [ ] Gõ vòng lặp train từ trí nhớ < 15 phút, chạy đúng ngay lần đầu.
 - [ ] Tính tay BLEU-4 một cặp câu, khớp với `sacrebleu`.
 - [ ] Có `env_report.md` ≥ 8 con số đo thật.

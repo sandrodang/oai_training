@@ -19,20 +19,29 @@ Không có thước đo riêng đáng tin, bạn sẽ đuổi theo nhiễu suố
 
 ---
 
-## 📅 LỊCH 8 NGÀY · **4h/ngày = 28h** (ngân sách bản 3, xem kế hoạch §4B.1)
+## 📅 LỊCH 8 NGÀY · **4h/ngày = 32h** (Tuần 1 xây nền nên nặng hơn 28h chuẩn)
 
 | Ngày | | Nội dung | Giờ | Sản phẩm |
 |---|---|---|---|---|
 | **N1** | T7 05/09 | 🔴 **ĐO MÔI TRƯỜNG** Colab + Kaggle (2h) · Đọc [§1 đánh giá phân loại](TAI_LIEU.md) (2h) | 4h | `env_report.md` |
-| **N2** | CN 06/09 | **BT 01** metrics (2h) · Đọc §2 BLEU (1,5h) · khởi động BT 02 (30') | 4h | `01_metrics.py` xanh |
-| **N3** | T2 07/09 | **BT 02** BLEU 🔴 (2,5h) · Đọc §3 sai số + bias–variance (1,5h) | 4h | `02_bleu.py` xanh |
-| **N4** | T3 08/09 | **BT 03** bootstrap (1,5h) · Đọc §4 rò rỉ (1,5h) · khởi động BT 04 (1h) | 4h | `03_bootstrap.py` xanh |
-| **N5** | T4 09/09 | **BT 04** chia fold (2h) · **BT 05** ngưỡng (2h) | 4h | `04`, `05` xanh |
-| **N6** | T5 10/09 | Đọc §5 PyTorch nền (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
+| **N2** | CN 06/09 | **BT 01** metrics (1h) · Đọc §2 BLEU (1,5h) · **BT 02** BLEU 🔴 (1,5h) | 4h | `01` xanh |
+| **N3** | T2 07/09 | Nốt **BT 02** (30') · Đọc §3 sai số + bias–variance (1,7h) · **BT 03** bootstrap (1h) · đệm | 4h | `02`, `03` xanh |
+| **N4** | T3 08/09 | Đọc §4 rò rỉ (1,5h) · **BT 04** chia fold (1h) · **BT 05** ngưỡng (1h) · đệm | 4h | `04`, `05` xanh |
+| **N5** | T4 09/09 | 🔴🔴 Đọc [§0 **TORCH CƠ BẢN**](TAI_LIEU.md) (2h) · **BT 00** `torch_basics` (2h) | 4h | `00` xanh |
+| **N6** | T5 10/09 | Đọc §5 PyTorch nền: optimizer · AMP · tái lập (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
 | **N7** | T6 11/09 | 🔴🔴 Đọc [§6 vòng lặp cải tiến](TAI_LIEU.md) (3h) · **BT 07** `error_analysis` (1h) | 4h | `07` xanh |
-| **N8** | T7 12/09 | **BT 08** `bayes_ceiling` (1,5h) · 🔴 đọc `task1_nlp_fpt26/` như baseline BTC (45') · nghiệm thu + 12 câu (1,75h) | 4h | `NGHIEM_THU.md` |
+| **N8** | T7 12/09 | **BT 08** `bayes_ceiling` (1,5h) · 🔴 đọc `task1_nlp_fpt26/` như baseline BTC (45') · nghiệm thu + 15 câu (1,75h) | 4h | `NGHIEM_THU.md` |
 
-**Tổng 32h trên 8 ngày** — 28h nội dung + 4h đệm. Nếu tuần bị bóp, xem **thứ tự hy sinh** ở cuối.
+**Đọc 13,3h · cài đặt ~12h · đo môi trường 2h · nghiệm thu 2,5h · đệm ~2h = 32h.**
+
+### ⚠️ Vì sao §0 TORCH CƠ BẢN ở N5 chứ không N1
+
+**BT 01–05 thuần numpy** — metrics, BLEU, bootstrap, chia fold, ngưỡng đều không cần torch.
+Torch chỉ bắt đầu cần từ **BT 06 `train_loop`**. Đặt §0 ngay trước nó thì kiến thức còn nóng.
+
+Nhưng **đừng đẩy nó ra sau N5**: toàn bộ Tuần 2 (`MultiHeadAttention` tự viết với
+`.view`/`.transpose`/`.contiguous`, `register_buffer` cho PositionalEncoding, `Dataset`/`collate_fn`
+cho bài dịch) đứng thẳng trên §0 và BT 00.
 
 ### ⚠️ Vì sao ĐO MÔI TRƯỜNG ở N1 (bản đầu để ở N7 — sai)
 
@@ -87,6 +96,7 @@ tuan01/
 ├── README.md            ← bạn đang đọc
 ├── TAI_LIEU.md          ← ĐỌC GÌ, ở đâu, bao lâu, câu hỏi tự kiểm tra
 ├── bai_tap/             ← khung code có sẵn docstring, BẠN điền vào
+│   ├── 00_torch_basics.py   🔴🔴 TENSOR · BROADCASTING · AUTOGRAD · nn.Module (làm TRƯỚC BT 06)
 │   ├── 01_metrics.py        macro-F1, Balanced Accuracy, AP50
 │   ├── 02_bleu.py           BLEU-4 + brevity penalty + smoothing
 │   ├── 03_bootstrap.py      bootstrap SE + bootstrap GHÉP CẶP
@@ -140,7 +150,7 @@ Bộ chấm dùng **scikit-learn làm chuẩn đối chiếu**. Bạn tự cài 
 
 ## ✅ Nghiệm thu cuối tuần → `NGHIEM_THU.md`
 
-- [ ] `pytest bai_tap/test_all.py` **41 xanh, 1 skip**
+- [ ] `pytest bai_tap/test_all.py` **49 xanh, 1 skip**
 - [ ] `train_loop.py` chạy được (bài gõ-từ-trí-nhớ đã **hoãn** — xem mục ✂️ ở trên)
 - [ ] Có `env_report.md` với **≥ 8 con số đo thật** trên Colab và Kaggle
 - [ ] Trả lời được 8 câu trong `TAI_LIEU.md § TỰ KIỂM TRA`
