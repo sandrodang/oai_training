@@ -7,7 +7,7 @@
 
 ---
 
-## §0 · TẦNG 1 PHẦN A — NỀN CỦA CẢ TUẦN · 5h · N1 🔴🔴
+## §0 · TẦNG 1 PHẦN A — NỀN CỦA CẢ TUẦN · 5h · N1–N2 🔴🔴
 ### Đọc TRƯỚC Transformer. Đọc sau thì §1 chỉ còn là học thuộc.
 
 | # | Tài liệu | Đọc phần nào | Giờ |
@@ -34,7 +34,7 @@
 
 ---
 
-## §1 · TRANSFORMER — TRỰC GIÁC RỒI ĐẾN CODE · 4h · N1–N2 🔴🔴
+## §1 · TRANSFORMER — TRỰC GIÁC RỒI ĐẾN CODE · 4h · N3–N4 🔴🔴
 
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
@@ -62,7 +62,7 @@
 
 ---
 
-## §2 · ATTENTION — NGUỒN GỐC · 1,25h · N3–N4
+## §2 · ATTENTION — NGUỒN GỐC · 1,25h · N5
 
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
@@ -81,7 +81,7 @@
 
 ---
 
-## §3 · BPE & SUBWORD · 45' · N5 🔴
+## §3 · BPE & SUBWORD · 45' · N6 🔴
 
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|

@@ -730,10 +730,10 @@ Bản 3 sửa bằng cách **tăng ngân sách** — và vì thế **khôi phụ
 Tổng 6 tầng   = 10+14+20+16+4+6 = 70h
 Tổng 7 tuần   = 13+11+10+10+10+10+6 = 70h     ✅ KHỚP
 
-Tuần 1 đọc 13h: Tầng 0 (10h) + Tầng 1 khởi động (3h) = **§0 TORCH CƠ BẢN 2h**
-+ d2l/Bag of Tricks 1h. §0 là phần trả nợ muộn: bài tập Tuần 1–2 đòi 22 API torch
+Tuần 1 đọc 13h: Tầng 0 (10h) + Tầng 1 khởi động (3h) = **§5 TORCH CƠ BẢN 2h**
++ d2l/Bag of Tricks 1h. §5 (`tuan01/TAI_LIEU.md`) là phần trả nợ muộn: bài tập Tuần 1–2 đòi 22 API torch
 (`nn.Module` 15 lần, `Dataset` 11, `.view`/`.transpose`/`.contiguous`, `register_buffer`…)
-mà trước đó KHÔNG tài liệu nào dạy — §5 mang tên "PyTorch nền" nhưng nội dung là
+mà trước đó KHÔNG tài liệu nào dạy — §6 mang tên "PyTorch nền" nhưng nội dung là
 optimizer · AMP · tái lập, không phải cơ học tensor.
 ```
 
@@ -1039,7 +1039,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 ### 🗓️ TUẦN 1 · 07–14/09 · NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
 
 **📖 Lý thuyết (13h)** — **Tầng 0 toàn bộ** (10h, gồm §(c) *Vòng lặp cải tiến*)
-+ Tầng 1 khởi động (3h): 🔴🔴 **§0 torch cơ bản (2h)** · d2l + Bag of Tricks (1h)
++ Tầng 1 khởi động (3h): 🔴🔴 **§5 torch cơ bản (2h)** · d2l + Bag of Tricks (1h)
 - 🔴🔴 **PyTorch basics: Tensors · Broadcasting · view/reshape · Autograd · nn.Module · DataLoader**
 - Post (2018) SacreBLEU · Papineni BLEU · ESL Ch.7
 - d2l.ai Ch.4–5 · He (2018) *Bag of Tricks*
@@ -1606,7 +1606,7 @@ Tổng khoá **~208 giờ**. Số học đã kiểm: 68h đọc = 68h phân bổ
 
 | Tuần | Ngày | 📖 Đọc | Kỹ thuật trọng tâm | Sản phẩm |
 |---|---|---|---|---|
-| 1 | 07–14/09 | Tầng 0 (10h) + 🔴🔴 **§0 torch cơ bản (2h)** + d2l/BoT (1h) = **13h** | 🔴🔴 **tensor · broadcasting · autograd · nn.Module** · metrics, CV design, bootstrap · 🔴 **phân tích lỗi · trần Bayes · đọc baseline BTC** | 🔴 `00_torch_basics.py` · `train_loop.py` < 15' · `env_report.md` · `error_analysis.py` · `bayes_ceiling.py` |
+| 1 | 07–14/09 | Tầng 0 (10h) + 🔴🔴 **§5 torch cơ bản (2h)** + d2l/BoT (1h) = **13h** | 🔴🔴 **tensor · broadcasting · autograd · nn.Module** · metrics, CV design, bootstrap · 🔴 **phân tích lỗi · trần Bayes · đọc baseline BTC** | 🔴 `00_torch_basics.py` · `train_loop.py` < 15' · `env_report.md` · `error_analysis.py` · `bayes_ceiling.py` |
 | 2 | 15–21/09 | T1 phần A (5h) + T2 đầu (6h) = **11h** | Transformer, attention, BPE, beam search | Transformer tự viết, **BLEU > 40** · 📓 khởi tạo sổ assert |
 | 3 | 22–28/09 | T2 giữa (7h) + Tầng 1: weight-avg · grad-tricks · **FGM · R-Drop** (3h) 🔴 | **Back-translation, BPE-dropout, ckpt averaging, SMT · FGM +0,0121 · R-Drop +0,0047** | **Giải VOAI CK T1 (Ba Na)** + bảng so sánh 5 hướng |
 | 4 | 29/09–05/10 | T3 video (9h) + focal loss (1h) | **CHỌN 1: TSM *hoặc* ST-GCN** (§Tầng 3 quy tắc cắt), Bag of Tricks | **Giải SOLOAI T2 (ký hiệu)** + bảng 3 kiến trúc |

@@ -1,53 +1,8 @@
 # TUẦN 1 — TÀI LIỆU ĐỌC
-### Tổng **~13,3h** (§0 torch cơ bản 2h + Tầng 0 ~9,5h + khởi động Tầng 1 ~1,7h).
-### Đọc theo thứ tự. Mỗi mục ghi rõ: đọc phần nào, bao lâu, và **rút ra gì**.
+### Tổng **~13,3h** · **§1 → §7 đúng thứ tự đọc N1 → N7** (khớp lịch trong `README.md`).
+### Mỗi mục ghi rõ: đọc phần nào, bao lâu, và **rút ra gì**.
 
 > Nếu link đổi, tìm theo **tên tài liệu** — đều là tài liệu kinh điển, không mất.
-
----
-
-## §0 · TORCH CƠ BẢN — 120 phút · N5 🔴🔴
-### Nền của mọi thứ từ BT 06 trở đi. BT 01–05 thuần numpy; torch bắt đầu từ đây.
-
-> ⚠️ **Bản trước của tài liệu này KHÔNG có §0.** §5 mang tên "PyTorch nền" nhưng nội dung
-> là optimizer · AMP · tái lập — tức **Tầng 1**, không phải cơ học tensor. Trong khi đó bài tập
-> Tuần 1–2 đòi **22 API torch** (`nn.Module` 15 lần, `Dataset` 11, `.view`/`.transpose`/
-> `.contiguous`, `register_buffer`…) mà không chỗ nào dạy. §0 trả nợ phần đó.
-
-### Đọc
-
-| # | Tài liệu | Đọc phần nào | Giờ |
-|---|---|---|---|
-| 0.1 | **PyTorch — Tensors** · https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html | tạo tensor · `dtype` · `device` · indexing/slicing · phép toán | 25' |
-| 0.2 | **PyTorch — Broadcasting semantics** · https://pytorch.org/docs/stable/notes/broadcasting.html | **toàn bộ** 🔴 ngắn, nhưng là nguồn lỗi âm thầm số 1 | 20' |
-| 0.3 | **torch.Tensor.view** · https://pytorch.org/docs/stable/generated/torch.Tensor.view.html | phần **bộ nhớ liền (contiguous)**: vì sao `view` lỗi được còn `reshape` thì không | 15' |
-| 0.4 | **PyTorch — Autograd** · https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html | `requires_grad` · `.backward()` · `.grad` · `no_grad` | 25' |
-| 0.5 | **PyTorch — Build the Neural Network** · https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html | `nn.Module`: `__init__` / `forward` / `parameters()` · `nn.Sequential` | 20' |
-| 0.6 | **PyTorch — Datasets & DataLoaders** · https://pytorch.org/tutorials/beginner/basics/data_tutorial.html | `Dataset` (`__len__`/`__getitem__`) · `DataLoader` · `collate_fn` | 15' |
-
-*Thiếu nền hơn nữa thì đọc thêm* [d2l — Thao tác dữ liệu](https://d2l.ai/chapter_preliminaries/ndarray.html) *(+30', không tính vào ngân sách).*
-
-### Phải rút ra được
-
-- **Broadcasting căn shape TỪ PHẢI SANG TRÁI.** Hệ quả nguy hiểm: với `x` shape `(B, L, D)`
-  mà tình cờ `L == D`, một `bias` shape `(L,)` **vẫn cộng được** — ra kết quả sai hoàn toàn,
-  không một lời cảnh báo. ⇒ **Kiểm shape rồi `raise`, đừng tin broadcasting.**
-- **`view` vs `reshape`.** `view` đòi bộ nhớ liền nên **báo lỗi to tiếng** sau `transpose` —
-  đó là lỗi TỐT. `reshape` tự copy nên **không bao giờ lỗi**, kể cả khi bạn quên `transpose`
-  và dữ liệu bị trộn sai. Dùng `.transpose(...).contiguous().view(...)` để lỗi nổ ra ngay.
-- **`nn.Parameter` vs `register_buffer`.** Buffer nằm trong `state_dict` và đi theo `.to(device)`
-  nhưng **không** nằm trong `.parameters()`. Trạng thái thống kê (`running_mean` của BatchNorm,
-  bảng `pe` của PositionalEncoding Tuần 2) phải là buffer — để Parameter thì optimizer sẽ
-  **"học"** một con số vốn không nên học, mà model vẫn train, vẫn ra số.
-- **`no_grad` vs `inference_mode`.** Cả hai tắt việc dựng đồ thị; `inference_mode` chặt hơn
-  và nhanh hơn — dùng khi suy luận.
-- **`.detach()` khi cộng dồn loss để log.** Cộng thẳng tensor còn gắn đồ thị thì đồ thị của
-  **mọi batch** bị giữ lại; vòng lặp chạy đúng vài chục batch rồi mới hết VRAM — rất khó truy.
-- **`.train()` vs `.eval()`** đổi hành vi Dropout và BatchNorm. Chi tiết ở §5.
-
-> 💻 Cài đặt: `bai_tap/00_torch_basics.py` — 7 hàm, **mỗi hàm là một chỗ bản sai vẫn chạy
-> và vẫn ra số**. `split_heads`/`merge_heads` chính là bước 2 và bước 4 của `MultiHeadAttention`
-> mà Tuần 2 BT 01 sẽ bắt bạn viết từ đầu.
 
 ---
 
@@ -141,7 +96,52 @@
 
 ---
 
-## §5 · PYTORCH NỀN — 100 phút · N6
+## §5 · TORCH CƠ BẢN — 120 phút · N5 🔴🔴
+### Nền của mọi thứ từ BT 06 trở đi. BT 01–05 thuần numpy; torch bắt đầu từ đây.
+
+> ⚠️ **Bản trước của tài liệu này KHÔNG có mục nào dạy torch.** §6 mang tên "PyTorch nền" nhưng nội dung
+> là optimizer · AMP · tái lập — tức **Tầng 1**, không phải cơ học tensor. Trong khi đó bài tập
+> Tuần 1–2 đòi **22 API torch** (`nn.Module` 15 lần, `Dataset` 11, `.view`/`.transpose`/
+> `.contiguous`, `register_buffer`…) mà không chỗ nào dạy. §5 trả nợ phần đó.
+
+### Đọc
+
+| # | Tài liệu | Đọc phần nào | Giờ |
+|---|---|---|---|
+| 0.1 | **PyTorch — Tensors** · https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html | tạo tensor · `dtype` · `device` · indexing/slicing · phép toán | 25' |
+| 0.2 | **PyTorch — Broadcasting semantics** · https://pytorch.org/docs/stable/notes/broadcasting.html | **toàn bộ** 🔴 ngắn, nhưng là nguồn lỗi âm thầm số 1 | 20' |
+| 0.3 | **torch.Tensor.view** · https://pytorch.org/docs/stable/generated/torch.Tensor.view.html | phần **bộ nhớ liền (contiguous)**: vì sao `view` lỗi được còn `reshape` thì không | 15' |
+| 0.4 | **PyTorch — Autograd** · https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html | `requires_grad` · `.backward()` · `.grad` · `no_grad` | 25' |
+| 0.5 | **PyTorch — Build the Neural Network** · https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html | `nn.Module`: `__init__` / `forward` / `parameters()` · `nn.Sequential` | 20' |
+| 0.6 | **PyTorch — Datasets & DataLoaders** · https://pytorch.org/tutorials/beginner/basics/data_tutorial.html | `Dataset` (`__len__`/`__getitem__`) · `DataLoader` · `collate_fn` | 15' |
+
+*Thiếu nền hơn nữa thì đọc thêm* [d2l — Thao tác dữ liệu](https://d2l.ai/chapter_preliminaries/ndarray.html) *(+30', không tính vào ngân sách).*
+
+### Phải rút ra được
+
+- **Broadcasting căn shape TỪ PHẢI SANG TRÁI.** Hệ quả nguy hiểm: với `x` shape `(B, L, D)`
+  mà tình cờ `L == D`, một `bias` shape `(L,)` **vẫn cộng được** — ra kết quả sai hoàn toàn,
+  không một lời cảnh báo. ⇒ **Kiểm shape rồi `raise`, đừng tin broadcasting.**
+- **`view` vs `reshape`.** `view` đòi bộ nhớ liền nên **báo lỗi to tiếng** sau `transpose` —
+  đó là lỗi TỐT. `reshape` tự copy nên **không bao giờ lỗi**, kể cả khi bạn quên `transpose`
+  và dữ liệu bị trộn sai. Dùng `.transpose(...).contiguous().view(...)` để lỗi nổ ra ngay.
+- **`nn.Parameter` vs `register_buffer`.** Buffer nằm trong `state_dict` và đi theo `.to(device)`
+  nhưng **không** nằm trong `.parameters()`. Trạng thái thống kê (`running_mean` của BatchNorm,
+  bảng `pe` của PositionalEncoding Tuần 2) phải là buffer — để Parameter thì optimizer sẽ
+  **"học"** một con số vốn không nên học, mà model vẫn train, vẫn ra số.
+- **`no_grad` vs `inference_mode`.** Cả hai tắt việc dựng đồ thị; `inference_mode` chặt hơn
+  và nhanh hơn — dùng khi suy luận.
+- **`.detach()` khi cộng dồn loss để log.** Cộng thẳng tensor còn gắn đồ thị thì đồ thị của
+  **mọi batch** bị giữ lại; vòng lặp chạy đúng vài chục batch rồi mới hết VRAM — rất khó truy.
+- **`.train()` vs `.eval()`** đổi hành vi Dropout và BatchNorm. Chi tiết ở §6.
+
+> 💻 Cài đặt: `bai_tap/00_torch_basics.py` — 7 hàm, **mỗi hàm là một chỗ bản sai vẫn chạy
+> và vẫn ra số**. `split_heads`/`merge_heads` chính là bước 2 và bước 4 của `MultiHeadAttention`
+> mà Tuần 2 BT 01 sẽ bắt bạn viết từ đầu.
+
+---
+
+## §6 · PYTORCH NỀN — 100 phút · N6
 
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
@@ -165,7 +165,7 @@
 
 ---
 
-## §6 · VÒNG LẶP CẢI TIẾN — PHÂN TÍCH LỖI · TRẦN BAYES · BASELINE BTC — 180 phút · N7 🔴🔴
+## §7 · VÒNG LẶP CẢI TIẾN — PHÂN TÍCH LỖI · TRẦN BAYES · BASELINE BTC — 180 phút · N7 🔴🔴
 
 > §1–§4 dạy **ĐO** xem một cải thiện có thật không. §6 dạy **SINH RA giả thuyết nên cải thiện CÁI GÌ**.
 > Hai nửa của cùng một vòng lặp. Thiếu nửa này thì 144 kỹ thuật ở các tầng sau chỉ là **thử mò**

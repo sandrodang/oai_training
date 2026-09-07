@@ -27,21 +27,21 @@ Không có thước đo riêng đáng tin, bạn sẽ đuổi theo nhiễu suố
 | **N2** | T3 08/09 | **BT 01** metrics (1h) · Đọc §2 BLEU (1,5h) · **BT 02** BLEU 🔴 (1,5h) | 4h | `01` xanh |
 | **N3** | T4 09/09 | Nốt **BT 02** (30') · Đọc §3 sai số + bias–variance (1,7h) · **BT 03** bootstrap (1h) · đệm | 4h | `02`, `03` xanh |
 | **N4** | T5 10/09 | Đọc §4 rò rỉ (1,5h) · **BT 04** chia fold (1h) · **BT 05** ngưỡng (1h) · đệm | 4h | `04`, `05` xanh |
-| **N5** | T6 11/09 | 🔴🔴 Đọc [§0 **TORCH CƠ BẢN**](TAI_LIEU.md) (2h) · **BT 00** `torch_basics` (2h) | 4h | `00` xanh |
-| **N6** | T7 12/09 | Đọc §5 PyTorch nền: optimizer · AMP · tái lập (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
-| **N7** | CN 13/09 | 🔴🔴 Đọc [§6 vòng lặp cải tiến](TAI_LIEU.md) (3h) · **BT 07** `error_analysis` (1h) | 4h | `07` xanh |
+| **N5** | T6 11/09 | 🔴🔴 Đọc [§5 **TORCH CƠ BẢN**](TAI_LIEU.md) (2h) · **BT 00** `torch_basics` (2h) | 4h | `00` xanh |
+| **N6** | T7 12/09 | Đọc §6 PyTorch nền: optimizer · AMP · tái lập (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
+| **N7** | CN 13/09 | 🔴🔴 Đọc [§7 vòng lặp cải tiến](TAI_LIEU.md) (3h) · **BT 07** `error_analysis` (1h) | 4h | `07` xanh |
 | **N8** | T2 14/09 | **BT 08** `bayes_ceiling` (1,5h) · 🔴 đọc `task1_nlp_fpt26/` như baseline BTC (45') · nghiệm thu + 15 câu (1,75h) | 4h | `NGHIEM_THU.md` |
 
 **Đọc 13,3h · cài đặt ~12h · đo môi trường 2h · nghiệm thu 2,5h · đệm ~2h = 32h.**
 
-### ⚠️ Vì sao §0 TORCH CƠ BẢN ở N5 chứ không N1
+### ⚠️ Vì sao §5 TORCH CƠ BẢN ở N5 chứ không N1
 
 **BT 01–05 thuần numpy** — metrics, BLEU, bootstrap, chia fold, ngưỡng đều không cần torch.
-Torch chỉ bắt đầu cần từ **BT 06 `train_loop`**. Đặt §0 ngay trước nó thì kiến thức còn nóng.
+Torch chỉ bắt đầu cần từ **BT 06 `train_loop`**. Đặt §5 ngay trước nó thì kiến thức còn nóng.
 
 Nhưng **đừng đẩy nó ra sau N5**: toàn bộ Tuần 2 (`MultiHeadAttention` tự viết với
 `.view`/`.transpose`/`.contiguous`, `register_buffer` cho PositionalEncoding, `Dataset`/`collate_fn`
-cho bài dịch) đứng thẳng trên §0 và BT 00.
+cho bài dịch) đứng thẳng trên §5 và BT 00.
 
 ### ⚠️ Vì sao ĐO MÔI TRƯỜNG ở N1 (bản đầu để ở N7 — sai)
 
@@ -52,10 +52,10 @@ cho bài dịch) đứng thẳng trên §0 và BT 00.
    học các kỹ thuật giả định có nhiều compute.
 3. **Nó nhẹ về trí óc**, hợp ngày đầu, chạy song song được với việc đọc.
 
-### ⚠️ Vì sao §6 và BT 07–08 ở CUỐI tuần chứ không đầu
+### ⚠️ Vì sao §7 và BT 07–08 ở CUỐI tuần chứ không đầu
 
-§1–§4 dạy **ĐO** xem một cải thiện có thật không. §6 dạy **SINH RA giả thuyết nên cải thiện gì**.
-Phải biết đo trước, vì mọi giả thuyết §6 sinh ra đều phải qua cổng 2×SE của §3.
+§1–§4 dạy **ĐO** xem một cải thiện có thật không. §7 dạy **SINH RA giả thuyết nên cải thiện gì**.
+Phải biết đo trước, vì mọi giả thuyết §7 sinh ra đều phải qua cổng 2×SE của §3.
 Nhưng **đừng để nó rớt khỏi tuần** — đây là nửa vòng lặp mà bản kế hoạch đầu thiếu hoàn toàn.
 
 ### 💰 Ngân sách thật (không tô hồng)
