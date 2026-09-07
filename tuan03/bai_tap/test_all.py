@@ -1,10 +1,11 @@
-"""Bộ chấm — Tầng 1 Toolkit (bộ đồ nghề huấn luyện).
+"""Bộ chấm tự động Tuần 3 — phần Tầng 1 (bộ đồ nghề học sâu).
 
-    python3 -m pytest bai_tap/test_all.py -q
-    SOLUTION=1 python3 -m pytest bai_tap/test_all.py -q
+    python3 -m pytest bai_tap/test_all.py -q            # chấm bài CỦA BẠN
+    SOLUTION=1 python3 -m pytest bai_tap/test_all.py -q # chấm ĐÁP ÁN
 """
 import os, importlib.util
 from pathlib import Path
+import numpy as np
 import pytest
 
 torch = pytest.importorskip("torch")
@@ -32,10 +33,10 @@ def tiny():
     return nn.Sequential(nn.Linear(4, 4), nn.BatchNorm1d(4), nn.Linear(4, 2))
 
 
-# ═══════════════════════════════ 01 — TRUNG BÌNH TRỌNG SỐ  → dùng ở TUẦN 3
+
 class TestWeightAveraging:
     def setup_method(self):
-        self.w = load("01_weight_averaging")
+        self.w = load("06_weight_averaging")
 
     def test_checkpoint_average_is_arithmetic_mean(self):
         sds = []
@@ -86,9 +87,11 @@ class TestWeightAveraging:
 
 
 # ═══════════════════════════════ 02 — MẸO GRADIENT  → dùng ở TUẦN 3
+
+
 class TestGradTricks:
     def setup_method(self):
-        self.g = load("02_grad_tricks")
+        self.g = load("07_grad_tricks")
 
     def test_accumulate_steps(self):
         assert self.g.accumulate_steps(64, 16) == 4
@@ -123,40 +126,8 @@ class TestGradTricks:
 
 
 # ═══════════════════════════════ 03 — FINE-TUNE ENCODER  → dùng ở TUẦN 6
-class TestFinetuneLR:
-    def setup_method(self):
-        self.f = load("03_finetune_lr")
-
-    def test_no_decay_group_holds_only_1d_params(self):
-        gs = self.f.param_groups_no_decay(tiny(), weight_decay=0.01)
-        assert len(gs) == 2
-        nd = [g for g in gs if g["weight_decay"] == 0.0][0]
-        assert all(p.ndim <= 1 for p in nd["params"])
-        assert len(nd["params"]) == 4, "2 bias Linear + weight&bias BatchNorm"
-
-    def test_llrd_increases_with_depth(self):
-        layers = [nn.Linear(8, 8) for _ in range(4)]
-        head = nn.Linear(8, 2)
-        gs = self.f.llrd_param_groups(layers, head, base_lr=2e-5, decay=0.5)
-        lrs = [g["lr"] for g in gs]
-        assert min(lrs) < max(lrs), "tầng thấp phải có LR NHỎ HƠN tầng cao"
-        assert abs(max(lrs) - 2e-5) < 1e-12, "head phải giữ base_lr"
-        assert abs(min(lrs) - 2e-5 * 0.5 ** 3) < 1e-12, "tầng thấp nhất = base * decay^(L-1)"
-
-    def test_gradual_unfreeze_is_monotonic(self):
-        sch = self.f.gradual_unfreeze_schedule(6, 4)
-        assert sch[0] == 0 and sch[-1] == 6, "bắt đầu chỉ head, cuối mở hết"
-        assert all(a <= b for a, b in zip(sch, sch[1:])), "phải không giảm"
-
-    def test_freeze_batchnorm(self):
-        m = tiny()
-        n = self.f.freeze_batchnorm(m)
-        bn = m[1]
-        assert n == 1 and not bn.training
-        assert all(not p.requires_grad for p in bn.parameters())
 
 
-# ═══════════════════════════════ 04 — ĐỐI KHÁNG  → dùng ở TUẦN 6
 class _EmbNet(nn.Module):
     def __init__(self):
         super().__init__()
@@ -169,7 +140,7 @@ class _EmbNet(nn.Module):
 
 class TestAdversarial:
     def setup_method(self):
-        self.a = load("04_adversarial")
+        self.a = load("08_adversarial")
 
     def test_fgm_perturbs_then_restores_exactly(self):
         torch.manual_seed(0)
@@ -206,61 +177,11 @@ class TestAdversarial:
 
 
 # ═══════════════════════════════ 05 — LOSS  → TUẦN 4 (focal) & TUẦN 5 (dice/contrastive)
-class TestLosses:
-    def setup_method(self):
-        self.l = load("05_losses")
-        torch.manual_seed(0)
-        self.lg, self.y = torch.randn(64, 3), torch.randint(0, 3, (64,))
-        self.sl = torch.randn(4, 1, 16, 16)
-        self.tg = (torch.rand(4, 1, 16, 16) > 0.8).float()
-
-    def test_focal_gamma0_equals_cross_entropy(self):
-        assert torch.allclose(self.l.focal_loss(self.lg, self.y, gamma=0.0),
-                              F.cross_entropy(self.lg, self.y), atol=1e-6), \
-            "gamma=0 PHẢI quy về cross-entropy — nếu không, công thức sai"
-
-    def test_focal_downweights_easy_examples(self):
-        assert self.l.focal_loss(self.lg, self.y, gamma=2.0).item() < \
-               F.cross_entropy(self.lg, self.y).item()
-
-    def test_dice_zero_on_perfect_prediction(self):
-        perf = self.tg * 20.0 - (1 - self.tg) * 20.0
-        assert self.l.dice_loss(perf, self.tg).item() < 1e-4
-        assert self.l.dice_loss(-perf, self.tg).item() > 0.9, "đoán ngược -> loss gần 1"
-
-    def test_tversky_reduces_to_dice(self):
-        """alpha=beta=0.5 quy về Dice — kiểm với eps NHỎ.
-        Với eps=1.0 hai công thức lệch ~4e-3 vì eps vào mẫu theo hệ số khác nhau."""
-        d = self.l.dice_loss(self.sl, self.tg, eps=1e-6)
-        t = self.l.tversky_loss(self.sl, self.tg, 0.5, 0.5, eps=1e-6)
-        assert abs(d.item() - t.item()) < 1e-5
-
-    def test_tversky_beta_favours_recall(self):
-        """beta > alpha phạt FN nặng hơn -> loss cao hơn khi model BỎ SÓT."""
-        under = self.tg * 20.0 - 20.0            # dự đoán gần như toàn 0 -> nhiều FN
-        hi_fn = self.l.tversky_loss(under, self.tg, alpha=0.1, beta=0.9)
-        hi_fp = self.l.tversky_loss(under, self.tg, alpha=0.9, beta=0.1)
-        assert hi_fn > hi_fp, "beta cao phải phạt bỏ sót nặng hơn"
-
-    def test_contrastive_pulls_and_pushes(self):
-        a = torch.zeros(4, 8); b = torch.zeros(4, 8)
-        same = self.l.contrastive_loss(a, b, torch.ones(4), margin=1.0)
-        assert same.item() < 1e-6, "cùng cặp + khoảng cách 0 -> loss 0"
-        diff = self.l.contrastive_loss(a, b, torch.zeros(4), margin=1.0)
-        # dung sai 1e-4 chu khong phai 1e-6: F.pairwise_distance cong eps=1e-6 noi bo
-        # nen khoang cach khong bao gio bang 0 tuyet doi.
-        assert abs(diff.item() - 1.0) < 1e-4, "khác cặp + khoảng cách 0 -> loss = margin^2"
-
-    def test_triplet_zero_when_well_separated(self):
-        a = torch.zeros(4, 8); p = torch.zeros(4, 8)
-        n = torch.full((4, 8), 10.0)
-        assert self.l.triplet_loss(a, p, n, margin=1.0).item() < 1e-6
 
 
-# ═══════════════════════════════ 06 — CONSISTENCY & ĐA NHIỆM  → dùng ở TUẦN 6
 class TestConsistencyMultitask:
     def setup_method(self):
-        self.c = load("06_consistency_multitask")
+        self.c = load("09_consistency_multitask")
 
     def test_rdrop_equals_ce_when_logits_identical(self):
         """Hai lần forward giống hệt -> KL = 0 -> R-Drop quy về CE."""
@@ -296,3 +217,6 @@ class TestConsistencyMultitask:
             opt.step()
         w = uw.weights()
         assert w[0] > w[1], "nhiệm vụ loss THẤP (ít nhiễu) phải được trọng số CAO hơn"
+
+
+# ══════════════════════════════════════════ M07 — CHUẨN HOÁ · KHỞI TẠO · GRADIENT (Tuần 2)

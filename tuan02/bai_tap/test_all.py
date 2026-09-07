@@ -315,3 +315,43 @@ class TestTrainMT:
         bleu = BL.corpus_bleu(hyps, [t for _, t in dv])
         print(f"\n  BLEU = {bleu:.2f}")
         assert bleu > 40, f"BLEU {bleu:.2f} quá thấp — pipeline có lỗi ở đâu đó"
+
+
+# ══════════════════════════════ M07 — CHUẨN HOÁ · KHỞI TẠO · GRADIENT (Tầng 1)
+class TestNormInitGradFlow:
+    def setup_method(self):
+        self.m = load("06_norm_init_gradflow")
+
+    def test_layer_norm_matches_torch(self):
+        torch.manual_seed(0)
+        x = torch.randn(4, 16)
+        got = self.m.LayerNormScratch(16)(x)
+        exp = nn.LayerNorm(16)(x)
+        assert torch.allclose(got, exp, atol=1e-5), "phải khớp nn.LayerNorm"
+
+    def test_layernorm_is_batch_invariant_but_batchnorm_is_not(self):
+        """Đổi các mẫu KHÁC trong batch: LayerNorm không đổi, BatchNorm đổi hẳn.
+        Đây là câu trả lời thật cho 'vì sao Transformer dùng LayerNorm'."""
+        torch.manual_seed(0)
+        x = torch.randn(8, 32)
+        d_ln = self.m.batch_sensitivity(self.m.LayerNormScratch(32), x)
+        d_bn = self.m.batch_sensitivity(nn.BatchNorm1d(32), x)
+        assert d_ln < 1e-5, f"LayerNorm phải BẤT BIẾN theo batch, đang lệch {d_ln:.2e}"
+        assert d_bn > 0.1, f"BatchNorm phải bị batch kéo đi, chỉ lệch {d_bn:.2e}"
+
+    def test_he_keeps_variance_alive_xavier_decays_naive_explodes(self):
+        """He giữ phương sai; Xavier TẮT DẦN vì ReLU vứt nửa tín hiệu; naive NỔ.
+        Cả ba đều không crash — đó là lý do phải ĐO."""
+        he = self.m.activation_variance(init="he")[-1]
+        xa = self.m.activation_variance(init="xavier")[-1]
+        na = self.m.activation_variance(init="naive")[-1]
+        assert 0.01 < he < 100, f"He phải giữ phương sai sống, đang {he:.2e}"
+        assert xa < he / 100, f"Xavier phải tắt dần với ReLU, đang {xa:.2e} vs He {he:.2e}"
+        assert na > 1e6 or na == float("inf"), f"naive std=1.0 phải nổ, đang {na:.2e}"
+
+    def test_preln_gradient_reaches_first_layer_far_better_than_postln(self):
+        """Lý do BT 02 tuần 2 bắt dùng Pre-LN, đo bằng số thay vì học thuộc."""
+        pre = self.m.grad_norm_first_layer("pre")
+        post = self.m.grad_norm_first_layer("post")
+        assert pre > 100 * post, \
+            f"Pre-LN phải đưa gradient xuống tầng đáy tốt hơn nhiều: pre={pre:.2e} post={post:.2e}"

@@ -386,3 +386,69 @@ class TestTrainLoop:
                                 ckpt=str(tmp_path / "c.pt"), log_every=0)
         bn = [m for m in model.modules() if isinstance(m, nn.BatchNorm1d)][0]
         assert bn.running_mean.abs().sum() > 0, "BatchNorm phải đã cập nhật running stats"
+
+
+# ══════════════════════════════════════════════ BT 07 — PHÂN TÍCH LỖI
+class TestErrorAnalysis:
+    def setup_method(self):
+        self.m = load("07_error_analysis")
+
+    def test_worst_examples_ranks_by_probability_of_true_class(self):
+        y = np.array([0, 1, 0])
+        proba = np.array([[0.9, 0.1], [0.4, 0.6], [0.2, 0.8]])
+        idx = self.m.worst_examples(y, proba, k=3)
+        assert idx[0] == 2, "mẫu tệ nhất là mẫu có p(lớp đúng) nhỏ nhất"
+        assert list(idx) == [2, 1, 0]
+
+    def test_confusion_pairs_sorted_by_total(self):
+        cm = np.array([[0, 5, 40], [3, 0, 1], [38, 2, 0]])
+        pairs = self.m.confusion_pairs(cm)
+        assert pairs[0][:2] == (0, 2), "cặp nhầm nhiều nhất phải đứng đầu"
+        assert pairs[0][2] == 78
+
+    def test_symmetric_is_ceiling_one_sided_is_prior_shift(self):
+        """🔴 Ý chính: nhầm ĐỐI XỨNG = trần (đừng tối ưu);
+        nhầm MỘT CHIỀU = lệch prior (sửa vài phút)."""
+        cm = np.zeros((3, 3), dtype=np.int64)
+        cm[0, 1], cm[1, 0] = 50, 48        # đối xứng -> trần
+        cm[0, 2], cm[2, 0] = 60, 3         # một chiều -> lệch prior
+        assert self.m.diagnose_pair(cm, 0, 1) == "tran"
+        assert self.m.diagnose_pair(cm, 0, 2) == "lech_prior"
+        assert self.m.diagnose_pair(cm, 1, 2) == "khong_nham"
+
+    def test_error_groups_counts_only_mistakes(self):
+        y = np.array([0, 0, 1, 1])
+        p = np.array([0, 1, 0, 1])
+        tags = ["ok", "teencode", "teencode", "ok"]
+        g = self.m.error_groups(y, p, tags)
+        assert g == {"teencode": 2}, "chỉ đếm mẫu SAI"
+
+
+# ══════════════════════════════════════════════ BT 08 — TRẦN BAYES
+class TestBayesCeiling:
+    def setup_method(self):
+        self.m = load("08_bayes_ceiling")
+
+    def test_duplicate_groups_keeps_only_repeats(self):
+        g = self.m.duplicate_groups(["a", "b", "a", "c", "a"])
+        assert set(g) == {"a"} and g["a"] == [0, 2, 4]
+
+    def test_ceiling_is_one_when_labels_consistent(self):
+        assert self.m.ceiling_from_duplicates(["a", "a", "b"], [1, 1, 0]) == 1.0
+
+    def test_ceiling_drops_with_conflicting_labels(self):
+        """3 mẫu 'a' nhãn [1,1,0] -> 1 mẫu thiểu số không thể đoán đúng."""
+        c = self.m.ceiling_from_duplicates(["a", "a", "a", "b"], [1, 1, 0, 0])
+        assert abs(c - 0.75) < 1e-9, f"trần phải là 1 - 1/4 = 0.75, đang {c}"
+
+    def test_noop_rate_flags_the_degenerate_transform(self):
+        """Nhãn nào biến đổi mà KHÔNG đổi chuỗi -> có trần cứng."""
+        pd = pytest.importorskip("pandas")
+        df = pd.DataFrame({
+            "text": ["x", "y", "x", "y", "zzz", "www"],
+            "noise_type": ["ORIGINAL", "ORIGINAL", "FAKE", "FAKE", "REAL", "REAL"],
+        })
+        r = self.m.noop_rate(df)
+        assert r["FAKE"] == 1.0, "FAKE không đổi gì -> no-op 100%"
+        assert r["REAL"] == 0.0, "REAL đổi thật -> no-op 0%"
+
