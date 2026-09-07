@@ -19,44 +19,56 @@ Không có thước đo riêng đáng tin, bạn sẽ đuổi theo nhiễu suố
 
 ---
 
-## 📅 LỊCH 8 NGÀY (~16 giờ — xem *Ngân sách thật* bên dưới)
+## 📅 LỊCH 8 NGÀY · **4h/ngày = 28h** (ngân sách bản 3, xem kế hoạch §4B.1)
 
 | Ngày | | Nội dung | Giờ | Sản phẩm |
 |---|---|---|---|---|
-| **N1** | T7 05/09 | 🔴 **ĐO MÔI TRƯỜNG** Colab + Kaggle (`notebooks/env_probe.ipynb`) | 2h | `env_report.md` |
-| **N2** | CN 06/09 | Đọc `TAI_LIEU.md` §1 (80') · **BT 01** metrics | 2,5h | `01_metrics.py` xanh |
-| **N3** | T2 07/09 | Đọc §2 BLEU (90') · **BT 02** BLEU 🔴 | 3h | `02_bleu.py` xanh |
-| **N4** | T3 08/09 | Đọc §3 sai số (60') · **BT 03** bootstrap | 2h | `03_bootstrap.py` xanh |
-| **N5** | T4 09/09 | Đọc §4 rò rỉ (90') · **BT 04** chia fold | 2,5h | `04_cv_split.py` xanh |
-| **N6** | T5 10/09 | Đọc §5 PyTorch nền (100') | 1,75h | ghi chú + `TU_KIEM_TRA` |
-| **N7** | T6 11/09 | **BT 06** `train_loop.py` — được tra tài liệu | 2h | vòng lặp chạy được |
-| **N8** | T7 12/09 | **BT 05** ngưỡng · Nghiệm thu · trả lời 8 câu | 2h | `NGHIEM_THU.md` |
+| **N1** | T7 05/09 | 🔴 **ĐO MÔI TRƯỜNG** Colab + Kaggle (2h) · Đọc [§1 đánh giá phân loại](TAI_LIEU.md) (2h) | 4h | `env_report.md` |
+| **N2** | CN 06/09 | **BT 01** metrics (2h) · Đọc §2 BLEU (1,5h) · khởi động BT 02 (30') | 4h | `01_metrics.py` xanh |
+| **N3** | T2 07/09 | **BT 02** BLEU 🔴 (2,5h) · Đọc §3 sai số + bias–variance (1,5h) | 4h | `02_bleu.py` xanh |
+| **N4** | T3 08/09 | **BT 03** bootstrap (1,5h) · Đọc §4 rò rỉ (1,5h) · khởi động BT 04 (1h) | 4h | `03_bootstrap.py` xanh |
+| **N5** | T4 09/09 | **BT 04** chia fold (2h) · **BT 05** ngưỡng (2h) | 4h | `04`, `05` xanh |
+| **N6** | T5 10/09 | Đọc §5 PyTorch nền (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
+| **N7** | T6 11/09 | 🔴🔴 Đọc [§6 vòng lặp cải tiến](TAI_LIEU.md) (3h) · **BT 07** `error_analysis` (1h) | 4h | `07` xanh |
+| **N8** | T7 12/09 | **BT 08** `bayes_ceiling` (1,5h) · 🔴 đọc `task1_nlp_fpt26/` như baseline BTC (45') · nghiệm thu + 12 câu (1,75h) | 4h | `NGHIEM_THU.md` |
 
-### ⚠️ Vì sao ĐO MÔI TRƯỜNG được đưa lên N1 (bản đầu để ở N7 — sai)
+**Tổng 32h trên 8 ngày** — 28h nội dung + 4h đệm. Nếu tuần bị bóp, xem **thứ tự hy sinh** ở cuối.
+
+### ⚠️ Vì sao ĐO MÔI TRƯỜNG ở N1 (bản đầu để ở N7 — sai)
 
 1. **Nó chứa việc chờ.** Xác minh SĐT Kaggle, tải dữ liệu, cài package — tắc thì phải biết
    **ngày 1**, không phải ngày 7.
 2. **Nó định nghĩa lại mọi thứ phía sau.** Nếu T4 mất 10 phút/epoch thì chiến lược
-   "8 epoch × 5 fold × 3 model" là **25 giờ** — bất khả thi. Phải biết điều đó **trước khi**
+   "8 epoch × 5 fold × 3 model" là **25 giờ** — bất khả thi. Phải biết **trước khi**
    học các kỹ thuật giả định có nhiều compute.
 3. **Nó nhẹ về trí óc**, hợp ngày đầu, chạy song song được với việc đọc.
+
+### ⚠️ Vì sao §6 và BT 07–08 ở CUỐI tuần chứ không đầu
+
+§1–§4 dạy **ĐO** xem một cải thiện có thật không. §6 dạy **SINH RA giả thuyết nên cải thiện gì**.
+Phải biết đo trước, vì mọi giả thuyết §6 sinh ra đều phải qua cổng 2×SE của §3.
+Nhưng **đừng để nó rớt khỏi tuần** — đây là nửa vòng lặp mà bản kế hoạch đầu thiếu hoàn toàn.
 
 ### 💰 Ngân sách thật (không tô hồng)
 
 | Khoản | Giờ |
 |---|---|
-| Đọc tài liệu (§1–§5, đã cắt 3 mục) | 7,0h |
+| 📖 Đọc §1–§6 | **11,3h** |
+| Đo môi trường | 2,0h |
 | BT 01 metrics | 1,0h |
-| BT 02 BLEU 🔴 *(thực tế 1,5–2h ở lần đầu — đừng tin con số 75')* | 1,75h |
+| BT 02 BLEU 🔴 *(thực tế 1,5–2h lần đầu — đừng tin con số 75')* | 1,75h |
 | BT 03 bootstrap | 0,85h |
-| BT 04 chia fold *(phần core; ⭐ tự cài splitter +45' là tuỳ chọn)* | 1,0h |
+| BT 04 chia fold *(⭐ tự cài splitter +45' là tuỳ chọn)* | 1,0h |
 | BT 05 ngưỡng | 0,85h |
 | BT 06 train loop *(lần đầu, được tra tài liệu)* | 1,75h |
-| Đo môi trường | 2,0h |
-| **TỔNG** | **~16,2h** |
+| BT 07 error_analysis 🔴 | 1,5h |
+| BT 08 bayes_ceiling 🔴 | 1,5h |
+| Đọc baseline BTC + nghiệm thu | 2,5h |
+| 🫙 Đệm | 4,0h |
+| **TỔNG** | **~30h / 32h** |
 
-**Nếu chỉ có 15h:** bỏ ⭐ (tự cài `stratified_group_kfold` — được phép gọi sklearn)
-và rút §4 xuống 60'. Đừng cắt BT 02 hay N1.
+**Thứ tự hy sinh nếu vỡ:** đệm → ⭐ tự cài splitter → §5 (100'→60') → BT 05.
+**KHÔNG BAO GIỜ CẮT:** BT 02 · N1 đo môi trường · §6 + BT 07 + BT 08.
 
 ### ✂️ Đã cắt khỏi bản đầu (5h) — chỉ cắt phần đọc không chuyển thành làm được
 

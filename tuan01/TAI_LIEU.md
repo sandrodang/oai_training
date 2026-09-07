@@ -11,10 +11,10 @@
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 1.1 | **scikit-learn User Guide — Metrics** · https://scikit-learn.org/stable/modules/model_evaluation.html | Mục `precision_recall_fscore_support`, `f1_score` (đọc kỹ đoạn về `average=`), `balanced_accuracy_score`, `confusion_matrix` | 40' |
-| 1.2 | **Jurafsky & Martin, SLP3** · https://web.stanford.edu/~jurafsky/slp3/ | **Ch.4 mục 4.7 "Evaluation: Precision, Recall, F-measure"** + 4.8 (test sets, cross-validation) | 30' |
+| 1.1 | **scikit-learn User Guide — Metrics** · https://scikit-learn.org/stable/modules/model_evaluation.html#precision-recall-f-measure-metrics | Mục `precision_recall_fscore_support`, `f1_score` (đọc kỹ đoạn về `average=`), [`balanced_accuracy_score`](https://scikit-learn.org/stable/modules/model_evaluation.html#balanced-accuracy-score), [`confusion_matrix`](https://scikit-learn.org/stable/modules/model_evaluation.html#confusion-matrix) | 40' |
+| 1.2 | **Jurafsky & Martin, SLP3** · https://web.stanford.edu/~jurafsky/slp3/4.pdf | **Mục 4.7 "Evaluation: Precision, Recall, F-measure"** + 4.8 (test sets, cross-validation) | 30' |
 | 1.3 | Wikipedia — *Youden's J statistic* | toàn bộ (ngắn) | 10' |
-| 1.4 | **Saito & Rehmsmeier (2015) — *The Precision-Recall Plot Is More Informative than the ROC Plot***<br>https://doi.org/10.1371/journal.pone.0118432 | Hình 1–4 + phần thảo luận. Đây là câu trả lời dứt điểm cho **ROC-AUC hay PR-AUC** | 40' |
+| 1.4 | **Saito & Rehmsmeier (2015) — *The Precision-Recall Plot Is More Informative than the ROC Plot***<br>https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0118432#sec010 | **Mục Results** (Hình 1–4) + Discussion. Đây là câu trả lời dứt điểm cho **ROC-AUC hay PR-AUC** | 40' |
 
 ### Phải rút ra được
 - `macro` = trung bình **không trọng số** các F1 từng lớp → **lớp hiếm nặng ký ngang lớp phổ biến**.
@@ -41,7 +41,7 @@
 |---|---|---|---|
 | 2.1 | **Papineni et al. (2002) — BLEU** · https://aclanthology.org/P02-1040/ | **Mục 2 toàn bộ** (modified n-gram precision, brevity penalty). Bỏ qua mục 3–5. | 35' |
 | 2.2 | **Post (2018) — A Call for Clarity in Reporting BLEU Scores** · https://arxiv.org/abs/1804.08771 | **Toàn bộ, chỉ 6 trang** 🔴 | 30' |
-| 2.3 | SLP3 · https://web.stanford.edu/~jurafsky/slp3/ | Ch.13 mục *"MT Evaluation"* (BLEU, chrF) | 25' |
+| 2.3 | SLP3 · https://web.stanford.edu/~jurafsky/slp3/13.pdf | Ch.13 mục *"MT Evaluation"* (BLEU, chrF) | 25' |
 
 ### Phải rút ra được
 - **Modified precision (clipping):** đếm n-gram trong bản dịch nhưng **cắt trần** bằng số lần xuất hiện
@@ -61,9 +61,9 @@
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 3.1 | **ESL** · https://hastie.su.domains/ElemStatLearn/ (PDF miễn phí) | **Chỉ mục 7.11 "Bootstrap Methods"**, lướt 7.10. *Bootstrap học bằng cách gõ BT 03 nhanh hơn đọc sách.* | 20' |
+| 3.1 | **ESL** · https://hastie.su.domains/ElemStatLearn/printings/ESLII_print12_toc.pdf#page=268 *(mạng chặn thì tra `ESLII_print12` trên Google)* | **Chỉ mục 7.11 "Bootstrap Methods"**, lướt 7.10. *Bootstrap học bằng cách gõ BT 03 nhanh hơn đọc sách.* | 20' |
 | 3.2 | **`PHUONG_PHAP_LUAN.md` — Nguyên lý 1** *(tài liệu của chính chúng ta)* | Toàn bộ §1.1–1.6 🔴 | 40' |
-| 3.3 | **ESL Ch.7.3** (bias–variance decomposition) + **Ch.8.7** (bagging) | Chỉ cần công thức phân rã và **vì sao trung bình nhiều model giảm phương sai** | 40' |
+| 3.3 | **ESL** · [Ch.7.3 bias–variance](https://hastie.su.domains/ElemStatLearn/printings/ESLII_print12_toc.pdf#page=242) + [Ch.8.7 bagging](https://hastie.su.domains/ElemStatLearn/printings/ESLII_print12_toc.pdf#page=301) | Chỉ cần công thức phân rã và **vì sao trung bình nhiều model giảm phương sai** | 40' |
 
 ### Phải rút ra được
 - SE của metric tỉ lệ `1/√n`. **Kiểm chứng bằng số của chính bạn:**
@@ -84,8 +84,8 @@
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 4.1 | **sklearn — Cross-validation** · https://scikit-learn.org/stable/modules/cross_validation.html | Mục 3.1.2 (iterators), **đọc kỹ `GroupKFold`, `StratifiedGroupKFold`, `TimeSeriesSplit`** + mục về data leakage | 40' |
-| 4.2 | sklearn — *Common pitfalls* · https://scikit-learn.org/stable/common_pitfalls.html | **Toàn bộ mục "Data leakage"** 🔴 | 25' |
+| 4.1 | **sklearn — Cross-validation** · https://scikit-learn.org/stable/modules/cross_validation.html#group-k-fold | Mục 3.1.2 (iterators), **đọc kỹ `GroupKFold`, `StratifiedGroupKFold`, `TimeSeriesSplit`** + mục về data leakage | 40' |
+| 4.2 | sklearn — *Common pitfalls* · https://scikit-learn.org/stable/common_pitfalls.html#data-leakage | **Toàn bộ mục "Data leakage"** 🔴 | 25' |
 | 4.3 | **`PHUONG_PHAP_LUAN.md` — Nguyên lý 3** | Toàn bộ §3.1–3.5 (bảng 6 loại rò rỉ + 4 phép thử) | 25' |
 
 ### Phải rút ra được
@@ -101,10 +101,13 @@
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 5.1 | **Dive into Deep Learning** · https://d2l.ai/ | **Ch.5** (MLP: backprop, khởi tạo) · **Ch.12.10–12.11** (Adam, lịch học) | 45' |
+| 5.1a | **d2l — Forward/Backprop & đồ thị tính toán** · https://d2l.ai/chapter_multilayer-perceptrons/backprop.html | toàn mục | 15' |
+| 5.1b | **d2l — Ổn định số học & khởi tạo** · https://d2l.ai/chapter_multilayer-perceptrons/numerical-stability-and-init.html | vanishing/exploding · Xavier | 15' |
+| 5.1c | **d2l — Adam** · https://d2l.ai/chapter_optimization/adam.html | toàn mục | 8' |
+| 5.1d | **d2l — Lịch học (LR scheduler)** · https://d2l.ai/chapter_optimization/lr-scheduler.html | warmup · cosine | 7' |
 | 5.2 | **PyTorch — Reproducibility** · https://pytorch.org/docs/stable/notes/randomness.html | **Toàn bộ** 🔴 (đây là quy chế bắt buộc) | 20' |
 | 5.3 | **PyTorch — AMP examples** · https://pytorch.org/docs/stable/notes/amp_examples.html | `autocast` + `GradScaler`, gradient clipping với AMP | 20' |
-| 5.4 | He et al. — **Bag of Tricks** · https://arxiv.org/abs/1812.01187 | Mục 3 (tricks) + mục 4 (zero-γ, no-bias-decay, label smoothing) 🔴 | 15' |
+| 5.4 | He et al. — **Bag of Tricks** · https://arxiv.org/pdf/1812.01187#section.3 | **Mục 3** (tricks) + **mục 4** (zero-γ, no-bias-decay, label smoothing) 🔴 | 15' |
 
 ### Phải rút ra được
 - `.train()` vs `.eval()`: **BatchNorm** đổi hành vi (dùng thống kê batch vs running stats),
@@ -128,8 +131,8 @@
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
 | 6.1 | **Andrew Ng — *Machine Learning Yearning*** (miễn phí)<br>https://info.deeplearning.ai/machine-learning-yearning-book | **Ch.13–19** (error analysis: eyeball set, phân nhóm nguyên nhân, ước lượng trần) 🔴🔴 | 1h |
-| 6.2 | **scikit-learn User Guide — `metrics`** | Mục **confusion matrix** + `ConfusionMatrixDisplay`. Tập đọc ma trận theo CẶP, không theo ô lẻ | 30' |
-| 6.3 | **Northcutt et al. (2021) — *Pervasive Label Errors in Test Sets***<br>https://arxiv.org/abs/2103.14749 | Mục 1 + 2. Chỉ cần nắm: **tập test thật cũng đầy nhãn sai**, và điều đó đặt TRẦN lên mọi mô hình | 45' |
+| 6.2 | **scikit-learn — confusion matrix** · https://scikit-learn.org/stable/modules/model_evaluation.html#confusion-matrix | Toàn mục + [`ConfusionMatrixDisplay`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.ConfusionMatrixDisplay.html). Tập đọc ma trận theo CẶP, không theo ô lẻ | 30' |
+| 6.3 | **Northcutt et al. (2021) — *Pervasive Label Errors in Test Sets***<br>https://arxiv.org/pdf/2103.14749 | **Mục 1 + 2**. Chỉ cần nắm: **tập test thật cũng đầy nhãn sai**, và điều đó đặt TRẦN lên mọi mô hình | 45' |
 | 6.4 | **`de_tham_khao/` + `task1_nlp_fpt26/`** | Đọc **baseline BTC phát sẵn** như một tài liệu: kiến trúc · augmentation · số epoch · cách chia val | 45' |
 
 ### Phải rút ra được

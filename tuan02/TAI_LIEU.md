@@ -12,10 +12,10 @@
 
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 0.1 | **d2l.ai Ch.6–7** — https://d2l.ai/ | Tính toán sâu · **khởi tạo tham số** · **ổn định số học** (vanishing/exploding) | 1,5h |
-| 0.2 | **d2l.ai Ch.11** — tối ưu hoá | SGD+momentum · Adam · lịch học | 1h |
-| 0.3 | **Goodfellow, *Deep Learning* Ch.6–8** | Ch.6 mạng truyền thẳng · Ch.6.5 **backprop & đồ thị tính toán** · Ch.8 tối ưu hoá | 2h |
-| 0.4 | **Loshchilov & Hutter (2019) — *Decoupled Weight Decay***<br>https://arxiv.org/abs/1711.05101 | Mục 2 + Thuật toán 2. Chỉ cần hiểu **vì sao weight decay ≠ L2 trong Adam** | 0,5h |
+| 0.1 | **d2l — Builders Guide** https://d2l.ai/chapter_builders-guide/index.html<br>+ **Ổn định số học & khởi tạo** https://d2l.ai/chapter_multilayer-perceptrons/numerical-stability-and-init.html | tầng & khối tuỳ biến · khởi tạo tham số · vanishing/exploding · Xavier | 1,5h |
+| 0.2 | **d2l — Tối ưu hoá** https://d2l.ai/chapter_optimization/index.html<br>· [momentum](https://d2l.ai/chapter_optimization/momentum.html) · [adam](https://d2l.ai/chapter_optimization/adam.html) · [lr-scheduler](https://d2l.ai/chapter_optimization/lr-scheduler.html) | ba mục đó là đủ, bỏ phần còn lại | 1h |
+| 0.3 | **Goodfellow, *Deep Learning*** · [Ch.6 mạng truyền thẳng](https://www.deeplearningbook.org/contents/mlp.html) · [Ch.8 tối ưu hoá](https://www.deeplearningbook.org/contents/optimization.html) | **Ch.6.5 backprop & đồ thị tính toán** 🔴 · Ch.8.1–8.5 | 2h |
+| 0.4 | **Loshchilov & Hutter (2019) — *Decoupled Weight Decay***<br>https://arxiv.org/pdf/1711.05101#section.2 | **Mục 2 + Thuật toán 2**. Chỉ cần hiểu **vì sao weight decay ≠ L2 trong Adam** | 0,5h |
 
 **Phải rút ra được**
 - **Vì sao Transformer dùng LayerNorm chứ không BatchNorm.** Câu trả lời ĐÚNG phải nhắc tới
@@ -39,7 +39,7 @@
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
 | 1.1 | **The Illustrated Transformer** — Jay Alammar<br>https://jalammar.github.io/illustrated-transformer/ | Toàn bộ. Đọc để LẤY TRỰC GIÁC, đừng cố nhớ chi tiết | 1h |
-| 1.2 | **The Annotated Transformer** — Harvard NLP<br>http://nlp.seas.harvard.edu/annotated-transformer/ | **Toàn bộ phần Model Architecture** (đến hết Full Model). Đọc CODE TỪNG DÒNG, gõ lại vào notebook riêng | **3h** 🔴🔴 |
+| 1.2 | **The Annotated Transformer** — Harvard NLP<br>http://nlp.seas.harvard.edu/annotated-transformer/#part-1-model-architecture | **Toàn bộ Part 1 — Model Architecture** (đến hết Full Model). Đọc CODE TỪNG DÒNG, gõ lại vào notebook riêng | **3h** 🔴🔴 |
 
 > **1.2 là tài liệu quan trọng nhất cả tuần.** Nó chính là bài báo Vaswani 2017 nhưng
 > mỗi công thức đi kèm code PyTorch chạy được. Đọc xong nó, BT 01 và BT 02 trở thành
@@ -66,8 +66,8 @@
 
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 2.1 | **d2l.ai** — https://d2l.ai/chapter_attention-mechanisms-and-transformers/ | Mục **11.1–11.3** (queries/keys/values, scoring functions) + **11.5** (multi-head) | 45' |
-| 2.2 | Bahdanau et al. (2015) — *Neural MT by Jointly Learning to Align and Translate*<br>https://arxiv.org/abs/1409.0473 | **Chỉ mục 3** (mô hình alignment) + Hình 3 (ma trận alignment) | 30' |
+| 2.1 | **d2l — Attention** · [queries-keys-values](https://d2l.ai/chapter_attention-mechanisms-and-transformers/queries-keys-values.html) · [attention-scoring-functions](https://d2l.ai/chapter_attention-mechanisms-and-transformers/attention-scoring-functions.html) · [multihead-attention](https://d2l.ai/chapter_attention-mechanisms-and-transformers/multihead-attention.html) | đúng ba trang đó, không đọc cả chương | 45' |
+| 2.2 | Bahdanau et al. (2015) — *Neural MT by Jointly Learning to Align and Translate*<br>https://arxiv.org/pdf/1409.0473#section.3 | **Chỉ mục 3** (mô hình alignment) + **Hình 3** (ma trận alignment) | 30' |
 
 **Phải rút ra được**
 - Bahdanau (**additive**: `v^T tanh(W_q q + W_k k)`) vs Luong/Transformer (**multiplicative**:
@@ -85,7 +85,7 @@
 
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
-| 3.1 | Sennrich et al. (2016) — *Neural MT of Rare Words with Subword Units*<br>https://arxiv.org/abs/1508.07909 | **Mục 3.2** (thuật toán BPE + ví dụ `low/lower/newest/widest`) và mục 1 (động cơ) | 45' |
+| 3.1 | Sennrich et al. (2016) — *Neural MT of Rare Words with Subword Units*<br>https://arxiv.org/pdf/1508.07909#subsection.3.2 | **Mục 3.2** (thuật toán BPE + ví dụ `low/lower/newest/widest`) và mục 1 (động cơ) | 45' |
 
 **Phải rút ra được**
 - BPE giải bài toán **từ hiếm / ngoài từ điển**: thay vì `<unk>`, từ lạ được tách thành
@@ -135,5 +135,5 @@ Hiểu đánh đổi quan trọng hơn tự viết thuật toán.
 - Sennrich (2016) **Back-translation** · https://arxiv.org/abs/1511.06709 🔴
 - Provilkov (2020) **BPE-Dropout** · https://arxiv.org/abs/1910.13267
 - Ott (2018) *Scaling NMT* — checkpoint averaging · https://arxiv.org/abs/1806.00187
-- **J&M SLP3 Ch.13** Machine Translation · https://web.stanford.edu/~jurafsky/slp3/
+- **J&M SLP3 Ch.13** Machine Translation · https://web.stanford.edu/~jurafsky/slp3/13.pdf
 - Koehn *SMT* Ch.4 — IBM Model 1 (phương án SMT khi dữ liệu cực ít)

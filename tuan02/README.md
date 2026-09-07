@@ -16,23 +16,29 @@ Nên "tự viết Transformer" ở đây không phải bài tập học thuật,
 
 ---
 
-## 📅 LỊCH 7 NGÀY (~15 giờ)
+## 📅 LỊCH 7 NGÀY · **4h/ngày = 28h** (ngân sách bản 3, xem kế hoạch §4B.1)
 
 | Ngày | | Nội dung | Giờ |
 |---|---|---|---|
-| **N1** | CN 13/09 | Đọc *Illustrated Transformer* (1h) + nửa đầu *Annotated Transformer* (1,5h) | 2,5h |
-| **N2** | T2 14/09 | Nốt *Annotated* (1,5h) · **BT 01** attention | 3h |
-| **N3** | T3 15/09 | d2l attention (45') · **BT 02** transformer phần 1 | 2,25h |
-| **N4** | T4 16/09 | **BT 02** phần 2 · Bahdanau §3 (30') | 2h |
-| **N5** | T5 17/09 | Sennrich BPE (45') · **BT 03** BPE | 1,75h |
-| **N6** | T6 18/09 | **BT 04** greedy + beam search | 1,5h |
-| **N7** | T7 19/09 | **BT 05** huấn luyện đầu-cuối · nghiệm thu | 2,5h |
+| **N1** | CN 13/09 | 🔴 Đọc [§0.1–0.2 d2l: khởi tạo · ổn định số học · tối ưu](TAI_LIEU.md) (2,5h) · **BT 06** `norm_init_gradflow` phần **a+b** (1,5h) | 4h |
+| **N2** | T2 14/09 | 🔴 Đọc [§0.3–0.4 Goodfellow backprop + AdamW](TAI_LIEU.md) (2,5h) · **BT 06** phần **c** Pre-LN vs Post-LN (1,5h) | 4h |
+| **N3** | T3 15/09 | Đọc *Illustrated Transformer* (1h) + nửa đầu *Annotated* (1,5h) · **BT 01** attention (1,5h) | 4h |
+| **N4** | T4 16/09 | Nốt *Annotated* (1,5h) · nốt **BT 01** · **BT 02** transformer phần 1 (2,5h) | 4h |
+| **N5** | T5 17/09 | **BT 02** transformer phần 2 🔴 (2,75h) · Đọc §2 d2l attention + Bahdanau §3 (1,25h) | 4h |
+| **N6** | T6 18/09 | Đọc §3 Sennrich BPE (45') · **BT 03** BPE (1,5h) · **BT 04** greedy + beam (1,75h) | 4h |
+| **N7** | T7 19/09 | **BT 05** huấn luyện đầu-cuối (2h) · 📓 **khởi tạo sổ assert** 22 mục (1h) · nghiệm thu (1h) | 4h |
 
-**Tổng ~15,5h.** Nếu chỉ có 13h: bỏ Bahdanau (30') và d2l (45'), rút BT 04 xuống greedy +
-beam đơn giản không có length penalty (−30'). **Đừng cắt BT 02** — nó là xương sống.
+**Tổng 28h.** Đọc 11h (§0 5h + §1 4h + §2 1,25h + §3 0,75h) · cài đặt 12h · sổ assert 2h ·
+thí nghiệm 2h · đệm 1h.
 
-> ⚠️ Bài tập nặng hơn tuần 1. BT 02 thực tế **2,5–3,5h ở lần đầu**. Nếu N3–N4 tràn giờ,
-> lấy giờ từ N5 (BPE có thể dùng `sentencepiece` thay vì tự viết, xem `TAI_LIEU.md §4`).
+> 🔴 **N1–N2 là Tầng 1, không phải phần phụ.** `06_norm_init_gradflow` đo ra ba con số:
+> BatchNorm lệch ~2,3 khi đổi batch (LayerNorm = 0) · He giữ phương sai còn Xavier **tắt** (7e-07)
+> · gradient tầng đáy **Pre-LN / Post-LN ≈ 5·10⁵ lần**.
+> Không có hai ngày này thì luật "dùng Pre-LN" ở BT 02 chỉ là câu **học thuộc**.
+
+> ⚠️ BT 02 thực tế **2,5–3,5h ở lần đầu**. Nếu N4–N5 tràn, lấy giờ từ N6
+> (BPE có thể dùng `sentencepiece` thay vì tự viết, xem `TAI_LIEU.md` §4) —
+> **đừng lấy từ N1–N2 và đừng cắt BT 02.**
 
 ---
 
