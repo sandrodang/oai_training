@@ -1,7 +1,8 @@
 # KẾ HOẠCH ÔN LUYỆN OLPAI'26 — VÒNG LOẠI KHU VỰC MIỀN BẮC
 ### Bản 2 — đã sửa theo đính chính. Lý thuyết trước, cài đặt sau.
 
-> **Mốc:** hôm nay **T7 05/09/2026** → thi **T7 31/10/2026**. Còn **56 ngày = 8 tuần chẵn**.
+> **Mốc:** hôm nay **T2 07/09/2026** → thi **T7 31/10/2026**. Còn **54 ngày**:
+> 7 tuần trọn (Tuần 1 dài 8 ngày) + 4 ngày giảm tải cuối.
 > **Địa điểm:** Học viện Công nghệ Bưu chính Viễn thông (Hà Nội).
 > **Đội hình:** 3 người · 2 máy · 1 tài khoản DeepSeek (2k ngữ cảnh/phiên).
 
@@ -1035,7 +1036,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 1 · 05–12/09 · NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
+### 🗓️ TUẦN 1 · 07–14/09 · NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
 
 **📖 Lý thuyết (13h)** — **Tầng 0 toàn bộ** (10h, gồm §(c) *Vòng lặp cải tiến*)
 + Tầng 1 khởi động (3h): 🔴🔴 **§0 torch cơ bản (2h)** · d2l + Bag of Tricks (1h)
@@ -1085,7 +1086,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 2 · 13–19/09 · TRANSFORMER & SEQ2SEQ — TỰ VIẾT TỪ ĐẦU
+### 🗓️ TUẦN 2 · 15–21/09 · TRANSFORMER & SEQ2SEQ — TỰ VIẾT TỪ ĐẦU
 
 **📖 Lý thuyết (11h)** — Tầng 1 phần A (**5h**) + Tầng 2 đầu (**6h**)
 
@@ -1142,7 +1143,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 3 · 20–26/09 · DỊCH MÁY ÍT TÀI NGUYÊN — 🔴 TUẦN QUAN TRỌNG NHẤT
+### 🗓️ TUẦN 3 · 22–28/09 · DỊCH MÁY ÍT TÀI NGUYÊN — 🔴 TUẦN QUAN TRỌNG NHẤT
 
 **📖 Lý thuyết (10h)** — Tầng 2 phần giữa (7h) + Tầng 1: **weight averaging · grad tricks · FGM · R-Drop** (3h) 🔴
 - **J&M SLP3 Ch.13 Machine Translation** · CS224n lecture MT/subword
@@ -1179,9 +1180,9 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 4 · 27/09–03/10 · CV NỀN + VIDEO / HÀNH ĐỘNG
+### 🗓️ TUẦN 4 · 29/09–05/10 · CV NỀN + VIDEO / HÀNH ĐỘNG
 
-**📖 Lý thuyết (10h)** — Tầng 3 nhánh ảnh + **một** hướng video (9h) + M05a focal (1h)
+**📖 Lý thuyết (10h)** — Tầng 3 nhánh ảnh + **một** hướng video (9h) + `06_focal_loss` (1h)
 - CS231n notes (CNN + training) · He 2016 ResNet · Tan&Le EfficientNet · He 2018 Bag of Tricks
 - **Lin (2019) TSM** 🔴 · Wang (2016) TSN · Carreira (2017) I3D · Yan (2018) ST-GCN
 
@@ -1210,9 +1211,9 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 5 · 04–10/10 · TỰ GIÁM SÁT, SO KHỚP, GHÉP ẢNH + TỐI ƯU SUY LUẬN
+### 🗓️ TUẦN 5 · 06–12/10 · TỰ GIÁM SÁT, SO KHỚP, GHÉP ẢNH + TỐI ƯU SUY LUẬN
 
-**📖 Lý thuyết (10h)** — Tầng 3 nhánh so khớp (7h) + Tầng 5 (2h) + M05b losses (1h)
+**📖 Lý thuyết (10h)** — Tầng 3 nhánh so khớp (7h) + Tầng 5 (2h) + `06_seg_match_losses` (1h)
 - **Noroozi & Favaro (2016) Jigsaw** 🔴🔴 · Doersch (2015) context prediction · Chen (2020) SimCLR
 - Gallagher (2012) / Cho — jigsaw solver & MGC
 - Ronneberger U-Net · Lin FPN · Roth PatchCore
@@ -1247,7 +1248,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 6 · 11–17/10 · ML LỒNG GHÉP + RÁP ĐỘI + TỔNG DUYỆT 1
+### 🗓️ TUẦN 6 · 13–19/10 · ML LỒNG GHÉP + RÁP ĐỘI + TỔNG DUYỆT 1
 
 **📖 Lý thuyết (10h)** — Tầng 4 (4h) + Tầng 2 phân loại văn bản (4h) + **finetune_lr: LLRD** (1h) + Tầng 5 (1h)
 - ESL Ch.9/10/15 · LightGBM & XGBoost paper · sklearn `calibration`
@@ -1277,7 +1278,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 7 · 18–24/10 · VÁ LỖ HỔNG + TỔNG DUYỆT 2 + ĐÓNG BĂNG
+### 🗓️ TUẦN 7 · 20–26/10 · VÁ LỖ HỔNG + TỔNG DUYỆT 2 + ĐÓNG BĂNG
 
 **📖 Lý thuyết (6h)** — ôn Tầng 2 (3h) + Tầng 5 (3h). Chỉ đọc lại phần `MOCK1.md` chỉ ra là yếu. **Không chủ đề mới.**
 
@@ -1297,11 +1298,11 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 🗓️ TUẦN 8 · 25–30/10 · NGHI THỨC HOÁ & GIẢM TẢI
+### 🗓️ TUẦN 8 · 27–30/10 · NGHI THỨC HOÁ & GIẢM TẢI
 
 > **Không kỹ thuật mới. Không thí nghiệm mới.** Tuần này chỉ để chắc chắn không mắc lỗi ngớ ngẩn.
 
-- **T2–T4** (≤2h/ngày): gõ lại toàn bộ thư viện chiến đấu từ trí nhớ, mỗi module 1 lần ·
+- **T3 27/10 – T4 28/10** (≤2h/ngày): gõ lại toàn bộ thư viện chiến đấu từ trí nhớ, mỗi module 1 lần ·
   diễn tập `check_submission.py` cho 3 dạng đề khác nhau trong 10 phút ·
   diễn tập dựng `Final/` + báo cáo kỹ thuật, **bấm giờ, phải xong trong 25 phút**.
 - **T5 29/10**: hậu cần (§9.1). Kiểm tra tài khoản, quota, đăng nhập sẵn. **Không code.**
@@ -1601,18 +1602,18 @@ Baseline nộp được trong 15 phút: ................................
 **Khi có đề mẫu / luật mới công bố: dừng lịch ôn, đọc kỹ, cập nhật tài liệu này trước.**
 
 **Ngân sách: 4h/ngày = 28h/tuần** (10 đọc · 12 cài đặt · 2 sổ assert · 3 thí nghiệm · 1 dự phòng).
-Tổng khoá **206 giờ**. Số học đã kiểm: 68h đọc = 68h phân bổ (§4B.2).
+Tổng khoá **~208 giờ**. Số học đã kiểm: 68h đọc = 68h phân bổ (§4B.2).
 
 | Tuần | Ngày | 📖 Đọc | Kỹ thuật trọng tâm | Sản phẩm |
 |---|---|---|---|---|
-| 1 | 05–12/09 | Tầng 0 (10h) | Metrics, CV design, bootstrap · 🔴 **phân tích lỗi · trần Bayes · đọc baseline BTC** | `train_loop.py` < 15' · `env_report.md` · 🔴 `error_analysis.py` · `bayes_ceiling.py` |
-| 2 | 13–19/09 | T1 phần A (6h) + T2 đầu (4h) | Transformer, attention, BPE, beam search | Transformer tự viết, **BLEU > 40** · 📓 khởi tạo sổ assert |
-| 3 | 20–26/09 | T2 giữa (7h) + Tầng 1: weight-avg · grad-tricks · **FGM · R-Drop** (3h) 🔴 | **Back-translation, BPE-dropout, ckpt averaging, SMT · FGM +0,0121 · R-Drop +0,0047** | **Giải VOAI CK T1 (Ba Na)** + bảng so sánh 5 hướng |
-| 4 | 27/09–03/10 | T3 video (9h) + M05a (1h) | **CHỌN 1: TSM *hoặc* ST-GCN** (§Tầng 3 quy tắc cắt), Bag of Tricks | **Giải SOLOAI T2 (ký hiệu)** + bảng 3 kiến trúc |
-| 5 | 04–10/10 | T3 so khớp (7h) + T5 (2h) + M05b (1h) | **Siamese cạnh + Hungarian**, cache đặc trưng, cascade | **Giải VOAI CK T2** + 2 `main.py` < 20' |
-| 6 | 11–17/10 | T4 (4h) + T2 phân loại (4h) + **LLRD** (1h) + T5 (1h) | LightGBM, hill-climbing, temperature scaling, LLRD | Phân vai + **TỔNG DUYỆT 1** (SOLOAI) → `MOCK1.md` |
-| 7 | 18–24/10 | ôn T2 (5h) + T5 (3h) | củng cố nhóm 🔴 | **TỔNG DUYỆT 2** (VOAI CK) → `MOCK2.md`, đóng băng |
-| 8 | 25–30/10 | — *(~10h, giảm tải)* | nghi thức | Mẫu báo cáo, hậu cần, **ngủ đủ** |
+| 1 | 07–14/09 | Tầng 0 (10h) + 🔴🔴 **§0 torch cơ bản (2h)** + d2l/BoT (1h) = **13h** | 🔴🔴 **tensor · broadcasting · autograd · nn.Module** · metrics, CV design, bootstrap · 🔴 **phân tích lỗi · trần Bayes · đọc baseline BTC** | 🔴 `00_torch_basics.py` · `train_loop.py` < 15' · `env_report.md` · `error_analysis.py` · `bayes_ceiling.py` |
+| 2 | 15–21/09 | T1 phần A (5h) + T2 đầu (6h) = **11h** | Transformer, attention, BPE, beam search | Transformer tự viết, **BLEU > 40** · 📓 khởi tạo sổ assert |
+| 3 | 22–28/09 | T2 giữa (7h) + Tầng 1: weight-avg · grad-tricks · **FGM · R-Drop** (3h) 🔴 | **Back-translation, BPE-dropout, ckpt averaging, SMT · FGM +0,0121 · R-Drop +0,0047** | **Giải VOAI CK T1 (Ba Na)** + bảng so sánh 5 hướng |
+| 4 | 29/09–05/10 | T3 video (9h) + focal loss (1h) | **CHỌN 1: TSM *hoặc* ST-GCN** (§Tầng 3 quy tắc cắt), Bag of Tricks | **Giải SOLOAI T2 (ký hiệu)** + bảng 3 kiến trúc |
+| 5 | 06–12/10 | T3 so khớp (7h) + T5 (2h) + seg/match losses (1h) | **Siamese cạnh + Hungarian**, cache đặc trưng, cascade | **Giải VOAI CK T2** + 2 `main.py` < 20' |
+| 6 | 13–19/10 | T4 (4h) + T2 phân loại (4h) + **LLRD** (1h) + T5 (1h) | LightGBM, hill-climbing, temperature scaling, LLRD | Phân vai + **TỔNG DUYỆT 1** (SOLOAI) → `MOCK1.md` |
+| 7 | 20–26/10 | ôn T2 (3h) + T5 (3h) = **6h** | củng cố nhóm 🔴 | **TỔNG DUYỆT 2** (VOAI CK) → `MOCK2.md`, đóng băng |
+| 8 | 27–30/10 | — *(~10h, giảm tải)* | nghi thức | Mẫu báo cáo, hậu cần, **ngủ đủ** |
 | — | **31/10** | — | — | **2 submission + `Final/` + báo cáo** |
 
 > 📓 Từ Tuần 3, mỗi tuần **gõ lại toàn bộ sổ assert (§4C) từ trí nhớ 1 lần**. Đó là thứ duy nhất

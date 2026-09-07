@@ -1,4 +1,4 @@
-# TUẦN 3 · 20–26/09 · DỊCH MÁY ÍT TÀI NGUYÊN
+# TUẦN 3 · 22–28/09 · DỊCH MÁY ÍT TÀI NGUYÊN
 
 > Thuộc `KE_HOACH_OLPAI26.md` Phần 5. Xem §4B.3 để biết tuần này nhận đơn vị kiến thức nào.
 

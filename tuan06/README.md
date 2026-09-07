@@ -1,4 +1,4 @@
-# TUẦN 6 · 11–17/10 · ML LỒNG GHÉP + TỔNG DUYỆT 1
+# TUẦN 6 · 13–19/10 · ML LỒNG GHÉP + TỔNG DUYỆT 1
 
 > Thuộc `KE_HOACH_OLPAI26.md` Phần 5. Xem §4B.3 để biết tuần này nhận đơn vị kiến thức nào.
 

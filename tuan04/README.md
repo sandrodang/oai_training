@@ -1,4 +1,4 @@
-# TUẦN 4 · 27/09–03/10 · CV NỀN + VIDEO / HÀNH ĐỘNG
+# TUẦN 4 · 29/09–05/10 · CV NỀN + VIDEO / HÀNH ĐỘNG
 
 > Thuộc `KE_HOACH_OLPAI26.md` Phần 5. Xem §4B.3 để biết tuần này nhận đơn vị kiến thức nào.
 

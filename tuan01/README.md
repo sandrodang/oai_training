@@ -1,4 +1,4 @@
-# TUẦN 1 · 05–12/09/2026
+# TUẦN 1 · 07–14/09/2026
 ## NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
 
 > Thuộc `KE_HOACH_OLPAI26.md` Phần 5. Lý thuyết: **Tầng 0 toàn bộ + khởi động Tầng 1**.
@@ -23,14 +23,14 @@ Không có thước đo riêng đáng tin, bạn sẽ đuổi theo nhiễu suố
 
 | Ngày | | Nội dung | Giờ | Sản phẩm |
 |---|---|---|---|---|
-| **N1** | T7 05/09 | 🔴 **ĐO MÔI TRƯỜNG** Colab + Kaggle (2h) · Đọc [§1 đánh giá phân loại](TAI_LIEU.md) (2h) | 4h | `env_report.md` |
-| **N2** | CN 06/09 | **BT 01** metrics (1h) · Đọc §2 BLEU (1,5h) · **BT 02** BLEU 🔴 (1,5h) | 4h | `01` xanh |
-| **N3** | T2 07/09 | Nốt **BT 02** (30') · Đọc §3 sai số + bias–variance (1,7h) · **BT 03** bootstrap (1h) · đệm | 4h | `02`, `03` xanh |
-| **N4** | T3 08/09 | Đọc §4 rò rỉ (1,5h) · **BT 04** chia fold (1h) · **BT 05** ngưỡng (1h) · đệm | 4h | `04`, `05` xanh |
-| **N5** | T4 09/09 | 🔴🔴 Đọc [§0 **TORCH CƠ BẢN**](TAI_LIEU.md) (2h) · **BT 00** `torch_basics` (2h) | 4h | `00` xanh |
-| **N6** | T5 10/09 | Đọc §5 PyTorch nền: optimizer · AMP · tái lập (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
-| **N7** | T6 11/09 | 🔴🔴 Đọc [§6 vòng lặp cải tiến](TAI_LIEU.md) (3h) · **BT 07** `error_analysis` (1h) | 4h | `07` xanh |
-| **N8** | T7 12/09 | **BT 08** `bayes_ceiling` (1,5h) · 🔴 đọc `task1_nlp_fpt26/` như baseline BTC (45') · nghiệm thu + 15 câu (1,75h) | 4h | `NGHIEM_THU.md` |
+| **N1** | T2 07/09 | 🔴 **ĐO MÔI TRƯỜNG** Colab + Kaggle (2h) · Đọc [§1 đánh giá phân loại](TAI_LIEU.md) (2h) | 4h | `env_report.md` |
+| **N2** | T3 08/09 | **BT 01** metrics (1h) · Đọc §2 BLEU (1,5h) · **BT 02** BLEU 🔴 (1,5h) | 4h | `01` xanh |
+| **N3** | T4 09/09 | Nốt **BT 02** (30') · Đọc §3 sai số + bias–variance (1,7h) · **BT 03** bootstrap (1h) · đệm | 4h | `02`, `03` xanh |
+| **N4** | T5 10/09 | Đọc §4 rò rỉ (1,5h) · **BT 04** chia fold (1h) · **BT 05** ngưỡng (1h) · đệm | 4h | `04`, `05` xanh |
+| **N5** | T6 11/09 | 🔴🔴 Đọc [§0 **TORCH CƠ BẢN**](TAI_LIEU.md) (2h) · **BT 00** `torch_basics` (2h) | 4h | `00` xanh |
+| **N6** | T7 12/09 | Đọc §5 PyTorch nền: optimizer · AMP · tái lập (1,7h) · **BT 06** `train_loop.py` (2,3h) | 4h | vòng lặp chạy được |
+| **N7** | CN 13/09 | 🔴🔴 Đọc [§6 vòng lặp cải tiến](TAI_LIEU.md) (3h) · **BT 07** `error_analysis` (1h) | 4h | `07` xanh |
+| **N8** | T2 14/09 | **BT 08** `bayes_ceiling` (1,5h) · 🔴 đọc `task1_nlp_fpt26/` như baseline BTC (45') · nghiệm thu + 15 câu (1,75h) | 4h | `NGHIEM_THU.md` |
 
 **Đọc 13,3h · cài đặt ~12h · đo môi trường 2h · nghiệm thu 2,5h · đệm ~2h = 32h.**
 

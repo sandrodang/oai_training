@@ -1,4 +1,4 @@
-# TUẦN 5 · 04–10/10 · TỰ GIÁM SÁT · SO KHỚP · TỐI ƯU SUY LUẬN
+# TUẦN 5 · 06–12/10 · TỰ GIÁM SÁT · SO KHỚP · TỐI ƯU SUY LUẬN
 
 > Thuộc `KE_HOACH_OLPAI26.md` Phần 5. Xem §4B.3 để biết tuần này nhận đơn vị kiến thức nào.
 

@@ -1,4 +1,4 @@
-# TUẦN 2 · 13–19/09/2026
+# TUẦN 2 · 15–21/09/2026
 ## TRANSFORMER & SEQ2SEQ — TỰ VIẾT TỪ ĐẦU
 
 > Thuộc `KE_HOACH_OLPAI26.md` Phần 5. Lý thuyết: **Tầng 1 (phần còn lại) + Tầng 2 nửa đầu**.
@@ -20,13 +20,13 @@ Nên "tự viết Transformer" ở đây không phải bài tập học thuật,
 
 | Ngày | | Nội dung | Giờ |
 |---|---|---|---|
-| **N1** | CN 13/09 | 🔴 Đọc [§0.1–0.2 d2l: khởi tạo · ổn định số học · tối ưu](TAI_LIEU.md) (2,5h) · **BT 06** `norm_init_gradflow` phần **a+b** (1,5h) | 4h |
-| **N2** | T2 14/09 | 🔴 Đọc [§0.3–0.4 Goodfellow backprop + AdamW](TAI_LIEU.md) (2,5h) · **BT 06** phần **c** Pre-LN vs Post-LN (1,5h) | 4h |
-| **N3** | T3 15/09 | Đọc *Illustrated Transformer* (1h) + nửa đầu *Annotated* (1,5h) · **BT 01** attention (1,5h) | 4h |
-| **N4** | T4 16/09 | Nốt *Annotated* (1,5h) · nốt **BT 01** · **BT 02** transformer phần 1 (2,5h) | 4h |
-| **N5** | T5 17/09 | **BT 02** transformer phần 2 🔴 (2,75h) · Đọc §2 d2l attention + Bahdanau §3 (1,25h) | 4h |
-| **N6** | T6 18/09 | Đọc §3 Sennrich BPE (45') · **BT 03** BPE (1,5h) · **BT 04** greedy + beam (1,75h) | 4h |
-| **N7** | T7 19/09 | **BT 05** huấn luyện đầu-cuối (2h) · 📓 **khởi tạo sổ assert** 22 mục (1h) · nghiệm thu (1h) | 4h |
+| **N1** | T3 15/09 | 🔴 Đọc [§0.1–0.2 d2l: khởi tạo · ổn định số học · tối ưu](TAI_LIEU.md) (2,5h) · **BT 06** `norm_init_gradflow` phần **a+b** (1,5h) | 4h |
+| **N2** | T4 16/09 | 🔴 Đọc [§0.3–0.4 Goodfellow backprop + AdamW](TAI_LIEU.md) (2,5h) · **BT 06** phần **c** Pre-LN vs Post-LN (1,5h) | 4h |
+| **N3** | T5 17/09 | Đọc *Illustrated Transformer* (1h) + nửa đầu *Annotated* (1,5h) · **BT 01** attention (1,5h) | 4h |
+| **N4** | T6 18/09 | Nốt *Annotated* (1,5h) · nốt **BT 01** · **BT 02** transformer phần 1 (2,5h) | 4h |
+| **N5** | T7 19/09 | **BT 02** transformer phần 2 🔴 (2,75h) · Đọc §2 d2l attention + Bahdanau §3 (1,25h) | 4h |
+| **N6** | CN 20/09 | Đọc §3 Sennrich BPE (45') · **BT 03** BPE (1,5h) · **BT 04** greedy + beam (1,75h) | 4h |
+| **N7** | T2 21/09 | **BT 05** huấn luyện đầu-cuối (2h) · 📓 **khởi tạo sổ assert** 22 mục (1h) · nghiệm thu (1h) | 4h |
 
 **Tổng 28h.** Đọc 11h (§0 5h + §1 4h + §2 1,25h + §3 0,75h) · cài đặt 12h · sổ assert 2h ·
 thí nghiệm 2h · đệm 1h.
