@@ -718,16 +718,19 @@ Bản 3 sửa bằng cách **tăng ngân sách** — và vì thế **khôi phụ
 | Tầng | Giờ | T1 | T2 | T3 | T4 | T5 | T6 | T7 |
 |---|---|---|---|---|---|---|---|---|
 | **0** Đánh giá & PP thực nghiệm 🔴🔴 | **10h** | **10** | — | — | — | — | — | ôn |
-| **1** Học sâu cốt lõi 🔴 | **12h** | — | **6** | **3** | **1** | **1** | **1** | ôn |
-| **2** NLP & Dịch máy 🔴🔴 | **20h** | — | **4** | **7** | — | — | **4** | **5** |
+| **1** Học sâu cốt lõi 🔴 | **12h** | **1** | **5** | **3** | **1** | **1** | **1** | ôn |
+| **2** NLP & Dịch máy 🔴🔴 | **20h** | — | **6** | **7** | — | — | **4** | **3** |
 | **3** Thị giác máy tính 🔴🔴 | **16h** | — | — | — | **9** | **7** | — | ôn |
 | **4** ML lồng ghép 🟠 | **4h** | — | — | — | — | — | **4** | — |
 | **5** Hạ tầng & tối ưu suy luận 🔴 | **6h** | — | — | — | — | **2** | **1** | **3** |
-| **📖 Đọc mỗi tuần** | **68h** | **10** | **10** | **10** | **10** | **10** | **10** | **8** |
+| **📖 Đọc mỗi tuần** | **68h** | **11** | **11** | **10** | **10** | **10** | **10** | **6** |
 
 ```
 Tổng 6 tầng   = 10+12+20+16+4+6 = 68h
-Tổng 7 tuần   = 10+10+10+10+10+10+8 = 68h      ✅ KHỚP
+Tổng 7 tuần   = 11+11+10+10+10+10+6 = 68h     ✅ KHỚP
+
+Tuần 1 đọc 11h vì ngoài Tầng 0 (10h) nó còn KHỞI ĐỘNG Tầng 1 1h (d2l Ch.4–5 +
+Bag of Tricks) — phần nền trực tiếp cho `06_train_loop.py`. Tuần 2 vì thế còn 9h.
 ```
 
 **Thay đổi so với bản 2 và lý do:**
@@ -1031,7 +1034,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ### 🗓️ TUẦN 1 · 05–12/09 · NỀN TẢNG: ĐÁNH GIÁ + PYTORCH + ĐO MÔI TRƯỜNG THẬT
 
-**📖 Lý thuyết (10h)** — **Tầng 0 toàn bộ**, gồm §(c) *Vòng lặp cải tiến* (mới)
+**📖 Lý thuyết (11h)** — **Tầng 0 toàn bộ** (10h, gồm §(c) *Vòng lặp cải tiến*) + khởi động Tầng 1 (1h)
 - Post (2018) SacreBLEU · Papineni BLEU · ESL Ch.7
 - d2l.ai Ch.4–5 · He (2018) *Bag of Tricks*
 
@@ -1073,16 +1076,17 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ### 🗓️ TUẦN 2 · 13–19/09 · TRANSFORMER & SEQ2SEQ — TỰ VIẾT TỪ ĐẦU
 
-**📖 Lý thuyết (10h)** — Tầng 1 phần A (**6h**) + Tầng 2 đầu (**4h**)
+**📖 Lý thuyết (11h)** — Tầng 1 phần A (**5h**) + Tầng 2 đầu (**6h**)
 
-*Tầng 1 phần A — 6h · nền của mọi thứ tuần này, đọc TRƯỚC Transformer:*
-- **d2l.ai Ch.6–7** (tính toán sâu · **khởi tạo** · ổn định số học) + **Ch.11** (tối ưu nâng cao) — 3h
+*Tầng 1 phần A — 5h · nền của mọi thứ tuần này, đọc TRƯỚC Transformer:*
+- **d2l.ai Ch.6–7** (tính toán sâu · **khởi tạo** · ổn định số học) + **Ch.11** (tối ưu nâng cao) — 2,5h
 - **Goodfellow Ch.6–8** (backprop · đồ thị tính toán · vanishing/exploding · tối ưu hoá) — 2h
-- **Loshchilov & Hutter (2019) AdamW** — 0,5h · ôn **He (2018) Bag of Tricks** phần **zero-γ init** + no-bias-decay — 0,5h
+- **Loshchilov & Hutter (2019) AdamW** — 0,5h *(Bag of Tricks đã đọc ở Tuần 1)*
 
-*Tầng 2 đầu — 4h:*
+*Tầng 2 đầu — 6h:*
 - *The Illustrated Transformer* → **The Annotated Transformer** (3h, đọc code từng dòng) 🔴🔴
-- Bahdanau 2015 §3 · Sennrich 2016 (BPE) · d2l.ai Ch.10–11 (attention, transformer) — 1h
+- Bahdanau 2015 §3 · d2l.ai Ch.10–11 (attention) — 1,25h · Sennrich 2016 (BPE) — 0,75h
+- *(chi tiết từng mục: `tuan02/TAI_LIEU.md` §1–§3)*
 
 **🔧 Kỹ thuật phải nắm tuần này**
 
@@ -1264,7 +1268,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ### 🗓️ TUẦN 7 · 18–24/10 · VÁ LỖ HỔNG + TỔNG DUYỆT 2 + ĐÓNG BĂNG
 
-**📖 Lý thuyết (8h)** — ôn Tầng 2 (5h) + Tầng 5 (3h). Chỉ đọc lại phần `MOCK1.md` chỉ ra là yếu. **Không chủ đề mới.**
+**📖 Lý thuyết (6h)** — ôn Tầng 2 (3h) + Tầng 5 (3h). Chỉ đọc lại phần `MOCK1.md` chỉ ra là yếu. **Không chủ đề mới.**
 
 **🔧 Kỹ thuật**: không thêm mới. Củng cố nhóm 🔴 trong bảng tổng hợp Phần 4.
 

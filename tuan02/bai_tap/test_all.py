@@ -6,7 +6,7 @@
 Oracle: torch.nn.functional cho attention; ví dụ kinh điển của Sennrich cho BPE;
 BLEU tự viết ở Tuần 1 cho bài dịch đầu-cuối.
 """
-import os, math, importlib.util
+import ast, os, math, importlib.util
 from pathlib import Path
 import numpy as np
 import pytest
@@ -31,6 +31,48 @@ def load(name, folder=None):
     except NotImplementedError:
         pytest.skip(f"{name}: chưa cài đặt")
     return mod
+
+
+# ══════════════════════════════════════════════ LUẬT CHƠI — chặn hàm dựng sẵn
+FORBIDDEN = {
+    "MultiheadAttention", "scaled_dot_product_attention",
+    "Transformer", "TransformerEncoder", "TransformerEncoderLayer",
+    "TransformerDecoder", "TransformerDecoderLayer",
+}
+
+
+def used_apis(path):
+    """Tên API thực sự ĐƯỢC GỌI trong file, lấy bằng AST.
+
+    Chỉ đếm `x.ten(...)` và `from ... import ten` — KHÔNG đếm chuỗi/chú thích,
+    vì docstring của chính bài tập có nhắc tên các hàm bị cấm.
+    """
+    tree = ast.parse(Path(path).read_text(encoding="utf-8"))
+    out = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Attribute):
+            out.add(node.attr)
+        elif isinstance(node, ast.ImportFrom):
+            out.update(a.name for a in node.names)
+        elif isinstance(node, ast.Import):
+            out.update(a.name.split(".")[-1] for a in node.names)
+    return out
+
+
+@pytest.mark.parametrize("mod", ["01_attention", "02_transformer"])
+def test_solution_does_not_use_builtin_transformer(mod):
+    """🔴 Luật §README: cấm nn.MultiheadAttention / F.scaled_dot_product_attention /
+    nn.Transformer* trong LỜI GIẢI — chúng là chuẩn đối chiếu của bộ test.
+
+    Không có guard này thì `return F.scaled_dot_product_attention(q,k,v)` là cách
+    DỄ NHẤT để qua `test_matches_torch_reference` (test đó lấy chính hàm đó làm oracle).
+    Đã thử: một lời giải gọi cả hai hàm cấm vẫn xanh 6/6.
+    """
+    p = SRC / f"{mod}.py"
+    if not p.exists():
+        pytest.skip(f"chưa có {p}")
+    bad = FORBIDDEN & used_apis(p)
+    assert not bad, f"{mod}.py dùng API bị cấm: {sorted(bad)} — phải tự viết"
 
 
 # ══════════════════════════════════════════════ BT 01 — ATTENTION
@@ -130,15 +172,24 @@ class TestTransformer:
                sum(p.numel() for p in untied.parameters()), "buộc trọng số phải GIẢM tham số"
 
     def test_padding_is_masked_out(self):
-        """Đổi nội dung tại vị trí PAD không được đổi kết quả."""
+        """🔴 Kết quả phải BẤT BIẾN theo LƯỢNG ĐỆM — assert §4C #4.
+
+        Cùng một câu 5 token, đệm tới độ dài 5 và độ dài 8, output phải trùng.
+
+        ⚠️ KHÔNG được viết test này bằng cách "đổi nội dung ở ô PAD": ô PAD được
+        nhận ra NHỜ giá trị pad_id, nên đổi nội dung ô đó là đổi luôn mask.
+        Bản cũ của test này so net(x) với chính net(x) -> luôn đúng, không kiểm
+        tra gì; model bỏ hẳn pad_mask vẫn PASS.
+        """
         net = self._net().eval()
-        src = torch.randint(1, 40, (2, 8)); src[:, 5:] = 0
-        tgt = torch.randint(1, 50, (2, 4))
+        short = torch.randint(1, 40, (1, 5))
+        pad8 = torch.cat([short, torch.zeros(1, 3, dtype=torch.long)], dim=1)
+        tgt = torch.randint(1, 50, (1, 4))
         with torch.no_grad():
-            a = net(src, tgt)
-            s2 = src.clone(); s2[:, 5:] = 0          # vẫn pad
-            b = net(s2, tgt)
-        assert torch.allclose(a, b, atol=1e-6)
+            a = net(short, tgt)
+            b = net(pad8, tgt)
+        assert torch.allclose(a, b, atol=1e-5), \
+            "đổi LƯỢNG ĐỆM làm đổi kết quả -> pad_mask sai hoặc thiếu"
 
 
 # ══════════════════════════════════════════════ BT 03 — BPE

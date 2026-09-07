@@ -53,7 +53,9 @@ tuan02/
 │   ├── 03_bpe.py          BPE của Sennrich, từ số 0
 │   ├── 04_decoding.py     greedy · beam search · length penalty
 │   ├── 05_train_mt.py     collate · Noam · vòng lặp train
-│   └── test_all.py        26 test (25 nhanh + 1 slow)
+│   ├── 06_norm_init_gradflow.py  🔴 TẦNG 1 — LayerNorm vs BatchNorm · Xavier/He · grad Pre/Post-LN
+│   │                              (làm TRƯỚC 02_transformer: đây là LÝ DO của luật Pre-LN)
+│   └── test_all.py        32 test (31 nhanh + 1 slow)
 ├── dap_an/              ⛔ chỉ mở sau khi đã thử ≥ 45 phút
 └── NGHIEM_THU.md
 ```
@@ -65,6 +67,7 @@ tuan02/
 ```bash
 cd /home/namdp36/oai/tuan02
 python3 -m pytest bai_tap/test_all.py -q -m "not slow"     # đỏ 25/25 — đúng như mong đợi
+$EDITOR bai_tap/06_norm_init_gradflow.py   # làm cái này TRƯỚC (nền Tầng 1)
 $EDITOR bai_tap/01_attention.py
 ```
 
@@ -107,7 +110,10 @@ Muốn khó hơn: sửa `make_toy_parallel.py` — thêm từ đồng nghĩa, nh
 
 ## ✅ Nghiệm thu → `NGHIEM_THU.md`
 
-- [ ] `pytest -m "not slow"` **25 xanh**
+- [ ] `pytest -m "not slow"` **31 xanh** *(khung: 29 đỏ + 2 xanh sẵn — 2 test
+      `builtin_transformer` là guard LUẬT CHƠI, phải xanh ngay từ đầu)*
+- [ ] 🔴 `06_norm_init_gradflow` xanh. Nói được bằng SỐ: BatchNorm lệch bao nhiêu khi
+      đổi batch (LayerNorm 0) · gradient tầng đáy Pre-LN/Post-LN gấp bao nhiêu lần
 - [ ] `pytest -m slow` xanh, **BLEU > 40**
 - [ ] Vẽ được sơ đồ decoder có causal mask + cross-attention, **không nhìn tài liệu**
 - [ ] Giải thích được vì sao **beam quá lớn có thể làm BLEU giảm**

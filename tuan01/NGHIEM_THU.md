@@ -7,7 +7,12 @@ cd /home/namdp36/oai/tuan01
 python3 -m pytest bai_tap/test_all.py -q
 ```
 
-- [ ] **32 xanh, 1 skip** (test AP50 bị skip có chủ đích — hoãn sang Tuần 5)
+- [ ] **41 xanh, 1 skip** (test AP50 bị skip có chủ đích — hoãn sang Tuần 5)
+- [ ] 🔴 `07_error_analysis` — chỉ đúng cặp nào là **trần**, cặp nào là **lệch prior**
+- [ ] 🔴 `08_bayes_ceiling` — chạy trên `work/data/training_set.csv` ra **TEENCODE 78,5%**,
+      năm nhãn còn lại **< 10%** ⇒ chỉ TEENCODE có trần
+- [ ] 🔴 Đọc `task1_nlp_fpt26/` **như thể là baseline BTC** trong 20 phút, không chạy code:
+      ghi ra kiến trúc · augmentation · số epoch · cách chia val
 - [ ] `01_metrics.py` — 5 test (+1 skip)
 - [ ] `02_bleu.py` — 7 test
 - [ ] `03_bootstrap.py` — 5 test

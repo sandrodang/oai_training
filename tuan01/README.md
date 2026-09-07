@@ -81,6 +81,8 @@ tuan01/
 │   ├── 04_cv_split.py       StratifiedGroupKFold + phát hiện rò rỉ
 │   ├── 05_threshold.py      tối ưu ngưỡng cho macro-F1 / BA
 │   ├── 06_train_loop.py     vòng lặp huấn luyện đầy đủ
+│   ├── 07_error_analysis.py  🔴 TẦNG 0 §c — nhầm đối xứng (trần) vs một chiều (lệch prior)
+│   ├── 08_bayes_ceiling.py   🔴 TẦNG 0 §c — đo TRẦN trước khi tối ưu
 │   └── test_all.py          bộ chấm tự động (sklearn làm oracle)
 ├── dap_an/              ← ⛔ CHỈ MỞ SAU KHI ĐÃ TỰ LÀM
 ├── notebooks/
@@ -126,7 +128,7 @@ Bộ chấm dùng **scikit-learn làm chuẩn đối chiếu**. Bạn tự cài 
 
 ## ✅ Nghiệm thu cuối tuần → `NGHIEM_THU.md`
 
-- [ ] `pytest bai_tap/test_all.py` **32 xanh, 1 skip**
+- [ ] `pytest bai_tap/test_all.py` **41 xanh, 1 skip**
 - [ ] `train_loop.py` chạy được (bài gõ-từ-trí-nhớ đã **hoãn** — xem mục ✂️ ở trên)
 - [ ] Có `env_report.md` với **≥ 8 con số đo thật** trên Colab và Kaggle
 - [ ] Trả lời được 8 câu trong `TAI_LIEU.md § TỰ KIỂM TRA`

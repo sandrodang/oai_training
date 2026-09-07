@@ -1,5 +1,36 @@
 # TUẦN 2 — TÀI LIỆU ĐỌC
-### Tổng ~6,5h. Đã cắt bớt so với bản kế hoạch gốc (lý do ghi ở cuối).
+### Tổng **11h** = Tầng 1 phần A (**5h**) + Tầng 2 đầu (**6h**: §1 4h · §2 1,25h · §3 0,75h).
+
+> ⚠️ **Bản trước của file này thiếu hoàn toàn Tầng 1** — cả 3 mục đọc đều là Tầng 2,
+> trong khi kế hoạch giao Tuần 2 gánh "Tầng 1 phần A". §0 dưới đây trả nợ phần đó.
+> Nó **không phải chủ đề rời**: nó là lớp giải thích nằm DƯỚI Pre-LN mà §1 sẽ bắt bạn dùng.
+
+---
+
+## §0 · TẦNG 1 PHẦN A — NỀN CỦA CẢ TUẦN · 5h · N1 🔴🔴
+### Đọc TRƯỚC Transformer. Đọc sau thì §1 chỉ còn là học thuộc.
+
+| # | Tài liệu | Đọc phần nào | Giờ |
+|---|---|---|---|
+| 0.1 | **d2l.ai Ch.6–7** — https://d2l.ai/ | Tính toán sâu · **khởi tạo tham số** · **ổn định số học** (vanishing/exploding) | 1,5h |
+| 0.2 | **d2l.ai Ch.11** — tối ưu hoá | SGD+momentum · Adam · lịch học | 1h |
+| 0.3 | **Goodfellow, *Deep Learning* Ch.6–8** | Ch.6 mạng truyền thẳng · Ch.6.5 **backprop & đồ thị tính toán** · Ch.8 tối ưu hoá | 2h |
+| 0.4 | **Loshchilov & Hutter (2019) — *Decoupled Weight Decay***<br>https://arxiv.org/abs/1711.05101 | Mục 2 + Thuật toán 2. Chỉ cần hiểu **vì sao weight decay ≠ L2 trong Adam** | 0,5h |
+
+**Phải rút ra được**
+- **Vì sao Transformer dùng LayerNorm chứ không BatchNorm.** Câu trả lời ĐÚNG phải nhắc tới
+  **padding và độ dài câu thay đổi**: thống kê theo batch bị ô nhiễm bởi ô đệm và đổi theo
+  việc batch tình cờ gồm những câu nào. Nói "vì nó chuẩn hoá theo feature" là **chưa trả lời**.
+- **Xavier ≠ He.** Xavier thiết kế cho tanh/sigmoid (đối xứng quanh 0); ReLU vứt một nửa tín hiệu
+  nên cần hệ số gấp đôi — đó là He. Dùng nhầm thì phương sai **tắt dần**, mạng vẫn chạy, chỉ học kém.
+- **AdamW ≠ Adam + L2.** Trong Adam, phạt L2 đi qua bộ chia thích nghi nên tham số có gradient lớn
+  bị phạt nhẹ đi. AdamW tách weight decay ra khỏi bước thích nghi.
+- **Gradient đi ngược qua residual.** Đường identity giữ gradient; mỗi phép chuẩn hoá chèn trên
+  đường đó làm nó suy giảm. Đây là lý do Pre-LN không cần warmup dài còn Post-LN thì cần.
+
+> 💻 Đo ngay bằng `bai_tap/06_norm_init_gradflow.py` — ba thí nghiệm, mỗi cái kết bằng một con số:
+> LayerNorm bất biến theo batch (BatchNorm lệch ~2,3) · He giữ phương sai còn Xavier tắt (7e-07)
+> · gradient tầng đáy **Pre-LN / Post-LN ≈ 5·10⁵ lần**.
 
 ---
 

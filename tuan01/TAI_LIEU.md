@@ -1,11 +1,12 @@
 # TUẦN 1 — TÀI LIỆU ĐỌC
+### Tổng **~11h** (Tầng 0 ~9,5h + khởi động Tầng 1 ~1,7h).
 ### Đọc theo thứ tự. Mỗi mục ghi rõ: đọc phần nào, bao lâu, và **rút ra gì**.
 
 > Nếu link đổi, tìm theo **tên tài liệu** — đều là tài liệu kinh điển, không mất.
 
 ---
 
-## §1 · ĐÁNH GIÁ PHÂN LOẠI — 80 phút · N2
+## §1 · ĐÁNH GIÁ PHÂN LOẠI — 120 phút · N2
 
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
@@ -13,6 +14,7 @@
 | 1.1 | **scikit-learn User Guide — Metrics** · https://scikit-learn.org/stable/modules/model_evaluation.html | Mục `precision_recall_fscore_support`, `f1_score` (đọc kỹ đoạn về `average=`), `balanced_accuracy_score`, `confusion_matrix` | 40' |
 | 1.2 | **Jurafsky & Martin, SLP3** · https://web.stanford.edu/~jurafsky/slp3/ | **Ch.4 mục 4.7 "Evaluation: Precision, Recall, F-measure"** + 4.8 (test sets, cross-validation) | 30' |
 | 1.3 | Wikipedia — *Youden's J statistic* | toàn bộ (ngắn) | 10' |
+| 1.4 | **Saito & Rehmsmeier (2015) — *The Precision-Recall Plot Is More Informative than the ROC Plot***<br>https://doi.org/10.1371/journal.pone.0118432 | Hình 1–4 + phần thảo luận. Đây là câu trả lời dứt điểm cho **ROC-AUC hay PR-AUC** | 40' |
 
 ### Phải rút ra được
 - `macro` = trung bình **không trọng số** các F1 từng lớp → **lớp hiếm nặng ký ngang lớp phổ biến**.
@@ -22,6 +24,11 @@
 - `Balanced Accuracy = (TPR + TNR)/2` **không chứa prevalence** → nộp toàn nhãn 0 luôn được đúng 0,5.
   (Chính là Bài học #3 trong `cv/RESULTS.md` của bạn.)
 - `Youden J = TPR + TNR − 1 = 2·BA − 1` → **tối đa BA ⟺ tối đa J**.
+- 🔴 **ROC-AUC vs PR-AUC.** ROC dùng TPR–FPR; `FPR = FP/N` có **N rất lớn** khi lớp dương hiếm,
+  nên vài trăm FP cũng chỉ nhích FPR một chút → **ROC-AUC trông đẹp một cách gây hiểu nhầm**.
+  PR dùng precision `TP/(TP+FP)`, không có N ở mẫu số, nên phản ánh đúng cái người dùng chịu.
+  **Quy tắc: lớp dương hiếm (anomaly, hate speech) → đọc PR-AUC.** Baseline của PR-AUC là tỉ lệ
+  lớp dương (không phải 0,5), nên PR-AUC 0,4 với lớp dương 1% là **rất tốt**, không phải tệ.
 
 ---
 
@@ -49,13 +56,14 @@
 
 ---
 
-## §3 · SAI SỐ, BOOTSTRAP, OVERFIT BẢNG XẾP HẠNG — 60 phút · N4 🔴
+## §3 · SAI SỐ, BOOTSTRAP, BIAS–VARIANCE, OVERFIT BẢNG XẾP HẠNG — 100 phút · N4 🔴
 
 ### Đọc
 | # | Tài liệu | Đọc phần nào | Giờ |
 |---|---|---|---|
 | 3.1 | **ESL** · https://hastie.su.domains/ElemStatLearn/ (PDF miễn phí) | **Chỉ mục 7.11 "Bootstrap Methods"**, lướt 7.10. *Bootstrap học bằng cách gõ BT 03 nhanh hơn đọc sách.* | 20' |
 | 3.2 | **`PHUONG_PHAP_LUAN.md` — Nguyên lý 1** *(tài liệu của chính chúng ta)* | Toàn bộ §1.1–1.6 🔴 | 40' |
+| 3.3 | **ESL Ch.7.3** (bias–variance decomposition) + **Ch.8.7** (bagging) | Chỉ cần công thức phân rã và **vì sao trung bình nhiều model giảm phương sai** | 40' |
 
 ### Phải rút ra được
 - SE của metric tỉ lệ `1/√n`. **Kiểm chứng bằng số của chính bạn:**
@@ -64,6 +72,10 @@
   so với `√2 × SE` biên → phân biệt được cải thiện nhỏ.
 - ⚠️ **Công thức quan trọng nhất:** chọn "tốt nhất trong k lượt nộp" bị thổi phồng `≈ SE·√(2 ln k)`.
   Với k=20, SE=0,0116 → **thiên lệch +0,028**, lớn hơn toàn bộ khoảng dao động giữa các cấu hình (0,001).
+- 🔴 **Vì sao ensemble giảm phương sai.** Trung bình `k` model có lỗi tương quan `ρ` cho phương sai
+  `σ²·(ρ + (1−ρ)/k)`. Số hạng `(1−ρ)/k` tan đi khi k tăng, **nhưng `ρ·σ²` thì không**.
+  ⇒ **Đa dạng (ρ thấp) quan trọng hơn chất lượng từng model.** Đó là lý do ở vòng trường,
+  ghép ViSoBERT với TF-IDF+LogReg (yếu hơn hẳn) vẫn có ích, còn ghép hai ViSoBERT gần giống nhau thì không.
 
 ---
 
@@ -105,6 +117,52 @@
 
 ---
 
+## §6 · VÒNG LẶP CẢI TIẾN — PHÂN TÍCH LỖI · TRẦN BAYES · BASELINE BTC — 180 phút · N7 🔴🔴
+
+> §1–§4 dạy **ĐO** xem một cải thiện có thật không. §6 dạy **SINH RA giả thuyết nên cải thiện CÁI GÌ**.
+> Hai nửa của cùng một vòng lặp. Thiếu nửa này thì 144 kỹ thuật ở các tầng sau chỉ là **thử mò**
+> theo thứ tự ngẫu nhiên — mà trong 6 tiếng thi bạn chỉ thử được 3–4 thứ.
+
+### Đọc
+
+| # | Tài liệu | Đọc phần nào | Giờ |
+|---|---|---|---|
+| 6.1 | **Andrew Ng — *Machine Learning Yearning*** (miễn phí)<br>https://info.deeplearning.ai/machine-learning-yearning-book | **Ch.13–19** (error analysis: eyeball set, phân nhóm nguyên nhân, ước lượng trần) 🔴🔴 | 1h |
+| 6.2 | **scikit-learn User Guide — `metrics`** | Mục **confusion matrix** + `ConfusionMatrixDisplay`. Tập đọc ma trận theo CẶP, không theo ô lẻ | 30' |
+| 6.3 | **Northcutt et al. (2021) — *Pervasive Label Errors in Test Sets***<br>https://arxiv.org/abs/2103.14749 | Mục 1 + 2. Chỉ cần nắm: **tập test thật cũng đầy nhãn sai**, và điều đó đặt TRẦN lên mọi mô hình | 45' |
+| 6.4 | **`de_tham_khao/` + `task1_nlp_fpt26/`** | Đọc **baseline BTC phát sẵn** như một tài liệu: kiến trúc · augmentation · số epoch · cách chia val | 45' |
+
+### Phải rút ra được
+
+**a. Hai chữ ký nhầm lẫn hoàn toàn khác nhau** — đây là ý quan trọng nhất cả mục:
+
+| Dạng | Dấu hiệu trên ma trận | Nghĩa là gì | Nên làm gì |
+|---|---|---|---|
+| **Đối xứng** | a→b nhiều **và** b→a nhiều | hai lớp thật sự chồng lấn | 🛑 **TRẦN** — đừng đâm đầu tối ưu |
+| **Một chiều** | a→b nhiều, b→a ít | **lệch prior / ngưỡng sai** | ✅ sửa rất rẻ, thường vài phút |
+
+> ⚠️ Ở vòng trường 2026, đúng lỗi lệch prior này lấy mất **0,023 điểm** (v8 được 0,697 thay vì 0,720)
+> và nó **LẶP LẠI HAI LẦN** — vì không ai nhìn ma trận nhầm lẫn.
+
+**b. Đo trần TRƯỚC khi tối ưu, không phải sau.** Cách rẻ nhất: đếm mẫu **trùng input khác nhãn**.
+Bằng chứng thật: **78,5% mẫu nhãn TEENCODE là no-op** (chuỗi sau biến đổi trùng khớp nguyên văn
+một câu `ORIGINAL`), trong khi năm nhãn còn lại đều **dưới 10%**. Nghĩa là head noise có **trần cứng**;
+mọi giờ đổ thêm vào nó là lãng phí. Phát hiện này đến từ **ĐẾM**, không từ mô hình, và tốn 15 phút.
+
+**c. Baseline BTC là mẫu trực tiếp về trình độ của BTC.** §1.3 kế hoạch: điểm của bạn là
+`(S − Min)/(Max − Min)`, tức mục tiêu là **vượt model phức tạp DO BTC huấn luyện** — một đích
+**cố định và hữu hạn**, không phải vượt mọi đội. BTC thường phát sẵn baseline; **đọc trước khi chạy**.
+Nếu baseline là ResNet18 + 10 epoch thì `Max` **không** phải SOTA, và mục tiêu vừa hạ một bậc.
+Baseline cũng tiết lộ **định dạng nộp bài đúng** — nhiều đội mất lượt nộp đầu chỉ vì đoán sai định dạng.
+
+**d. Cổng quyết định.** Mọi cải tiến phải qua 4 câu: gain > 2×SE? · dương trên mấy fold?
+· bao nhiêu giây/mẫu khi suy luận? · có vỡ trần `main.py` 20 phút không?
+
+> 💻 Cài đặt tương ứng: `bai_tap/07_error_analysis.py` và `bai_tap/08_bayes_ceiling.py`.
+> Nghiệm thu `08`: chạy trên `work/data/training_set.csv` phải ra **TEENCODE 78,5%**, năm nhãn còn lại **< 10%**.
+
+---
+
 ## 🧪 TỰ KIỂM TRA — trả lời được hết mới sang tuần 2
 
 Viết câu trả lời ra giấy, **không nhìn tài liệu**:
@@ -117,6 +175,10 @@ Viết câu trả lời ra giấy, **không nhìn tài liệu**:
 6. Sau 20 lượt nộp, chọn cái điểm public cao nhất thì thiên lệch lên trên **bao nhiêu**? Viết công thức.
 7. Ba tầng nhóm trong bài nhận diện ngôn ngữ ký hiệu là gì? Nên `GroupKFold` theo tầng nào? Vì sao?
 8. `model.eval()` đổi hành vi của BatchNorm ra sao? Vì sao LayerNorm không bị ảnh hưởng?
+9. Cho ma trận nhầm lẫn 3 lớp: chỉ ra cặp nào là **trần** và cặp nào là **lệch prior**. Căn cứ vào đâu?
+10. Không có mẫu trùng input thì đo trần Bayes bằng cách nào?
+11. **ROC-AUC hay PR-AUC?** Lớp dương chiếm 1% thì chọn cái nào, vì sao cái kia gây hiểu nhầm?
+12. Vì sao ensemble giảm phương sai? Vì sao **đa dạng quan trọng hơn chất lượng từng model**?
 
 > Đáp án gợi ý nằm rải trong `TAI_LIEU.md` và `PHUONG_PHAP_LUAN.md` — **tự tìm, đừng hỏi LLM**.
 

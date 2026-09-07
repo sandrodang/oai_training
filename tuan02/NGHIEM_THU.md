@@ -4,7 +4,7 @@
 
 ```bash
 cd /home/namdp36/oai/tuan02
-python3 -m pytest bai_tap/test_all.py -q -m "not slow"    # phải 25 xanh
+python3 -m pytest bai_tap/test_all.py -q -m "not slow"    # phải 31 xanh
 python3 -m pytest bai_tap/test_all.py -q -m slow -s       # phải xanh, in BLEU
 ```
 
