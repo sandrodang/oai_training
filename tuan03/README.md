@@ -8,6 +8,10 @@ Thư mục này **mới có phần Tầng 1** (bộ đồ nghề học sâu), đ
 
 `06_weight_averaging` · `07_grad_tricks` · `08_adversarial` (FGM) · `09_consistency_multitask` (R-Drop)
 
+Và 🔴🔴 **`10_modern_transformer`** — RMSNorm · RoPE · GQA · SwiGLU: nâng cấp Transformer
+bản gốc 2017 của Tuần 2 lên bản hiện đại mà tutorial chính thức vòng Bắc 2025 dùng.
+Cả bốn thành phần đều hỏng âm thầm (assert §4C **#10 · #11 · #12**).
+
 Phần bài tập chính của tuần (`01`–`05`) sẽ được dựng khi tới tuần này.
 
 ## Chạy

@@ -341,6 +341,24 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 - Hệ quả: khi một nhiệm vụ con chỉ chiếm 15% trọng số **và** có trần thấp, chiến lược đúng là
   **bỏ nó ở mức đủ dùng** và dồn toàn bộ giờ sang nhiệm vụ chiếm 85%.
 
+**c2b · Bản CV của cùng nguyên lý: đếm dữ liệu HỎNG và TRÙNG trước khi train** 🔴
+
+Trần không chỉ đến từ nhãn sai — nó còn đến từ **dữ liệu không chứa thông tin**. Bằng chứng thật
+từ tutorial chính thức vòng Bắc 2025 (`OlympicAI_2025_CV.pdf` §VIII.1) trên bộ ngôn ngữ ký hiệu:
+
+- **~20% video có frame hỏng** — phổ biến nhất là **solid color** kéo dài. Không lọc thì model
+  học trên khung hình không mang thông tin ngôn ngữ nào.
+- **Trùng lặp đáng kể** giữa các video trong cùng lớp ⇒ *"lượng dữ liệu hiệu dụng thực sự có thể
+  nhỏ hơn"* con số 3.875 rất nhiều. Trùng lặp còn **làm hỏng chia fold** (cùng một video nằm cả
+  train lẫn val → OOF thổi phồng, đúng lỗi đã mất 0,04 ở vòng trường).
+
+Việc phải làm **trong 30 phút đầu**, trước mọi thí nghiệm:
+1. Quét frame bất thường (toàn một màu / gần như không đổi) → loại frame, và **loại cả video**
+   nếu quá ngưỡng (ví dụ > 60% frame hỏng).
+2. Dò trùng lặp (hash khung hình hoặc đặc trưng thô) → giữ **một bản mỗi cụm**;
+   lớp đuôi ít dữ liệu thì giữ thêm vài bản nhưng **phải đánh cùng group khi chia fold**.
+3. Ghi lại **N hiệu dụng** thay cho N danh nghĩa — mọi tính toán ngân sách epoch dựa trên số này.
+
 **c3 · Đọc baseline BTC phát sẵn — 20 phút đầu giờ thi** 🔴
 
 - §1.3: điểm của bạn là `(S − Min)/(Max − Min)`. Mục tiêu **không phải** vượt các đội khác —
@@ -352,6 +370,20 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
   có dùng pretrained không. Nếu baseline là ResNet18 + 10 epoch, `Max` **không** phải SOTA —
   và mục tiêu của bạn vừa hạ xuống một bậc.
 - ⚠️ Baseline cũng tiết lộ **định dạng nộp bài đúng**. Nhiều đội mất lượt nộp đầu chỉ vì đoán sai định dạng.
+
+**c3b · Số hiệu chuẩn từ vòng Bắc 2025** *(để định cỡ thí nghiệm, không phải để chép)*
+
+| | Con số thật |
+|---|---|
+| NLP — dịch Hoa→Việt | **32.061 cặp câu**, độ dài 1–40+ từ · metric **SacreBLEU** |
+| NLP — cấu hình tham chiếu | joint SentencePiece **vocab 8.000** (baseline 3.000) · `label_smoothing = **0,01**` |
+| CV — ngôn ngữ ký hiệu | **100 lớp** · train **3.875** / public **1.630** / private **2.859** video · metric **Macro-F1** |
+| CV — baseline BTC phát sẵn | **CRNN** (CNN + LSTM), `T = 16` frame, uniform sampling |
+| Điểm tham chiếu | giải pháp tutorial đạt **137.15 → hạng 9** |
+
+⚠️ `label_smoothing = 0,01` ở cấu hình NMT tham chiếu **ngược với "0,1 là chuẩn de facto"** mà
+chính tài liệu này ghi ở mục *Huấn luyện NMT*. Bài học: **quét siêu tham số, đừng tin mặc định** —
+kể cả mặc định do tài liệu của chính bạn khẳng định.
 
 **c4 · Cổng quyết định — mọi cải tiến phải qua 4 câu hỏi**
 
@@ -435,6 +467,32 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 
 **(b) Kỹ thuật nâng cao — *đây là danh mục bạn yêu cầu***
 
+*🔴🔴 Kiến trúc Transformer HIỆN ĐẠI — bốn thành phần thay cho bản gốc 2017:*
+> Nguồn: tutorial chính thức AI VIET NAM vòng Bắc 2025 (`OlympicAI_2025_NLP.pdf` §IV) — mô hình
+> tham chiếu dùng **cả bốn**. Khi tác vụ NLP **cấm pretrained** (§11 câu 0), chất lượng kiến trúc
+> tự viết chính là chỗ cạnh tranh, nên đây không phải phần xa xỉ.
+- **RMSNorm** thay LayerNorm — bỏ bước trừ mean và bỏ bias `β`, chỉ chuẩn hoá theo `RMS(x)`.
+  Rẻ hơn, giữ nguyên hướng vector, ổn định gradient khi ghép với **pre-norm** (chuẩn của LLaMA/Qwen).
+- **RoPE (Rotary Position Embedding)** thay sinusoidal PE cộng-thêm — **xoay** từng cặp chiều của
+  `q`,`k` theo vị trí, khiến tích vô hướng chỉ phụ thuộc **khoảng cách `m−n`**. Nhúng vị trí
+  **tương đối** thẳng vào attention, ngoại suy độ dài tốt hơn hẳn.
+- **Grouped-Query Attention (GQA)** — nhiều query head dùng chung một cặp K/V head. Giảm bộ nhớ
+  và chi phí giải mã, gần như không mất chất lượng ⇒ hợp trần `main.py ≤ 20 phút`.
+- **FFN-SwiGLU** thay `Linear→ReLU→Linear` — nhánh cổng dùng SiLU điều biến nhánh value.
+  Mạnh hơn ReLU ở cùng ngân sách tham số.
+
+*🔴 Huấn luyện đa hướng & căn chỉnh biểu diễn:*
+- **Huấn luyện HAI CHIỀU** `zh→vi` **và** `vi→zh` trong cùng một model, phân biệt bằng
+  **language token** ở đầu câu nguồn. Dùng **cùng một bộ dữ liệu hai lần**, chiều phụ làm
+  regularizer cho chiều chính. Tham chiếu dùng `vi2zh_epoch_ratio ≈ 0,7` với **cửa sổ trượt**
+  theo epoch (mỗi epoch chỉ lấy một phần chiều phụ, trượt dần) — vừa đa dạng vừa không loãng.
+- **Contrastive song ngữ (InfoNCE)** làm loss phụ: tạo bốn view `zh_vi · vi_vi · vi_zh · zh_zh`,
+  căn chỉnh "vi-space" và "zh-space" để encoder đưa hai ngôn ngữ về **cùng không gian ngữ nghĩa**.
+  `L = L_MT + λ·L_CL`. Khác R-Drop ở chỗ: R-Drop ép **nhất quán giữa hai lần forward**,
+  contrastive ép **căn chỉnh giữa hai ngôn ngữ**.
+- **SAM (Sharpness-Aware Minimization)** — tìm nghiệm nằm ở **vùng loss phẳng**, tổng quát tốt hơn.
+  Cùng họ động cơ với FGM/R-Drop, chi phí ~2× forward-backward. 🟠
+
 *Huấn luyện NMT:*
 - **Label smoothing 0.1** (chuẩn de facto cho MT)
 - **Checkpoint averaging** 5–10 checkpoint cuối 🔴🔴 — *lựa chọn ensemble MẶC ĐỊNH của kỳ thi này:*
@@ -455,6 +513,11 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
   giữ phần lớn lợi ích) hoặc **cascade** (§Tầng 5). Hạ từ 🔴 xuống 🟠 chính vì ràng buộc này.
 - **MBR decoding** (Minimum Bayes Risk) — sinh n-best rồi chọn câu có BLEU/chrF kỳ vọng cao nhất 🟠
 - **Reranking n-best** bằng model ngược chiều hoặc language model (noisy channel)
+  🔴 **Mẹo hợp lệ, không cần dữ liệu ngoài:** huấn luyện một **LM tiếng Việt ngay tại chỗ** từ
+  chính phần `vi` của tập train, rồi dùng nó rerank n-best theo độ trôi chảy. Không đụng luật
+  "không dùng dữ liệu ngoài" và không cần pretrained.
+- **Sampling decoding**: **top-k** · **top-p (nucleus)** — sinh nhiều bản dịch đa dạng để đưa vào
+  rerank/MBR. Không đổi trọng số, chỉ đổi cách giải mã. 🟠
 - **Lexically constrained decoding** — ép giữ tên riêng/số
 - **Copy mechanism / pointer-generator** — cho từ hiếm, tên, chữ số 🔴
 
@@ -533,6 +596,10 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 *Huấn luyện ảnh (áp dụng được cho mọi bài CV):*
 - **Bag of Tricks** (He 2018): cosine LR, label smoothing, **zero-γ init** cho residual cuối, no-bias-decay 🔴
 - Augmentation: **RandAugment**, TrivialAugment, AutoAugment, **AugMix**
+- 🔴 **Augmentation VIDEO phải NHẤT QUÁN theo thời gian**: sinh tham số biến đổi **một lần**
+  rồi áp cho **toàn bộ chuỗi frame**. Áp độc lập từng frame sẽ làm chuyển động bị rung/giật và
+  phá chính thứ model cần học. Bộ phép hợp lý: `speed (0,9–1,1)` · `crop_scale (0,85–1,0)` ·
+  `color jitter` — tất cả dùng chung một seed cho cả clip.
 - **Mixup / CutMix / CutOut / GridMask / Copy-Paste** — ⚠️ *hại* với segmentation và anomaly detection
 - **Progressive resizing** (train nhỏ → tinh chỉnh lớn): tiết kiệm thời gian rất nhiều trên T4 🔴
 - **EMA / SWA**, checkpoint averaging
@@ -548,11 +615,22 @@ Ký hiệu ưu tiên: 🔴 bắt buộc · 🟠 nên có · 🟡 nếu dư thờ
 - **Weighted Box/Mask Fusion (WBF)** để ensemble kết quả định vị
 
 *Video / hành động — SOLOAI T2 dạng này 🔴:*
-> 🔴 **QUY TẮC CẮT:** 14h không đủ để giỏi cả 3 nhánh CV. **Chọn ĐÚNG MỘT hướng video và đào sâu
-> đến mức cài được từ trí nhớ**, phần còn lại chỉ đọc để nhận dạng đề:
-> · **TSM** nếu đề cho video RGB thô · **ST-GCN** nếu đề cho (hoặc dễ trích) keypoint.
-> Quyết định ở **Tuần 4** sau khi đọc lại 2 đề mẫu, rồi **không đổi nữa**. I3D / SlowFast /
-> two-stream / TimeSformer hạ xuống 🟡 — biết tên, không cài.
+> 🔴 **QUY TẮC CẮT:** không đủ giờ để giỏi cả 3 nhánh CV. **Chọn ĐÚNG MỘT hướng video và đào sâu
+> đến mức cài được từ trí nhớ**, phần còn lại chỉ đọc để nhận dạng đề. Ba đường được phép chọn:
+>
+> | Đường | Khi nào chọn |
+> |---|---|
+> | 🔴🔴 **CNN 2D + Transformer encoder + attention pooling** | **mặc định**, và là đường tutorial chính thức 2025 dùng (ConvNeXt-Tiny) — đạt **137.15, hạng 9** |
+> | **TSM** | video RGB thô, cần rẻ hơn 3D-CNN |
+> | **ST-GCN** | đề cho sẵn (hoặc dễ trích) keypoint |
+>
+> ⚠️ **Bản trước của quy tắc này chỉ cho chọn TSM hoặc ST-GCN — sai.** Tutorial chính thức
+> `OlympicAI_2025_CV.pdf` **không nhắc TSM, ST-GCN, I3D, SlowFast, MediaPipe/keypoint một lần nào**;
+> nó đi CNN-2D + Transformer + attention pooling và vẫn vào top 10. Đó là đường an toàn nhất
+> vì tái dùng backbone ImageNet (được phép ở tác vụ CV) và ghép với thứ bạn đã tự viết ở Tuần 2.
+>
+> Quyết định ở **Tuần 4** sau khi đọc lại 2 đề mẫu, rồi **không đổi nữa**.
+> I3D / SlowFast / two-stream / TimeSformer hạ xuống 🟡 — biết tên, không cài.
 - **Lấy mẫu khung hình**: dense vs **TSN sparse sampling** (chia video thành K đoạn, lấy 1 khung mỗi đoạn) 🔴
 - **CNN + LSTM/GRU (CRNN)** — BTC 2025 phát sẵn baseline dạng này
 - **3D-CNN**: C3D, **I3D**, R(2+1)D, **X3D**, **SlowFast**
@@ -874,11 +952,11 @@ và **không dùng được** vì phải nhảy thư mục. Nay mỗi module đ�
 
 | Module | Nội dung | File | Vì dùng cho | Assert §4C |
 |---|---|---|---|---|
-| norm · init · gradflow 🔴 | LayerNorm vs BatchNorm · Xavier/He · grad flow Pre/Post-LN | `tuan02/…/06_norm_init_gradflow.py` | **lớp giải thích dưới Pre-LN** của BT 02 | **#10 · #11** |
+| norm · init · gradflow 🔴 | LayerNorm vs BatchNorm · Xavier/He · grad flow Pre/Post-LN | `tuan02/…/06_norm_init_gradflow.py` | **lớp giải thích dưới Pre-LN** của BT 02 | **#13 · #14** |
 | weight averaging | EMA · SWA · **checkpoint averaging** | `tuan03/…/06_weight_averaging.py` | 🔴 ensemble mặc định (suy luận ×1) | — |
-| grad tricks | gradient accumulation · checkpointing · thứ tự AMP | `tuan03/…/07_grad_tricks.py` | batch lớn cho MT trên GPU yếu | **#20** |
-| adversarial 🔴 | **FGM** · PGD · FreeLB | `tuan03/…/08_adversarial.py` | **+0,0121 OOF, 5/5 fold** · tấn công embedding ⇒ dùng được cho seq2seq | **#17** |
-| consistency 🔴 | **R-Drop** · consistency · uncertainty weighting | `tuan03/…/09_consistency_multitask.py` | **+0,0047 OOF, 4/5 fold** · R-Drop (Wu 2021) **sinh ra cho NMT** | **#18** |
+| grad tricks | gradient accumulation · checkpointing · thứ tự AMP | `tuan03/…/07_grad_tricks.py` | batch lớn cho MT trên GPU yếu | **#23** |
+| adversarial 🔴 | **FGM** · PGD · FreeLB | `tuan03/…/08_adversarial.py` | **+0,0121 OOF, 5/5 fold** · tấn công embedding ⇒ dùng được cho seq2seq | **#20** |
+| consistency 🔴 | **R-Drop** · consistency · uncertainty weighting | `tuan03/…/09_consistency_multitask.py` | **+0,0047 OOF, 4/5 fold** · R-Drop (Wu 2021) **sinh ra cho NMT** | **#21** |
 | focal loss | focal | `tuan04/…/06_focal_loss.py` | phân loại ảnh mất cân bằng | — |
 | seg & match losses | dice · tversky · contrastive · triplet | `tuan05/…/06_seg_match_losses.py` | segmentation & Siamese cạnh (jigsaw) | — |
 | finetune lr | LLRD · gradual unfreezing · freeze BN | `tuan06/…/06_finetune_lr.py` | fine-tune encoder pretrained | — |
@@ -970,7 +1048,7 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ---
 
-### 📓 SỔ ASSERT — 22 mục nhóm 🔴, phải gõ được từ trí nhớ
+### 📓 SỔ ASSERT — 25 mục nhóm 🔴, phải gõ được từ trí nhớ
 
 > Mỗi mục: *chế độ hỏng âm thầm* → *câu kiểm tra*. Gõ lại toàn bộ sổ này **1 lần mỗi tuần** từ Tuần 3.
 
@@ -987,34 +1065,37 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 | 7 | **Beam length penalty** | lp=0 → thiên vị câu ngắn, cộng dồn với BP của BLEU | `assert len(beam(lp=1.5)) >= len(beam(lp=0.0))` |
 | 8 | **beam=1 ≡ greedy** | beam cài sai vẫn ra câu hợp lý | `assert beam(k=1,lp=0.0) == greedy()` |
 | 9 | **BPE theo rank** | quét trái→phải thay vì rank nhỏ nhất | `assert apply_bpe("abc",[("a","b"),("b","c")]) == ["ab","c","</w>"]` |
-| 10 | **LayerNorm ≠ BatchNorm** | BN trong Transformer: thống kê ô nhiễm bởi padding, đổi theo batch — **không crash**, chỉ kém | `y1=norm(x)[0]; batch2=x.clone(); batch2[1:]=randn_like(batch2[1:])`<br>`assert allclose(norm(batch2)[0], y1)  # LN đúng; BN sẽ TRƯỢT` |
-| 11 | **Pre-LN vs Post-LN** | Post-LN không warmup → gradient tầng đầu tắt, train phân kỳ *hoặc* chỉ học kém | `assert grad_norm_layer0(preln) > 10 * grad_norm_layer0(postln)` |
+| 10 | **RoPE** | sai quy ước ghép cặp (liền kề vs nửa-tách) → vẫn train, vẫn ra BLEU | `assert abs(dot(q@5,k@3) - dot(q@12,k@10)) < 1e-4`<br>`assert abs(dot(q@5,k@3) - dot(q@5,k@4)) > 1e-3` |
+| 11 | **RMSNorm** | lỡ trừ mean → thành LayerNorm, không ai báo | `assert not allclose(RMSNorm(x), LayerNorm(x))  # x có mean≠0`<br>`assert len(list(n.parameters()))==1  # không bias` |
+| 12 | **GQA `repeat_kv`** | `.repeat()` xếp XEN KẼ thay vì liền khối | `assert repeat_kv(arange(2).view(1,2,1,1),3).flatten().tolist()==[0,0,0,1,1,1]` |
+| 13 | **LayerNorm ≠ BatchNorm** | BN trong Transformer: thống kê ô nhiễm bởi padding, đổi theo batch — **không crash**, chỉ kém | `y1=norm(x)[0]; batch2=x.clone(); batch2[1:]=randn_like(batch2[1:])`<br>`assert allclose(norm(batch2)[0], y1)  # LN đúng; BN sẽ TRƯỢT` |
+| 14 | **Pre-LN vs Post-LN** | Post-LN không warmup → gradient tầng đầu tắt, train phân kỳ *hoặc* chỉ học kém | `assert grad_norm_layer0(preln) > 10 * grad_norm_layer0(postln)` |
 
 **Nhóm B — Đánh giá & chia dữ liệu** *(nơi mất nhiều điểm nhất ở vòng trường)*
 
 | # | Kỹ thuật | Hỏng âm thầm kiểu gì | Assert |
 |---|---|---|---|
-| 12 | **Chia fold có nhóm** | rò rỉ → OOF thổi phồng **0,04** | `assert not (set(g[tr]) & set(g[va]))` |
-| 13 | **Hiệu chỉnh prior** | dùng train-prior → lệch phân phối dự đoán | `assert abs(pred_dist - test_prior).max() < 0.05` |
-| 14 | **Mọi đại lượng đã tune** | fit và eval cùng dữ liệu → gain ảo | nửa-fit / nửa-eval: `assert gain_eval < gain_fit` |
-| 15 | **Trọng số ensemble trên OOF** | tối ưu trên chính tập chấm | như #12, cộng: `assert w.sum()≈1 and (w>=0).all()` |
-| 16 | **Brevity penalty của BLEU** | quên BP → điểm ảo cho câu ngắn | `assert bleu(["a"],["a b c d"]) < bleu(["a b c d"],["a b c d"])` |
+| 15 | **Chia fold có nhóm** | rò rỉ → OOF thổi phồng **0,04** | `assert not (set(g[tr]) & set(g[va]))` |
+| 16 | **Hiệu chỉnh prior** | dùng train-prior → lệch phân phối dự đoán | `assert abs(pred_dist - test_prior).max() < 0.05` |
+| 17 | **Mọi đại lượng đã tune** | fit và eval cùng dữ liệu → gain ảo | nửa-fit / nửa-eval: `assert gain_eval < gain_fit` |
+| 18 | **Trọng số ensemble trên OOF** | tối ưu trên chính tập chấm | như #12, cộng: `assert w.sum()≈1 and (w>=0).all()` |
+| 19 | **Brevity penalty của BLEU** | quên BP → điểm ảo cho câu ngắn | `assert bleu(["a"],["a b c d"]) < bleu(["a b c d"],["a b c d"])` |
 
 **Nhóm C — Huấn luyện**
 
 | # | Kỹ thuật | Hỏng âm thầm kiểu gì | Assert |
 |---|---|---|---|
-| 17 | **FGM** | tấn công sai tham số / quên khôi phục | `w0=emb.weight.clone(); fgm.attack()`<br>`assert not equal(emb.weight,w0); fgm.restore(); assert equal(emb.weight,w0)` |
-| 18 | **R-Drop / consistency** | KL sai chiều, áp nhầm head | `assert kl(p,p) < 1e-6` và `assert kl(p,q)≈kl(q,p)` *(bản đối xứng)* |
-| 19 | **label_smoothing + ignore_index** | tính loss trên ô PAD → loãng | `assert loss(logits, all_pad_targets) == 0` |
-| 20 | **AMP: GradScaler ↔ scheduler** | `sched.step()` khi scaler đã bỏ bước | `s0=scaler.get_scale(); scaler.step(opt); scaler.update()`<br>`if scaler.get_scale() >= s0: sched.step()` |
+| 20 | **FGM** | tấn công sai tham số / quên khôi phục | `w0=emb.weight.clone(); fgm.attack()`<br>`assert not equal(emb.weight,w0); fgm.restore(); assert equal(emb.weight,w0)` |
+| 21 | **R-Drop / consistency** | KL sai chiều, áp nhầm head | `assert kl(p,p) < 1e-6` và `assert kl(p,q)≈kl(q,p)` *(bản đối xứng)* |
+| 22 | **label_smoothing + ignore_index** | tính loss trên ô PAD → loãng | `assert loss(logits, all_pad_targets) == 0` |
+| 23 | **AMP: GradScaler ↔ scheduler** | `sched.step()` khi scaler đã bỏ bước | `s0=scaler.get_scale(); scaler.step(opt); scaler.update()`<br>`if scaler.get_scale() >= s0: sched.step()` |
 
 **Nhóm D — Hai cổng cuối, không có ngoại lệ**
 
 | # | Ràng buộc | Assert |
 |---|---|---|
-| 21 | **`main.py` ≤ 20 phút** (§1.4) | `t0=time(); main(); assert time()-t0 < 1200` |
-| 22 | **Tái lập** (quy chế bắt buộc) | `assert run(seed=42) == run(seed=42)` |
+| 24 | **`main.py` ≤ 20 phút** (§1.4) | `t0=time(); main(); assert time()-t0 < 1200` |
+| 25 | **Tái lập** (quy chế bắt buộc) | `assert run(seed=42) == run(seed=42)` |
 
 > 🔴 **Mục 19 và 20 phải chạy được ở giờ thứ 6 khi KHÔNG có DeepSeek.** Không thương lượng.
 
@@ -1119,12 +1200,12 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
    Ba thí nghiệm, mỗi cái kết thúc bằng một con số, không phải một câu chữ:
    - **a. LayerNorm tự viết** ≡ `nn.LayerNorm`. Rồi chứng minh **vì sao Transformer không dùng BatchNorm**:
      giữ nguyên câu thứ nhất, **đổi các câu KHÁC trong batch** → output của **BN đổi**, của **LN không đổi**.
-     Với batch có padding và độ dài thay đổi, thống kê BN bị ô nhiễm bởi ô đệm. *(assert §4C #10)*
+     Với batch có padding và độ dài thay đổi, thống kê BN bị ô nhiễm bởi ô đệm. *(assert §4C #13)*
    - **b. Khởi tạo**: đo phương sai kích hoạt qua **20 tầng** với Xavier/He vs `randn()`.
      Xavier giữ phương sai ổn định; khởi tạo ẩu làm nó **nổ hoặc tắt** — và không hề crash.
    - **c. Pre-LN vs Post-LN**: dựng hai stack 12 tầng, đo `grad_norm` **tại tầng ĐẦU**.
      Post-LN nhỏ hơn Pre-LN ít nhất một bậc ⇒ **đó chính là lý do Post-LN cần warmup dài**,
-     và là lý do BT 02 bắt dùng Pre-LN. *(assert §4C #11)*
+     và là lý do BT 02 bắt dùng Pre-LN. *(assert §4C #14)*
    > Không có mục 0 này thì "Pre-LN ổn định hơn" chỉ là câu **học thuộc**. Có nó, đó là **số bạn tự đo**.
 1. **Viết Transformer seq2seq từ số 0** (~300 dòng, Pre-LN, tied embeddings), **không dùng HuggingFace**.
    Train trên một cặp ngôn ngữ nhỏ bất kỳ. Đạt BLEU > 0 và giải thích được từng con số.
@@ -1145,7 +1226,8 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 
 ### 🗓️ TUẦN 3 · 22–28/09 · DỊCH MÁY ÍT TÀI NGUYÊN — 🔴 TUẦN QUAN TRỌNG NHẤT
 
-**📖 Lý thuyết (10h)** — Tầng 2 phần giữa (7h) + Tầng 1: **weight averaging · grad tricks · FGM · R-Drop** (3h) 🔴
+**📖 Lý thuyết (10h)** — Tầng 2 phần giữa, gồm 🔴🔴 **kiến trúc hiện đại RMSNorm · RoPE · GQA · SwiGLU** (7h)
++ Tầng 1: **weight averaging · grad tricks · FGM · R-Drop** (3h) 🔴
 - **J&M SLP3 Ch.13 Machine Translation** · CS224n lecture MT/subword
 - Sennrich (2016) back-translation · Provilkov (2020) BPE-dropout · Ott (2018) Scaling NMT
 - Koehn *SMT* Ch.4 (IBM Model 1, word alignment)
@@ -1162,8 +1244,14 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 0. 🔴 **`06_weight_averaging` · `07_grad_tricks` · `08_adversarial` · `09_consistency_multitask`** (~3h code). Làm TRƯỚC phần dịch máy bên dưới —
    `06_weight_averaging` và `08_adversarial` được dùng ngay ở mục 1–3 của tuần này.
    Chấm: `pytest bai_tap/test_all.py -q` (15 test).
-   **Assert §4C #17 (FGM) · #18 (R-Drop) · #20 (AMP)**
+   **Assert §4C #20 (FGM) · #21 (R-Drop) · #23 (AMP)**
    phải gõ được từ trí nhớ trước khi sang tuần 4.
+0b. 🔴🔴 **`10_modern_transformer.py`** (~2h) — nâng cấp Transformer Tuần 2 lên bản hiện đại:
+   **RMSNorm** (không trừ mean) · **RoPE** (vị trí tương đối trong tích vô hướng) ·
+   **GQA** (nhiều query head chung một cặp K/V) · **FFN-SwiGLU**.
+   Cả bốn đều hỏng âm thầm: RMSNorm trừ mean thì thành LayerNorm; RoPE sai quy ước ghép cặp thì
+   vẫn ra BLEU; `repeat_kv` dùng `.repeat()` thì xếp xen kẽ; SwiGLU đảo nhánh vẫn học.
+   *Nguồn: tutorial chính thức vòng Bắc 2025 — mô hình tham chiếu dùng cả bốn.*
 1. **Giải trọn VOAI 2025 CK Tác vụ 1 (Ba Na → Việt), bấm giờ 3 tiếng trên Colab.**
    Đây là bài luyện sát đề nhất trong toàn bộ kế hoạch.
 2. So sánh có số liệu trên **cùng** tập dữ liệu:
@@ -1172,6 +1260,8 @@ Nhờ DeepSeek viết decoder, rồi **thả assert của mình lên nó** — 5
 3. Cài **checkpoint averaging** và **ensemble decoding**, đo mức tăng BLEU.
 
 **✅ Nghiệm thu**
+- [ ] 🔴🔴 `10_modern_transformer` xanh 7/7. **Đo A/B trên bài Ba Na**: Transformer gốc Tuần 2
+      vs bản RMSNorm+RoPE+GQA+SwiGLU — chênh BLEU bao nhiêu, có qua cổng 2×SE không?
 - [ ] 🔴 Bốn module Tầng 1 (`06`–`09`) **xanh hết**, và đo được **FGM có dương trên bài Ba Na không** (đừng tin số của bài khác).
 - [ ] 📓 **Gõ lại toàn bộ sổ assert (§4C) từ trí nhớ**, không nhìn — sai mục nào thì học lại mục đó.
 - [ ] Có bảng so sánh 5 hướng dịch máy, kèm BLEU và thời gian train.
@@ -1569,7 +1659,23 @@ Baseline nộp được trong 15 phút: ................................
 
 ## PHẦN 11 — CÂU HỎI GỬI BTC NGAY TUẦN NÀY (`olpvietnam@vaip.vn`)
 
+> 🔴🔴 **CÂU 0 LÀ CÂU QUAN TRỌNG NHẤT.** Tutorial chính thức AI VIET NAM cho vòng Bắc 2025
+> (`OlympicAI_2025_NLP.pdf` §II.1, `OlympicAI_2025_CV.pdf` §II) cho thấy **luật pretrained KHÁC NHAU
+> giữa hai tác vụ trong cùng một vòng**. Trả lời câu này quyết định **cả một khối kiến thức có dùng được hay không**.
+
+0. 🔴🔴 **PRETRAINED — hỏi RIÊNG cho từng tác vụ, đừng hỏi chung.** Vòng Bắc 2025 quy định:
+   - **NLP:** *"không được sử dụng các mô hình huấn luyện sẵn (pre-trained)… như BERT, BART… **cho bất kỳ bước xử lý nào**"*
+   - **CV:** *"Thí sinh **cũng có thể sử dụng** các mô hình pretrained được huấn luyện trên ImageNet"*
+
+   Trong khi **vòng trường 2026 lại CHO PHÉP** pretrained ở tác vụ NLP (đội chúng tôi dùng ViSoBERT).
+   ⇒ Xin xác nhận cho **vòng miền Bắc 2026**: (a) tác vụ NLP có cấm pretrained không?
+   (b) tác vụ CV có cho ImageNet-pretrained không? (c) `sentencepiece`/tokenizer huấn luyện **tại chỗ**
+   trên dữ liệu BTC có được coi là "pretrained" không?
+
 1. **Norm_score:** *"Nếu > 10 thì quy về 10"* — là **10** hay **100**? Trần điểm thực tế là bao nhiêu?
+   ⚠️ **Dẫn chứng:** tutorial AI VIET NAM ghi giải pháp của họ đạt **137.15 điểm, xếp hạng 9**
+   ở vòng Bắc 2025 — tức điểm tổng **vượt 100**. Vậy trần là bao nhiêu, và 137.15 là *tổng 2 tác vụ*
+   hay *trung bình*?
    Vòng miền 2026 dùng công thức `(S−Min)/(Max−Min)` như 2025 hay `SCORE/MAX` như vòng trường 2026?
 2. Đề vòng miền có **2 tác vụ** (1 NLP + 1 CV) như 4 kỳ trước, hay tách thành 3 bài theo 3 lĩnh vực?
 3. **Pretrained**: có danh sách model được phép như `download_model.py` của SOLOAI 2025 không?
